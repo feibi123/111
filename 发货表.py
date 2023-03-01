@@ -5,7 +5,8 @@ variable2 = st.sidebar.number_input("输入30天安全库存", min_value=1, max_
 variable3 = st.sidebar.number_input("输入60天安全库存", min_value=31, max_value=60, value=60)  # 60天安全库存
 variable4 = st.sidebar.number_input("输入最小安全库存", min_value=1, max_value=7, value=7)  # 最小安全库存
 variable5 = st.sidebar.number_input("输入物流周期", min_value=1, max_value=60, value=45)  # 物流周期
-df = pd.read_csv(r'E:\发货表\FSM\订单报告.csv', encoding='gbk', header=None)   # header=None 参数禁止将第一行读入为列标题
+uploaded_file = st.file_uploader("上传订单报告", type="csv")
+df = pd.read_csv(uploaded_file, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
 df.columns = df.iloc[0]  # 将第八行作为标题
 df = df.drop(df.index[0])  # 删除第八行
