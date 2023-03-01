@@ -41,7 +41,8 @@ dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列�
 df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
-dt = pd.read_excel(r'E:\发货表\FSM\在途库存.xlsx', header=0)  # 读取在途库存，并将首行作为标题列
+uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列
+dt = pd.read_excel(uploaded_file1, header=0)
 
 dk = pd.read_csv(r'E:\发货表\FSM\即时库存.csv', header=0)  # 读取即时库存，并将首行作为标题列
 mask = (dk['detailed-disposition'] == 'SELLABLE') & (dk['country'] != 'CA')  # 筛选出'SELLABLE'和美国的在库库存
