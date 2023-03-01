@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
-uploaded_file1 = st.file_uploader("上传在途库存", type="csv")  # 读取在途库存，并将首行作为标题列
-dt = pd.read_csv(uploaded_file1, header=0)
+uploaded_file = st.file_uploader("上传订单报告", type="csv")
+df = pd.read_csv(uploaded_file, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
+df = df.drop(df.index[:7]) 
 st.dataframe(df)
