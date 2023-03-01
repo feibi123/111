@@ -46,8 +46,8 @@ df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天�
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
 with col8:
-    uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列
-dt = pd.read_excel(uploaded_file1, header=0)
+    uploaded_file1 = st.file_uploader("上传在途库存", type="csv")  # 读取在途库存，并将首行作为标题列
+dt = pd.read_csv(uploaded_file1, header=0)
 
 with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
@@ -61,8 +61,8 @@ df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销�
 df = pd.merge(df, dk, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格和在库库存表格合并
 
 with col10:
-    uploaded_file3 = st.file_uploader("上传产品属性表", type="xlsx")  # 读取产品属性表，并将首行作为标题列
-dc = pd.read_excel(uploaded_file3, header=0)
+    uploaded_file3 = st.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表，并将首行作为标题列
+dc = pd.read_csv(uploaded_file3, header=0)
 dc = dc[['链接名称', '父ASIN', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
