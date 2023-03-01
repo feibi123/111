@@ -1,3 +1,4 @@
+pip install openpyxl
 import streamlit as st
 import pandas as pd
 uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
