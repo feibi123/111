@@ -13,8 +13,8 @@ with col4:
 with col5:
     variable5 = st.number_input("输入物流周期", min_value=1, max_value=60, value=45)  # 物流周期
 
-col1, col2, col3, col4 = st.columns(4)
-with col1:
+col7, col8, col9, col10 = st.columns(4)
+with col7:
     uploaded_file = st.file_uploader("上传订单报告", type="csv")
 df = pd.read_csv(uploaded_file, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
@@ -45,11 +45,11 @@ dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列�
 df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
-with col2:
+with col8:
     uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列
 dt = pd.read_excel(uploaded_file1, header=0)
 
-with col3:
+with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
 dk = pd.read_csv(uploaded_file2, header=0, encoding='gbk')   # 读取即时库存，并将首行作为标题列
 mask = (dk['detailed-disposition'] == 'SELLABLE') & (dk['country'] != 'CA')  # 筛选出'SELLABLE'和美国的在库库存
@@ -60,7 +60,7 @@ dk = dk.rename(columns={'quantity': '在库库存数量'})  # 将’quantity‘�
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在途库存表格合并
 df = pd.merge(df, dk, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格和在库库存表格合并
 
-with col4:
+with col10:
     uploaded_file3 = st.file_uploader("上传产品属性表", type="xlsx")  # 读取产品属性表，并将首行作为标题列
 dc = pd.read_excel(uploaded_file3, header=0)
 dc = dc[['链接名称', '父ASIN', 'sku']]  # 只保留链接名称、父ASIN和sku列
