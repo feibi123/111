@@ -1,9 +1,5 @@
-import subprocess
-subprocess.call(['pip', 'install', 'openpyxl'])
-
 import streamlit as st
 import pandas as pd
-import openpyxl
 st.set_page_config(layout="wide")
 col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
