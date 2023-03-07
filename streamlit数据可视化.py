@@ -57,7 +57,7 @@ if uploaded_file is not None:
             headers = [cell.value for cell in next(rows)]
             # 读取数据行
             data = [[cell.value for cell in row] for row in rows]
- dt = pd.DataFrame(data, columns=headers)
+    dt = pd.DataFrame(data, columns=headers)
     
 with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
