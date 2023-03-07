@@ -15,8 +15,8 @@ with col5:
 
 col7, col8, col9, col10 = st.columns(4)
 with col7:
-    uploaded_file = st.file_uploader("上传订单报告", type="csv")
-df = pd.read_csv(uploaded_file, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
+    uploaded_file1 = st.file_uploader("上传订单报告", type="csv")
+df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
 df.columns = df.iloc[0]  # 将第八行作为标题
 df = df.drop(df.index[0])  # 删除第八行
@@ -46,19 +46,18 @@ df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天�
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
 with col8:
-    uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列   
+    uploaded_file = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列   
 # 读取Excel文件（如果上传了文件）
-if uploaded_file1 is not None:
+if uploaded_file is not None:
     with openpyxl.Workbook() as wb:
-        with openpyxl.reader.excel.load_workbook(uploaded_file1) as workbook:
+        with openpyxl.reader.excel.load_workbook(uploaded_file) as workbook:
             worksheet = workbook.active
             rows = worksheet.rows
             # 读取标题行
             headers = [cell.value for cell in next(rows)]
             # 读取数据行
             data = [[cell.value for cell in row] for row in rows]
-    # 将数据转换为数据框
-    df = pd.DataFrame(data, columns=headers)
+ dt = pd.DataFrame(data, columns=headers)
     
 with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
