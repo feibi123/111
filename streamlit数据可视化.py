@@ -46,8 +46,8 @@ df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天�
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
 with col8:
-    uploaded_file1 = st.file_uploader("上传在途库存", type="csv")  # 读取在途库存，并将首行作为标题列
-dt = pd.read_csv(uploaded_file1, header=0)
+    uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列
+dt = pd.read_excel(uploaded_file1, header=0) if uploaded_file1 else None
 
 with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
