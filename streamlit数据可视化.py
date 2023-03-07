@@ -46,9 +46,20 @@ df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天�
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
 with col8:
-    uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列
-dt = pd.read_excel(uploaded_file1, header=0) if uploaded_file1 else None
-
+    uploaded_file1 = st.file_uploader("上传在途库存", type="xlsx")  # 读取在途库存，并将首行作为标题列   
+# 读取Excel文件（如果上传了文件）
+if uploaded_file1 is not None:
+    with openpyxl.Workbook() as wb:
+        with openpyxl.reader.excel.load_workbook(uploaded_file1) as workbook:
+            worksheet = workbook.active
+            rows = worksheet.rows
+            # 读取标题行
+            headers = [cell.value for cell in next(rows)]
+            # 读取数据行
+            data = [[cell.value for cell in row] for row in rows]
+    # 将数据转换为数据框
+    df = pd.DataFrame(data, columns=headers)
+    
 with col9:
     uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
 dk = pd.read_csv(uploaded_file2, header=0, encoding='gbk')   # 读取即时库存，并将首行作为标题列
