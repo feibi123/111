@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 col1, col2 = st.sidebar.columns(2)
 variable = col1.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
 variable2 = col1.number_input("输入30天安全库存", min_value=1, max_value=30, value=30)  # 30天安全库存
-variable5 = col2.number_input("输入物流周期", min_value=1, max_value=60, value=45)  # 物流周期
+variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_value=60, value=45)  # 生产+物流周期
 variable3 = col2.number_input("输入60天安全库存", min_value=31, max_value=60, value=60)  # 60天安全库存
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=7, value=7)  # 最小安全库存
 
