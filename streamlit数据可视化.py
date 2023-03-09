@@ -1,21 +1,20 @@
 import streamlit as st
 import pandas as pd
+pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
-col1, col2, col3, col4, col5 = st.columns(5)
-with col1:
-    variable = st.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
-with col2:
-    variable2 = st.number_input("输入30天安全库存", min_value=1, max_value=30, value=30)  # 30天安全库存
-with col3:
-    variable3 = st.number_input("输入60天安全库存", min_value=31, max_value=60, value=60)  # 60天安全库存
-with col4:
-    variable4 = st.number_input("输入最小安全库存", min_value=1, max_value=7, value=7)  # 最小安全库存
-with col5:
-    variable5 = st.number_input("输入物流周期", min_value=1, max_value=60, value=45)  # 物流周期
 
-col7, col8, col9, col10 = st.columns(4)
-with col7:
-    uploaded_file1 = st.file_uploader("上传订单报告", type="csv")
+col1, col2 = st.sidebar.columns(2)
+variable = col1.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
+variable2 = col1.number_input("输入30天安全库存", min_value=1, max_value=30, value=30)  # 30天安全库存
+variable5 = col2.number_input("输入物流周期", min_value=1, max_value=60, value=45)  # 物流周期
+variable3 = col2.number_input("输入60天安全库存", min_value=31, max_value=60, value=60)  # 60天安全库存
+variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=7, value=7)  # 最小安全库存
+
+uploaded_file1 = st.file_uploader("上传订单报告", type="csv")
+uploaded_file = st.file_uploader("上传在途库存", type="csv")
+uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
+uploaded_file3 = st.file_uploader("上传产品属性表", type="csv")
+
 df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
 df.columns = df.iloc[0]  # 将第八行作为标题
@@ -45,12 +44,8 @@ dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列�
 df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
-with col8:
-    uploaded_file = st.file_uploader("上传在途库存", type="csv")  # 读取在途库存，并将首行作为标题列   
-dt = pd.read_csv(uploaded_file, header=0)
-
-with col9:
-    uploaded_file2 = st.file_uploader("上传即时库存", type="csv")
+dt = pd.read_csv(uploaded_file, header=0)# 读取在途库存，并将首行作为标题列
+    
 dk = pd.read_csv(uploaded_file2, header=0, encoding='gbk')   # 读取即时库存，并将首行作为标题列
 mask = (dk['detailed-disposition'] == 'SELLABLE') & (dk['country'] != 'CA')  # 筛选出'SELLABLE'和美国的在库库存
 dk = dk.loc[mask]
@@ -59,10 +54,8 @@ dk = dk.rename(columns={'quantity': '在库库存数量'})  # 将’quantity‘�
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在途库存表格合并
 df = pd.merge(df, dk, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格和在库库存表格合并
-
-with col10:
-    uploaded_file3 = st.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表，并将首行作为标题列
-dc = pd.read_csv(uploaded_file3, header=0)
+   
+dc = pd.read_csv(uploaded_file3, header=0)# 读取产品属性表，并将首行作为标题列
 dc = dc[['链接名称', '父ASIN', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
@@ -118,5 +111,4 @@ def style_cell(x):
 
 
 df = df.style.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-
-st.dataframe(df)
+st.table(styled_df)
