@@ -56,7 +56,7 @@ df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销�
 df = pd.merge(df, dk, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格和在库库存表格合并
    
 dc = pd.read_csv(uploaded_file3, header=0)# 读取产品属性表，并将首行作为标题列
-dc = dc[['链接名称', '父ASIN', 'sku']]  # 只保留链接名称、父ASIN和sku列
+dc = dc[['产品类别', 'sku']]  # 只保留产品类别和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
 df.fillna(0, inplace=True)  # 将所有空值替换为0
@@ -87,18 +87,18 @@ df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库�
     = df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数',
           '总预计可售天数', '安全库存', '最晚发货时间', '最小安全库存', '建议补货数量']].round().astype(int)  # 保留整数
 
-cols = ['链接名称', '父ASIN', 'sku', '7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
+cols = ['产品类别', 'sku', '7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
         '最晚发货时间', '最小安全库存', '建议补货数量']
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
-link_names = df["链接名称"].unique()
+link_names = df["产品类别"].unique()
 link_names = ["全选"] + list(link_names)
-selected_links = st.multiselect("选择链接名称", link_names)
+selected_links = st.multiselect("选择产品类别", link_names)
 
 if "全选" in selected_links:
     df = df
 else:
-    df = df[df["链接名称"].isin(selected_links)]
+    df = df[df["产品类别"].isin(selected_links)]
 
 
 def style_cell(x):
