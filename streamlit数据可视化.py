@@ -111,4 +111,4 @@ def style_cell(x):
 
 
 df = df.style.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-st.table(styled_df)
+st.table(df)
