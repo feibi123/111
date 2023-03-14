@@ -38,13 +38,13 @@ dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列�
 df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
-dt = pd.read_csv(uploaded_file, header=0)
+dt = pd.read_csv(uploaded_file, header=0, encoding='gbk')
 dt = dt.rename(columns={'Merchant SKU': 'sku'})
 dt['Inbound'] = dt['Inbound'].astype(int)
 dt['Available'] = dt['Available'].astype(int)
 dt['FC transfer'] = dt['FC transfer'].astype(int)
 dt = dt.rename(columns={'Inbound': '在途库存数量'})
-dt = dt.assign(在库库存数量=lambda x: x['Available'] + x['FC transfer'])
+dt['在库库存数量'] = round(dt['Available'] + dt['FC transfer'])
 cols1 = ['sku', '在途库存数量', '在库库存数量']
 dt = dt.reindex(columns=cols1)
 
