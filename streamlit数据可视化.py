@@ -102,14 +102,14 @@ df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
 col1, col2 = st.columns(2)
 
-link_names = df["链接名称"].unique()
+link_names = df["产品类别"].unique()
 link_names = ["全选"] + list(link_names)
-selected_links = col1.multiselect("选择链接名称", link_names)
+selected_links = col1.multiselect("选择产品", link_names)
 
 if "全选" in selected_links:
     df = df
 else:
-    df = df[df["链接名称"].isin(selected_links)]
+    df = df[df["产品类别"].isin(selected_links)]
 
 link_names1 = df["是否发货"].unique()
 link_names1 = ["全选"] + list(link_names1)
