@@ -50,7 +50,7 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-dc = pd.read_csv(uploaded_file3, header=0)  # 读取产品属性表，并将首行作为标题列
+dc = pd.read_csv(uploaded_file3, header=0, encoding='gbk')  # 读取产品属性表，并将首行作为标题列
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留产品类别和sku列
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
 df.fillna(0, inplace=True)  # 将所有空值替换为0
