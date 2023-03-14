@@ -11,7 +11,7 @@ variable3 = col2.number_input("输入60天安全库存", min_value=31, max_value
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=7, value=7)  # 最小安全库存
 
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
-uploaded_file = st.sidebar.file_uploader("上传在途库存", type="csv")
+uploaded_file = st.sidebar.file_uploader("上传在途库存", type="txt")
 uploaded_file3 = st.sidebar.file_uploader("上传产品属性表", type="csv")
 df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
