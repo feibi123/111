@@ -55,7 +55,7 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-dc = pd.read_csv(uploaded_file1, header=0, encoding='auto')
+dc = pd.read_csv(uploaded_file1, header=0, encoding='latin1')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
