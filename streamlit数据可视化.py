@@ -121,13 +121,25 @@ else:
 
 
 def style_cell(x):
-    style1 = ''
+    style = ''
     if x < 30:
-        style1 += "font-weight: bold; color: green;"
+        style += "font-weight: bold; color: green;"
     elif x > 180:
-        style1 += "font-weight: bold; color: red;"
-    return style1
+        style += "font-weight: bold; color: red;"
+    return style
 
 
-styled_df = df.style.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
+# 设置单元格样式
+def style_cell1(y):
+    style = ''
+    if y < 10:
+        style += "font-weight: bold; color: red;"
+    else:
+        style += ""
+    return style
+
+
+# 应用样式
+styled_df = df.style.applymap(style_cell1, subset=['最晚发货时间'])
+styled_df = styled_df.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
 st.table(styled_df)
