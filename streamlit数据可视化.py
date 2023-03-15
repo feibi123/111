@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import chardet
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
@@ -55,10 +56,11 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-try:
-    dc = pd.read_csv(uploaded_file, header=0, encoding='utf-8')
-except UnicodeDecodeError:
-    dc = pd.read_csv(uploaded_file, header=0, encoding='gbk')
+with open(uploaded_file, 'rb') as f:
+    result = chardet.detect(f.read())
+
+
+dc = pd.read_csv(uploaded_file, header=0, encoding=result['encoding'])
 #  dc = pd.read_csv(uploaded_file, header=0, encoding='latin1')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
