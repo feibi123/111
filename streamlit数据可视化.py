@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import chardet
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
@@ -11,7 +10,6 @@ variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_valu
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
 
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
-uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 
 df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
@@ -56,11 +54,12 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-with open(uploaded_file, 'rb') as f:
-    result = chardet.detect(f.read())
-
-
-dc = pd.read_csv(uploaded_file, header=0, encoding=result['encoding'])
+def app():
+    uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表
+    if uploaded_file is not None:
+        with uploaded_file:
+            result = chardet.detect(uploaded_file.read())
+        dc = pd.read_csv(uploaded_file, encoding=result['encoding'])
 #  dc = pd.read_csv(uploaded_file, header=0, encoding='latin1')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
