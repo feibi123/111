@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import chardet
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
@@ -9,11 +10,11 @@ variable2 = col2.number_input("输入安全库存", min_value=1, max_value=60, v
 variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_value=90, value=45)  # 物流周期
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
 
-uploaded_file = st.sidebar.file_uploader("上传订单报告", type="csv")
-uploaded_file1 = st.sidebar.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表
+uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
+uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 
-df = pd.read_csv(uploaded_file, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
+df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
 df.columns = df.iloc[0]  # 将第八行作为标题
 df = df.drop(df.index[0])  # 删除第八行
@@ -55,7 +56,7 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-dc = pd.read_csv(uploaded_file1, header=0, encoding='gbk')
+dc = pd.read_csv(uploaded_file1, header=0, encoding='auto')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
