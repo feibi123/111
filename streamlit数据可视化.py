@@ -54,13 +54,7 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-def app():
-    uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")  # 读取产品属性表
-    if uploaded_file is not None:
-        with uploaded_file:
-            result = chardet.detect(uploaded_file.read())
-        dc = pd.read_csv(uploaded_file, encoding=result['encoding'])
-#  dc = pd.read_csv(uploaded_file, header=0, encoding='latin1')
+dc = pd.read_csv(uploaded_file, header=0, encoding='gbk')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
