@@ -9,6 +9,7 @@ variable2 = col2.number_input("输入安全库存", min_value=1, max_value=60, v
 variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_value=90, value=45)  # 物流周期
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
 
+uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 
