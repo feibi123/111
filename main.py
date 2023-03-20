@@ -1,8 +1,11 @@
 import streamlit as st
+import pandas as pd
+from io import StringIO
 
-uploaded_file = st.file_uploader("上传文件", type=["csv"], accept_multiple_files=False)
+uploaded_file = st.file_uploader("Choose a CSV file", type="text/csv")
 
 if uploaded_file is not None:
-    file_contents = uploaded_file.read()
-    st.write("上传的文件内容：")
-    st.write(file_contents)
+    content = uploaded_file.read().decode("utf-8")
+    df = pd.read_csv(StringIO(content))
+    st.write("File content:")
+    st.write(df)
