@@ -1,20 +1,23 @@
 import streamlit as st
+import codecs
 
-def read_file(file):
-    content = file.read()
-    encoding = detect_encoding(content[:100]) # 只读取文件的前100字节用于判断编码
-    return content.decode(encoding)
+def read_uploaded_file(file):
+    with codecs.open(file, 'r', encoding=codecs.lookup(file.name).name) as f:
+        file_contents = f.read()
+    return file_contents
 
-def detect_encoding(bytes_content):
-    if bytes_content.startswith(b'\xef\xbb\xbf'): # UTF-8 with BOM
-        return 'utf-8-sig'
-    elif bytes_content[0] == 0xb5 and bytes_content[1] == 0xc7: # GB2312
-        return 'gb2312'
-    else:
-        return 'utf-8'
+def main():
+    st.title("文件上传示例")
+    uploaded_files = st.file_uploader("上传文件", type=["txt", "csv"])
+    if uploaded_files is not None:
+        file_data = []
+        for file in uploaded_files:
+            file_dict = {"name": file.name, "content": file.read()}
+            file_data.append(file_dict)
 
-uploaded_file = st.file_uploader("Upload a file", type=["csv", "txt"])
-if uploaded_file is not None:
-    file_contents = read_file(uploaded_file)
-    st.write(file_contents)
+        for file in file_data:
+            st.write(f"文件名：{file['name']}")
+            st.write(f"文件内容：{read_uploaded_file(file['content'])}")
 
+if __name__ == "__main__":
+    main()
