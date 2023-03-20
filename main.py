@@ -1,5 +1,5 @@
 import streamlit as st
 import pandas as pd
-uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
-df = pd.read_csv(uploaded_file)
+uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
+df = pd.read_excel(uploaded_file)
 st.table(df)
