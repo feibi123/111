@@ -2,9 +2,6 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
-# 创建 streamlit 应用程序
-st.title("Upload CSV file")
-
 # 添加上传文件的按钮
 uploaded_file = st.file_uploader("Choose a file")
 
@@ -28,6 +25,6 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-# df = df[['date/time', 'sku', 'quantity']]
+df = df[['date/time', 'sku', 'quantity']]
 # 显示数据框
 st.table(df)
