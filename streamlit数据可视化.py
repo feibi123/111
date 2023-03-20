@@ -17,9 +17,9 @@ uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
 file_content = uploaded_file.read().decode('utf-8-sig')
 if '\uFFFD' in file_content:
         file_content = uploaded_file.read().decode('gb2312')      
-        dc = pd.read_csv(io.StringIO(file_content), header=0)
-        
-        
+       
+
+dc = pd.read_csv(io.StringIO(file_content), header=0)      
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.read_csv(uploaded_file1, header=None, encoding='GB2312')  # header=None 参数禁止将第一行读入为列标题
