@@ -1,8 +1,10 @@
 import pandas as pd
 import streamlit as st
 
-uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
+uploaded_file = st.sidebar.file_uploader("上传订单报告", type="csv")
 
-df = pd.read_csv(uploaded_file1)  # header=None 参数禁止将第一行读入为列标题
-df = df.drop(df.index[:7])  # 删除前7行
-st.table(df)
+if uploaded_file is not None:
+    # 使用 Pandas 读取 CSV 文件
+    df = pd.read_csv(uploaded_file)
+    # 显示数据框
+    st.write(df)
