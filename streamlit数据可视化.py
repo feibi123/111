@@ -14,9 +14,11 @@ variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
-raw_data = io.BytesIO(uploaded_file.read())
-file_encoding = codecs.lookup(raw_data.read(4)).name
-dc = pd.read_csv(raw_data, header=0, encoding=file_encoding)
+raw_data = uploaded_file.getvalue()
+file_encoding = codecs.lookup(raw_data[:4]).name
+# 将BytesIO对象转换为TextIOWrapper对象，并使用pandas库来读取CSV文件，并将第一行作为标题行
+string_data = raw_data.decode(file_encoding)
+dc = pd.read_csv(io.StringIO(string_data), header=0)
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.read_csv(uploaded_file1, header=None, encoding='GB2312')  # header=None 参数禁止将第一行读入为列标题
