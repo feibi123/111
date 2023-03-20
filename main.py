@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from io import StringIO
 
 # 创建 streamlit 应用程序
 st.title("Upload CSV file")
