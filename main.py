@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import io
+import chardet
 
 # 创建文件上传按钮
 with st.sidebar:
@@ -8,11 +9,13 @@ with st.sidebar:
 
 # 如果用户上传了文件，则读取文件
 if uploaded_file is not None:
-    # 将上传的文件内容转换为字符串，并尝试使用GB2312编码和UTF-8-SIG编码进行读取
-    file_content = uploaded_file.read().decode('gb2312')
-    if '\uFFFD' in file_content:
-        file_content = uploaded_file.read().decode('utf-8-sig')
+    # 使用chardet库自动检测文件编码
+    file_content = uploaded_file.read()
+    file_encoding = chardet.detect(file_content)['encoding']
 
-    # 将字符串转换为pandas的DataFrame，并将第一行作为标题行
+    # 根据文件编码读取文件内容
+    file_content = file_content.decode(file_encoding)
+
+    # 将文件内容转换为pandas的DataFrame，并将第一行作为标题行
     df = pd.read_csv(io.StringIO(file_content), header=0)
     st.write(df)
