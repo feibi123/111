@@ -1,3 +1,8 @@
+import streamlit as st
+import pandas as pd
+import codecs
+from io import StringIO
+
 # 创建上传文件的按钮
 uploaded_file = st.file_uploader("Upload a file", type=["csv"])
 
@@ -7,3 +12,4 @@ if uploaded_file is not None:
     raw_text = codecs.decode(uploaded_file.read(), codecs.BOM_UTF8, 'utf-8')
     df = pd.read_csv(StringIO(raw_text))
     st.write(df)
+    
