@@ -1,32 +1,20 @@
-import subprocess
-
-subprocess.check_call(["pip", "install", "chardet"])
-
-
-pip list
-which python
-
-
 import streamlit as st
-import chardet
 
-# 上传文件并读取文件内容
-uploaded_file = st.file_uploader("上传文件", type=["csv"])
-if uploaded_file is not None:
-    # 读取文件内容
-    content = uploaded_file.getvalue()
-    
-    # 自动检测文件编码
-    result = chardet.detect(content)
-    file_encoding = result["encoding"]
-    
-    # 使用检测到的编码读取文件
-    if file_encoding is not None:
-        st.write(f"文件编码: {file_encoding}")
-        content = content.decode(file_encoding)
+def read_file(file):
+    content = file.read()
+    encoding = detect_encoding(content[:100]) # 只读取文件的前100字节用于判断编码
+    return content.decode(encoding)
+
+def detect_encoding(bytes_content):
+    if bytes_content.startswith(b'\xef\xbb\xbf'): # UTF-8 with BOM
+        return 'utf-8-sig'
+    elif bytes_content[0] == 0xb5 and bytes_content[1] == 0xc7: # GB2312
+        return 'gb2312'
     else:
-        st.write("未能检测到文件编码")
-    
-    # 将文件内容转换为 Pandas DataFrame
-    df = pd.read_csv(io.StringIO(content), header=0)
-    st.write(df)
+        return 'utf-8'
+
+uploaded_file = st.file_uploader("Upload a file", type=["csv", "txt"])
+if uploaded_file is not None:
+    file_contents = read_file(uploaded_file)
+    st.write(file_contents)
+
