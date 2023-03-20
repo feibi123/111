@@ -1,29 +1,26 @@
 import streamlit as st
 import pandas as pd
-import codecs
-from io import StringIO
 
-# 设置页面标题
-st.title("上传 CSV 文件示例")
+# 创建 streamlit 应用程序
+st.title("Upload CSV file")
 
-# 创建上传按钮
-uploaded_file = st.file_uploader("上传 CSV 文件", type="csv")
+# 添加上传文件的按钮
+uploaded_file = st.file_uploader("Choose a file")
 
 # 如果用户上传了文件
 if uploaded_file is not None:
-    # 读取文件内容并解码
+    # 读取文件内容
     content = uploaded_file.read()
-    decoded_content = codecs.decode(content, 'utf-8-sig') # 解码为 utf-8
 
-    # 将文件内容转换为字符串
-    csv_string = StringIO(decoded_content)
-
-    # 尝试使用 Pandas 读取 utf-8 编码的文件
+    # 尝试使用 utf-8 编码方式进行解码
     try:
-        df = pd.read_csv(csv_string, skiprows=7)
-    except:
-        # 如果读取失败，尝试使用 Pandas 读取 gbk 编码的文件
-        df = pd.read_csv(csv_string, skiprows=7, encoding='gbk')
+        decoded_content = content.decode('utf-8')
+    except UnicodeDecodeError:
+        # 如果解码失败，则尝试使用 gbk 编码方式进行解码
+        decoded_content = content.decode('gbk')
+
+    # 将解码后的文件内容转换为 pandas 数据框
+    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
 
     # 显示数据框
     st.write(df)
