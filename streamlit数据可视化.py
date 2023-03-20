@@ -10,7 +10,7 @@ variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_valu
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
 
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
-uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
+uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="xlsx")
 uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
 
 df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
@@ -42,7 +42,7 @@ dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列�
 df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
 df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
 
-dt = pd.read_csv(uploaded_file2, header=0, encoding='gbk')
+dt = pd.read_excel(uploaded_file2, header=0)
 dt = dt.rename(columns={'Merchant SKU': 'sku'})
 dt['Inbound'] = dt['Inbound'].astype(int)
 dt['Available'] = dt['Available'].astype(int)
