@@ -1,3 +1,7 @@
+import subprocess
+
+subprocess.check_call(["pip", "install", "chardet"])
+
 import streamlit as st
 import chardet
 
