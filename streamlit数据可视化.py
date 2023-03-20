@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from io import StringIO
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
@@ -9,19 +10,43 @@ variable2 = col2.number_input("输入安全库存", min_value=1, max_value=60, v
 variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_value=90, value=45)  # 物流周期
 variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
 
-uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="xlsx")
 uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
+uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 
-df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
-df = df.drop(df.index[:7])  # 删除前7行
-df.columns = df.iloc[0]  # 将第八行作为标题
-df = df.drop(df.index[0])  # 删除第八行
+# 如果用户上传了文件
+if uploaded_file1 is not None:
+    # 读取文件内容
+    content = uploaded_file1.read()
+
+    # 尝试使用 utf-8 编码方式进行解码
+    try:
+        decoded_content = content.decode('utf-8')
+    except UnicodeDecodeError:
+        # 如果解码失败，则尝试使用 gbk 编码方式进行解码
+        decoded_content = content.decode('gbk')
+
+    # 将解码后的文件内容转换为 pandas 数据框
+    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
+
+    
 df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
+df = df[['date/time', 'sku', 'quantity']]
+# 显示数据框
+# st.table(df)
+
+# df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
+# df = df.drop(df.index[:7])  # 删除前7行
+# df.columns = df.iloc[0]  # 将第八行作为标题
+# df = df.drop(df.index[0])  # 删除第八行
+# df = df.dropna(subset=['quantity'])  # 删除含有空值的行
+# df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
+# df = df.dropna(subset=['type'])   # 删除含有空值的行
+# df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
+# df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
 df = df.rename(columns={'date/time': 'datetime'})  # 将date/time列名更改为datetime
 df['datetime'] = df['datetime'].str.extract(r'(\w{3} \d+, \d{4})')  # 用正则表达式提取出日期
 df['datetime'] = pd.to_datetime(df['datetime'], format='%b %d, %Y')  # 转换列类型
