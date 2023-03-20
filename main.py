@@ -1,22 +1,6 @@
-import codecs
 import streamlit as st
-
-# 上传文件
-uploaded_file = st.file_uploader("上传文件", type=["csv"])
-
-# 如果上传了文件
-if uploaded_file is not None:
-
-    # 检测文件编码
-    raw_data = uploaded_file.read()
-    try:
-        decoded_data = raw_data.decode("utf-8")
-    except UnicodeDecodeError:
-        decoded_data = raw_data.decode("gbk")
-
-    # 读取文件数据
-    with codecs.open(uploaded_file.name, "r", encoding="utf-8") as f:
-        data = f.read()
-
-    # 在应用程序中显示数据
-    st.write(data)
+import pandas as pd
+uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
+df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
+df = df.drop(df.index[:7])  # 删除前7行
+st.table(df)
