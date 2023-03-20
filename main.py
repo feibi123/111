@@ -20,7 +20,7 @@ if uploaded_file is not None:
 
     # 尝试使用 Pandas 读取 utf-8 编码的文件
     try:
-        df = pd.read_csv(csv_string, , skiprows=7)
+        df = pd.read_csv(csv_string, skiprows=7)
     except:
         # 如果读取失败，尝试使用 Pandas 读取 gbk 编码的文件
         df = pd.read_csv(csv_string, skiprows=7, encoding='gbk')
