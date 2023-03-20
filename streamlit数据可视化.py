@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import chardet
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
