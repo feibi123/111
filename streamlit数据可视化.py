@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import codecs
-import io
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
 
@@ -14,12 +12,8 @@ variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
-file_content = uploaded_file.read().decode('utf-8-sig')
-if '\uFFFD' in file_content:
-        file_content = uploaded_file.read().decode('gb2312')      
-       
-
-dc = pd.read_csv(io.StringIO(file_content), header=0)      
+ 
+dc = pd.read_csv(io.StringIO(file_content), header=0, encoding='GB2312')
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.read_csv(uploaded_file1, header=None, encoding='GB2312')  # header=None 参数禁止将第一行读入为列标题
