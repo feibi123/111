@@ -1,28 +1,22 @@
+import codecs
 import streamlit as st
-import pandas as pd
-import chardet
 
-# Define function to detect file encoding
-def detect_encoding(file):
-    with open(file, 'rb') as f:
-        result = chardet.detect(f.read())
-    return result['encoding']
+# 上传文件
+uploaded_file = st.file_uploader("上传文件", type=["csv"])
 
-# Create file uploader
-uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
-
-# Check if file is uploaded
+# 如果上传了文件
 if uploaded_file is not None:
-    # Get file encoding
-    file_encoding = detect_encoding(uploaded_file)
-    # Read file based on encoding
-    if file_encoding == 'utf-8':
-        df = pd.read_csv(uploaded_file)
-    elif file_encoding == 'GB2312':
-        df = pd.read_csv(uploaded_file, encoding='GB18030')
-    else:
-        st.error("File encoding not supported")
-    # Show data
-    st.write(df)
-else:
-    st.info("Please upload a CSV file.")
+
+    # 检测文件编码
+    raw_data = uploaded_file.read()
+    try:
+        decoded_data = raw_data.decode("utf-8")
+    except UnicodeDecodeError:
+        decoded_data = raw_data.decode("gbk")
+
+    # 读取文件数据
+    with codecs.open(uploaded_file.name, "r", encoding="utf-8") as f:
+        data = f.read()
+
+    # 在应用程序中显示数据
+    st.write(data)
