@@ -13,6 +13,7 @@ uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="csv")
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告", type="csv")
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="csv")
 
+
 df = pd.read_csv(uploaded_file1, header=None, encoding='GB2312')  # header=None 参数禁止将第一行读入为列标题
 df = df.drop(df.index[:7])  # 删除前7行
 df.columns = df.iloc[0]  # 将第八行作为标题
@@ -55,7 +56,7 @@ dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
 
-dc = pd.read_csv(uploaded_file, header=0, encoding='GB2312')
+dc = pd.read_csv(uploaded_file, header=0)
 dc = dc[['产品类别', '颜色', 'sku']]  # 只保留链接名称、父ASIN和sku列
 
 df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
