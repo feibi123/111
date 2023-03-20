@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
-uploaded_file = st.file_uploader("Choose a CSV file", type="text/csv")
+uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
 if uploaded_file is not None:
     content = uploaded_file.read().decode("utf-8")
