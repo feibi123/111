@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from io import StringIO
-from streamlit_aggrid import GridOptionsBuilder, AgGrid
 
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
@@ -30,14 +29,22 @@ df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类�
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
 df = df[['date/time', 'sku', 'quantity']]
-# 显示数据框
-# 创建 GridOptionsBuilder 对象以配置 AgGrid
-gob = GridOptionsBuilder.from_dataframe(df)
-gob.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
-gob.configure_column('quantity', editable=True, type=["numericColumn", "valueColumn"])
-gob.configure_grid_options(domLayout='normal')
-gridOptions = gob.build()
 
-# 创建 AgGrid 组件并将其添加到 Streamlit 应用程序中
-AgGrid(df, gridOptions=gridOptions, height=500, width='100%', frozen_columns=1, theme='streamlit')
+
+if not df.empty:
+    st.write(
+        f"""
+        <style>
+            .stTable thead th {{
+                position: sticky;
+                top: 0;
+                background-color: white;
+                z-index: 999;
+            }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    
 st.table(df)
