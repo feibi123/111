@@ -3,3 +3,5 @@ numpy
 chardet
 openpyxl
 streamlit_aggrid
+streamlit-pandas-profiling
+
