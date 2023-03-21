@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 
+pd.set_option('display.max_colwidth', None)
+st.set_page_config(layout="wide"
 # 添加上传文件的按钮
 uploaded_file = st.file_uploader("Choose a file")
 
