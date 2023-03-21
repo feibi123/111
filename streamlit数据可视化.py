@@ -34,7 +34,7 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-df = df[['date/time', 'sku', 'quantity']]
+df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
 # 显示数据框
 # st.table(df)
 
