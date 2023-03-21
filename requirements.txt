@@ -2,3 +2,4 @@ pandas
 numpy
 chardet
 openpyxl
+streamlit_aggrid
