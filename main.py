@@ -21,14 +21,12 @@ if uploaded_file is not None:
         decoded_content = content.decode('gbk')
 
     # 将解码后的文件内容转换为 pandas 数据框
-    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
-
-    
-df = df.dropna(subset=['quantity'])  # 删除含有空值的行
-df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
-df = df.dropna(subset=['type'])   # 删除含有空值的行
-df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-df = df[['date/time', 'sku', 'quantity']]
+    df = pd.read_csv(StringIO(decoded_content), skiprows=7)  
+    df = df.dropna(subset=['quantity'])  # 删除含有空值的行
+    df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
+    df = df.dropna(subset=['type'])   # 删除含有空值的行
+    df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
+    df = df[['date/time', 'sku', 'quantity']]
 
 
 if not df.empty:
@@ -45,6 +43,4 @@ if not df.empty:
         """,
         unsafe_allow_html=True,
     )
-    
-    
-st.table(df)
+    st.write(df)
