@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 from io import StringIO
-from streamlit_bokeh_events import streamlit_bokeh_events
 
 # 读取上传的文件
 uploaded_file = st.file_uploader("Choose a file")
@@ -21,12 +20,9 @@ if uploaded_file is not None:
     # 将解码后的文件内容转换为 pandas 数据框
     df = pd.read_csv(StringIO(decoded_content), skiprows=7)
     
-    freeze_table_header = st.bokeh_chart([])
-
-    if df is not None:
-        # 使用 st.write 方法展示数据帧
-        st.write(df)
-        # 使用 streamlit_bokeh_events 库的 with_streamlit 方法，将数据帧和 freeze_table_header 绑定在一起
-        with streamlit_bokeh_events(freeze_table_header, events="freeze_table_header"):
-            pass
-        
+     
+if 'df' in locals():
+    st.markdown("<style>.css-q4dj2t th, .css-1a6erhd {position: sticky; top: 0;}</style>", unsafe_allow_html=True)
+    st.table(df)
+    
+    
