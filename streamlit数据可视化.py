@@ -124,25 +124,26 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-col1, col2 = st.columns(2)
+col1, col2 = st.beta_columns(2
+with col1:
+    link_names = df["产品类别"].unique()
+    link_names = ["全选"] + list(link_names)
+    selected_links = st.multiselect("选择产品", link_names)
 
-link_names = df["产品类别"].unique()
-link_names = ["全选"] + list(link_names)
-selected_links = col1.multiselect("选择产品", link_names)
+    if "全选" in selected_links:
+      df = df
+    else:
+      df = df[df["产品类别"].isin(selected_links)]
 
-if "全选" in selected_links:
-    df = df
-else:
-    df = df[df["产品类别"].isin(selected_links)]
+with col2:                             
+    link_names1 = df["是否发货"].unique()
+    link_names1 = ["全选"] + list(link_names1)
+    selected_links1 = st.multiselect("是否发货", link_names1)
 
-link_names1 = df["是否发货"].unique()
-link_names1 = ["全选"] + list(link_names1)
-selected_links1 = col2.multiselect("是否发货", link_names1)
-
-if "全选" in selected_links1:
-    df = df
-else:
-    df = df[df["是否发货"].isin(selected_links1)]
+    if "全选" in selected_links1:
+       df = df
+    else:
+      df = df[df["是否发货"].isin(selected_links1)]
 
 
 def style_cell(x):
