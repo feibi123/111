@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 from io import StringIO
 from streamlit_pandas_profiling import st_profile_report
-
+st.set_page_config(layout="wide")
 # 读取上传的文件
 uploaded_file = st.file_uploader("Choose a file")
 
@@ -19,10 +19,6 @@ if uploaded_file is not None:
         decoded_content = content.decode('gbk')
 
     # 将解码后的文件内容转换为 pandas 数据框
-    df = pd.read_csv(StringIO(decoded_content), skiprows=7)  
+    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
     
-    # 将所有列都转换为字符串类型
-    df = df.astype(str)
-    
-    # 使用 streamlit-pandas-profiling 绘制交互式报告
-    st_profile_report(df)
+    st.table(df.style.set_table_styles([{'selector': 'thead', 'sticky': True}]))
