@@ -25,7 +25,7 @@ def set_block_container_style(display="flex"):
         unsafe_allow_html=True,
     )
     
- set_block_container_style()
+set_block_container_style()
 # 读取上传的文件
 uploaded_file = st.file_uploader("Choose a file")
 
