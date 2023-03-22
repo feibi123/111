@@ -10,5 +10,5 @@ styled_table = (
           .set_table_styles([{'selector': 'thead th', 'props': [('position', 'sticky'), ('top', '0')] }])
     )
 
-    # 在 Streamlit 中显示表格
+# 在 Streamlit 中显示表格
 st.table(styled_table)
