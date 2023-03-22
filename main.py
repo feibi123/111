@@ -1,27 +1,24 @@
-import pandas as pd
 import streamlit as st
-from io import StringIO
+import pandas as pd
 
-pd.set_option('display.max_colwidth', None)
+df = pd.DataFrame({
+    "产品类别": ["A", "A", "B", "C"],
+    "是否发货": ["是", "否", "是", "否"],
+    "销售数量": [20, 50, 180, 10]
+})
+
 st.set_page_config(layout="wide")
-upload_key = "my_file_upload"
+selected_links = st.multiselect("选择产品", df["产品类别"].unique())
+selected_links1 = st.multiselect("是否发货", df["是否发货"].unique())
 
-# 读取上传的文件
-uploaded_file = st.file_uploader("Choose a file", key=upload_key, type=["csv"])
+# 创建容器
+container = st.beta_container()
 
-# 如果用户上传了文件
-if uploaded_file is not None:
-    # 读取文件内容
-    content = uploaded_file.read()
+# 在容器中放置复选框
+with container:
+    st.write(selected_links)
+    st.write(selected_links1)
 
-    # 尝试使用 utf-8 编码方式进行解码
-    try:
-        decoded_content = content.decode('utf-8')
-    except UnicodeDecodeError:
-        # 如果解码失败，则尝试使用 gbk 编码方式进行解码
-        decoded_content = content.decode('gbk')
-
-    # 将解码后的文件内容转换为 pandas 数据框
-    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
-    
-    st.table(df)
+# 显示数据框
+df = df[df["产品类别"].isin(selected_links) & df["是否发货"].isin(selected_links1)]
+st.table(df)
