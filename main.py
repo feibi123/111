@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from io import StringIO
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 # 如果用户上传了文件
 if uploaded_file1 is not None:
