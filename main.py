@@ -26,8 +26,13 @@ st.write("""
         text-align: left;
         font-size: 14px;
     }
+    /* 调整表格容器的大小和滚动行为 */
+    .table-container {
+        height: 500px;
+        overflow-y: scroll;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # 将表格呈现为HTML表格，并对首行应用CSS类
-st.write(df.head(20).to_html(index=False, classes=["freeze", "table"], escape=False), unsafe_allow_html=True)
+st.write(f'<div class="table-container"><table><thead><tr class="freeze">{"".join([f"<th>{col}</th>" for col in df.columns])}</tr></thead><tbody>{"".join([f"<tr>{"".join([f"<td>{str(val)}</td>" for val in row.values])}</tr>" for i, row in df.head(20).iterrows()])}</tbody></table></div>', unsafe_allow_html=True)
