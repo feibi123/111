@@ -6,7 +6,6 @@ uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 df = pd.read_csv(uploaded_file1, skiprows=7)
 df = df.dropna(subset=['quantity'])
 
-
 # 设置CSS样式
 st.write("""
 <style>
