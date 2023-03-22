@@ -5,6 +5,8 @@ uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
  # 将解码后的文件内容转换为 pandas 数据框
 df = pd.read_csv(uploaded_file1, skiprows=7)
 df = df.dropna(subset=['quantity'])
+
+# 设置CSS样式
 st.write("""
 <style>
     /* 冻结表格首行 */
