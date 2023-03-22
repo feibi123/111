@@ -4,9 +4,10 @@ from io import StringIO
 
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout="wide")
+upload_key = "my_file_upload"
 
 # 读取上传的文件
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a file", key=upload_key, type=["csv"])
 
 # 如果用户上传了文件
 if uploaded_file is not None:
