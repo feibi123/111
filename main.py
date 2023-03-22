@@ -22,7 +22,27 @@ if uploaded_file is not None:
     
      
 if 'df' in locals():
-    st.markdown("<style>.css-q4dj2t th, .css-1a6erhd {position: sticky; top: 0;}</style>", unsafe_allow_html=True)
-    st.table(df)
+    # 添加 css 样式
+    st.markdown("""
+        <style>
+            .dataframe th {
+                position: sticky;
+                top: 0;
+                background-color: #FFFFFF;
+                z-index: 1;
+            }
+            .dataframe tbody tr:first-child th {
+                position: sticky;
+                left: 0;
+                z-index: 0;
+            }
+        </style>
+    """, unsafe_allow_html=True)
     
-    
+
+     styles = [
+        {'selector': 'th', 'props': [('font-size', '16px'), ('text-align', 'center')]},
+        {'selector': 'td', 'props': [('font-size', '14px'), ('text-align', 'center')]},
+        {'selector': 'tr:hover td', 'props': [('background-color', '#f5f5f5')]}
+    ]
+    st.write(df.style.set_table_styles(styles), unsafe_allow_html=True)
