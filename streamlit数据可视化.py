@@ -124,6 +124,17 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
+st.markdown("""
+    <style>
+        .st-bt {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 col1, col2 = st.columns(2)
 
 link_names = df["产品类别"].unique()
@@ -144,6 +155,11 @@ if "全选" in selected_links1:
     df = df
 else:
     df = df[df["是否发货"].isin(selected_links1)]
+
+
+col1.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
+col2.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
+
 
 def style_cell(x):
     style = ''
