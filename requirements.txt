@@ -4,4 +4,5 @@ chardet
 openpyxl
 streamlit_aggrid
 streamlit-pandas-profiling
+streamlit_bokeh_events
 
