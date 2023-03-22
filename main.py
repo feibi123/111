@@ -1,31 +1,8 @@
 import pandas as pd
 import streamlit as st
 from io import StringIO
-from streamlit.elements import layout_utils
-from streamlit.proto import BlockPath_pb2
+from streamlit_bokeh_events import streamlit_bokeh_events
 
-def set_block_container_style(display="flex"):
-    """Set CSS style attributes to make elements flex and sticky"""
-    st.markdown(
-        f"""
-        <style>
-            #root {{
-                display: {display};
-            }}
-            .stBlockContainer {{
-                flex: 1;
-            }}
-            .streamlit-sticky.sticky-header {{
-                top: 0px;
-                z-index: 10000;
-                position: sticky !important;
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    
-set_block_container_style()
 # 读取上传的文件
 uploaded_file = st.file_uploader("Choose a file")
 
@@ -44,11 +21,12 @@ if uploaded_file is not None:
     # 将解码后的文件内容转换为 pandas 数据框
     df = pd.read_csv(StringIO(decoded_content), skiprows=7)
     
-    set_block_container_style(display="block")
-    block = layout_utils.empty()
-    block_path = BlockPath_pb2.BlockPath(path=[block.id])
-    block.stickyHeaders = [block_path]
-    block.stickyFooters = [block_path]
+    freeze_table_header = st.bokeh_chart([])
 
-    # Display the data frame
-    st.dataframe(df)
+    if df is not None:
+        # 使用 st.write 方法展示数据帧
+        st.write(df)
+        # 使用 streamlit_bokeh_events 库的 with_streamlit 方法，将数据帧和 freeze_table_header 绑定在一起
+        with streamlit_bokeh_events(freeze_table_header, events="freeze_table_header"):
+            pass
+        
