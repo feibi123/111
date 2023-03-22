@@ -13,12 +13,11 @@ if uploaded_file1 is not None:
     except UnicodeDecodeError:
         # 如果解码失败，则尝试使用 gbk 编码方式进行解码
         decoded_content = content.decode('gbk')
-        
-        
-
-    # 将解码后的文件内容转换为 pandas 数据框
-df = pd.read_csv(StringIO(decoded_content), skiprows=7)
+ # 将解码后的文件内容转换为 pandas 数据框
+    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
     
+ 
+df = df.dropna(subset=['quantity'])
 st.write("""
 <style>
     /* 冻结表格首行 */
