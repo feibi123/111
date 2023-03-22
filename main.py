@@ -23,4 +23,4 @@ if uploaded_file is not None:
     # 将解码后的文件内容转换为 pandas 数据框
     df = pd.read_csv(StringIO(decoded_content), skiprows=7)
     
-    st.write(df)
+    st.table(df)
