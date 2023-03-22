@@ -6,6 +6,7 @@ uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 df = pd.read_csv(uploaded_file1, skiprows=7)
 df = df.dropna(subset=['quantity'])
 
+
 # 设置CSS样式
 st.write("""
 <style>
@@ -37,4 +38,4 @@ st.write("""
 """, unsafe_allow_html=True)
 
 # 将表格呈现为HTML表格，并对首行应用CSS类
-st.write(f'<div class="table-container"><table><thead><tr class="freeze">{"".join([f"<th>{col}</th>" for col in df.columns])}</tr></thead><tbody>{"".join([f"<tr>{"".join([f"<td>{str(val)}</td>" for val in row.values])}</tr>" for i, row in df.head(20).iterrows()])}</tbody></table></div>', unsafe_allow_html=True)
+st.write(f'<div class="table-container"><table><thead><tr class="freeze">{"".join([f"<th>{col}</th>" for col in df.columns])}</tr></thead><tbody>{" ".join([f"<tr>{''.join([f'<td>{str(val)}</td>' for val in row.values])}</tr>" for i, row in df.head(20).iterrows()])}</tbody></table></div>', unsafe_allow_html=True)
