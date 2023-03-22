@@ -132,6 +132,9 @@ st.markdown("""
             width: 100%;
             z-index: 999;
         }
+        .sidebar .st-bt {
+            left: initial;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -159,6 +162,7 @@ else:
 
 col1.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
 col2.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
+st.sidebar.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
 
 
 def style_cell(x):
