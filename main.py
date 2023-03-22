@@ -6,8 +6,9 @@ uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 df = pd.read_csv(uploaded_file1, skiprows=7)
 df = df.dropna(subset=['quantity'])
 styled_table = (
-    df.style
-      .set_table_styles([{'selector': 'thead th', 'props': [('position', 'sticky'), ('top', '0')] }])
-)
+        df.style
+          .set_table_styles([{'selector': 'thead th', 'props': [('position', 'sticky'), ('top', '0')] }])
+    )
 
+    # 在 Streamlit 中显示表格
 st.table(styled_table)
