@@ -124,17 +124,6 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-st.markdown("""
-    <style>
-        .st-bt {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 999;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 col1, col2 = st.columns(2)
 
 link_names = df["产品类别"].unique()
@@ -149,9 +138,6 @@ else:
 link_names1 = df["是否发货"].unique()
 link_names1 = ["全选"] + list(link_names1)
 selected_links1 = col2.multiselect("是否发货", link_names1)
-
-col1.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
-col2.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
 
 
 if "全选" in selected_links1:
