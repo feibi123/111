@@ -16,6 +16,17 @@ container = st.beta_container()
 
 # 在容器中放置复选框
 with container:
+    # 使用 CSS 样式表固定复选框的位置
+    st.markdown("""
+    <style>
+    .st-ct {
+        position: fixed !important;
+        top: 100px;
+        left: 50px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.write(selected_links)
     st.write(selected_links1)
 
