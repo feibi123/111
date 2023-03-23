@@ -1,35 +1,43 @@
+import streamlit as st
 import pandas as pd
-from IPython.core.display import display, HTML
 
-# 生成示例数据
-data = {'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Emma', 'Frank'],
-        'Age': [25, 32, 18, 47, 22, 19],
-        'Gender': ['F', 'M', 'M', 'M', 'F', 'M']}
+# 创建示例数据
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
 # 设置表格样式
-style = """
-<style>
-table {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-}
+st.markdown(
+    """
+    <style>
+        /* 设置表格样式 */
+        .scrollable-table {
+            height: 600px;
+            overflow-y: scroll;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
 
-th {
-    position: sticky;
-    top: 0;
-    background-color: white;
-}
+        /* 设置表头样式 */
+        .scrollable-table th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 2;
+        }
 
-th, td {
-    border: 1px solid black;
-    padding: 10px;
-    text-align: center;
-}
-</style>
-"""
+        /* 设置表格行的样式 */
+        .scrollable-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# 生成HTML代码并输出
-html = style + df.to_html(index=False)
-display(HTML(html))
+# 显示表格
+with st.beta_container():
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
