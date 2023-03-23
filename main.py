@@ -31,4 +31,5 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.write("<div class='scrollable-table'>", df.loc[:, ['姓名', '年龄', '性别']].to_html(index=False), "</div>", unsafe_allow_html=True)
+
