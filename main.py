@@ -7,6 +7,9 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
+# 重命名列名
+df = df.rename(columns={'姓名': 'Name', '年龄': 'Age', '性别': 'Gender'})
+
 # 设置表格样式
 st.markdown(
     """
@@ -31,5 +34,5 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.loc[:, ['姓名', '年龄', '性别']].to_html(index=False), "</div>", unsafe_allow_html=True)
-
+    st.write("<div class='scrollable-table'><table><thead><tr><th>Name</th><th>Age</th><th>Gender</th></tr></thead>",
+             df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
