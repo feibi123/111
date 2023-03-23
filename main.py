@@ -2,25 +2,31 @@ import streamlit as st
 import pandas as pd
 
 # 创建示例数据
-data = {'Name': ['Alice', 'Bob', 'Charlie'] * 100,
-        'Age': [18, 19, 20] * 100,
-        'Gender': ['Female', 'Male', 'Male'] * 100}
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
 # 设置表格样式
 st.markdown(
     """
     <style>
-        #mytable {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
+        .scrollable-table {
+            position: fixed;
+            top: 150px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
         }
 
-        #mytable thead {
+        .scrollable-table table {
+            width: 100%;
+        }
+
+        .scrollable-table thead {
             position: sticky;
             top: 0;
-            background-color: white;
         }
     </style>
     """,
@@ -29,30 +35,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div style='overflow-x: auto;'><table id='mytable'>", df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
-
-# 首行固定
-st.markdown(
-    """
-    <script>
-        var tableOffset = $("#mytable").offset().top;
-        var $header = $("#mytable > thead").clone();
-        var $fixedHeader = $("#header-fixed").append($header);
-        
-        $(window).bind("scroll", function() {
-            var offset = $(this).scrollTop();
-            if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
-                $fixedHeader.show();
-            }
-            else if (offset < tableOffset) {
-                $fixedHeader.hide();
-            }
-        });
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
-# 创建空的表格，用于显示固定的表头
-st.markdown("<table id='header-fixed'></table>", unsafe_allow_html=True)
-
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
