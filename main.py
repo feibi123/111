@@ -1,12 +1,35 @@
-import streamlit as st
 import pandas as pd
+from IPython.core.display import display, HTML
 
-# 创建示例数据
-data = {'姓名': ['小明', '小红', '小刚'] * 100,
-        '年龄': [18, 19, 20] * 100,
-        '性别': ['男', '女', '男'] * 100}
+# 生成示例数据
+data = {'Name': ['Alice', 'Bob', 'Charlie', 'David', 'Emma', 'Frank'],
+        'Age': [25, 32, 18, 47, 22, 19],
+        'Gender': ['F', 'M', 'M', 'M', 'F', 'M']}
 df = pd.DataFrame(data)
 
-# 显示表格
-with st.beta_container():
-    st.write(df.style.set_table_styles([{'selector': 'thead th', 'props': [('position', 'sticky'), ('top', '0px')]}]).render())
+# 设置表格样式
+style = """
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+</style>
+"""
+
+# 生成HTML代码并输出
+html = style + df.to_html(index=False)
+display(HTML(html))
