@@ -27,6 +27,12 @@ st.markdown(
         .scrollable-table table {
             width: 100%;
         }
+        
+        .scrollable-table thead {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+        }
     </style>
     """,
     unsafe_allow_html=True
