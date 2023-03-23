@@ -11,12 +11,8 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
-        .full-width {
-            width: 100%;
-        }
-
-        .full-height {
-            height: 500px;
+        .scrollable-table {
+            height: 300px;
             overflow: auto;
         }
     </style>
@@ -26,4 +22,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='full-height'><table class='full-width'>", df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
