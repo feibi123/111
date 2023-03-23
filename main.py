@@ -18,13 +18,21 @@ data = {'A': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
        }
 df = pd.DataFrame(data)
 
-# 使用st.markdown函数添加HTML标记
 st.markdown(
     """
     <style>
         /* 将表格的高度设置为100% */
         .full-height {
             height: 100%;
+        }
+        /* 将表格固定在页面的位置 */
+        .fixed-table {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: auto;
         }
         /* 设置表头的位置为固定 */
         .freeze {
@@ -38,19 +46,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 将表格的高度设置为100%
-container = st.container()
-container.markdown(
-    '<div class="full-height">' + "&nbsp;" + '</div>',
+# 显示数据表格
+st.markdown(
+    f'<div class="fixed-table"><table class="full-height"><thead><tr class="freeze"><th>{df.columns[0]}</th></tr></thead><tbody>{df.to_html(index=False)}</tbody></table></div>',
     unsafe_allow_html=True
 )
-
-# 添加表格并将表头放置在一个固定的div元素中
-with container:
-    # 将表头放置在一个固定的div元素中
-    st.markdown(
-        f'<div class="freeze">{df.columns[0]}</div>',
-        unsafe_allow_html=True
-    )
-    # 显示数据表格
-    st.dataframe(df)
