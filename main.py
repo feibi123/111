@@ -11,16 +11,25 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
-        .scrollable-table-container {
-            position: relative;
-            overflow: auto;
-            height: 80vh;
+        .freeze-row::-webkit-scrollbar {
+            display: none;
         }
-
-        .scrollable-table-container table {
-            width: 100%;
+        .freeze-row {
             position: sticky;
             top: 0;
+            z-index: 1;
+        }
+        .freeze-row th {
+            background-color: white !important;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+        }
+        .freeze-row td {
+            background-color: white !important;
+        }
+        .full-width {
+            width: 100%;
         }
     </style>
     """,
@@ -29,4 +38,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table-container'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.table(df.style.set_table_attributes('class="freeze-row full-width"').hide_index())
