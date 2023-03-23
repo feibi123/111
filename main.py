@@ -28,11 +28,6 @@ st.markdown(
             background-color: white;
             z-index: 2;
         }
-
-        /* 设置表格行的样式 */
-        .scrollable-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
     </style>
     """,
     unsafe_allow_html=True
