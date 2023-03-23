@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 
 # 创建示例数据
-data = {'姓名': ['小明', '小红', '小刚', '小红', '小刚', '小红', '小刚', '小红', '小刚', '小红', '小刚', '小红', '小刚', '小红', '小刚'],
-        '年龄': [18, 19, 20, 18, 19, 20, 18, 19, 20, 18, 19, 20, 18, 19, 20],
-        '性别': ['男', '女', '男', '男', '女', '男', '男', '女', '男', '男', '女', '男', '男', '女', '男']}
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
 # 设置表格样式
@@ -12,8 +12,17 @@ st.markdown(
     """
     <style>
         .scrollable-table {
-            height: 300px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
             overflow: auto;
+        }
+
+        .scrollable-table table {
+            width: 100%;
         }
     </style>
     """,
