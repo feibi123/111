@@ -7,39 +7,22 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
+# 显示标题行
+st.write(df.columns.tolist())
+
 # 设置表格样式
 st.markdown(
     """
     <style>
-        .scrollable-table {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            overflow: auto;
-        }
-
-        .scrollable-table table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .scrollable-table th, .scrollable-table td {
-            padding: 8px;
-            text-align: center;
-        }
-
-        .scrollable-table th {
+        #freeze-table thead {
             position: sticky;
             top: 0;
-            background-color: #ffffff;
+            z-index: 1;
+            background-color: white;
         }
-
-        .scrollable-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        #freeze-table tbody {
+            height: 400px;
+            overflow-y: auto;
         }
     </style>
     """,
@@ -47,5 +30,10 @@ st.markdown(
 )
 
 # 显示表格
-with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+st.write(
+    df.style
+        .set_table_attributes('id="freeze-table"')
+        .set_properties(**{'width': '100%', 'text-align': 'center'})
+        .set_table_styles([{'selector': 'th', 'props': [('font-weight', 'bold')]}])
+        .hide_index()
+)
