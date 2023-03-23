@@ -35,18 +35,6 @@ df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类�
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
 df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
-# 显示数据框
-# st.table(df)
-
-# df = pd.read_csv(uploaded_file1, header=None, encoding='gbk')  # header=None 参数禁止将第一行读入为列标题
-# df = df.drop(df.index[:7])  # 删除前7行
-# df.columns = df.iloc[0]  # 将第八行作为标题
-# df = df.drop(df.index[0])  # 删除第八行
-# df = df.dropna(subset=['quantity'])  # 删除含有空值的行
-# df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
-# df = df.dropna(subset=['type'])   # 删除含有空值的行
-# df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-# df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
 df = df.rename(columns={'date/time': 'datetime'})  # 将date/time列名更改为datetime
 df['datetime'] = df['datetime'].str.extract(r'(\w{3} \d+, \d{4})')  # 用正则表达式提取出日期
 df['datetime'] = pd.to_datetime(df['datetime'], format='%b %d, %Y')  # 转换列类型
@@ -124,38 +112,6 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-st.markdown(
-    """
-    <style>
-        /* 设置整个页面的宽度和高度 */
-        body {
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-        }
-
-        /* 将列的宽度设置为50% */
-        .column {
-            width: 50%;
-            float: left;
-            position: fixed;
-            height: 100%;
-        }
-
-        /* 将第一列的位置固定在页面左侧 */
-        #column1 {
-            left: 0;
-        }
-        
-        /* 将第二列的位置固定在页面左侧，紧贴第一列 */
-        #column2 {
-            left: 50%;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 col1, col2 = st.columns(2)
 
 link_names = df["产品类别"].unique()
@@ -199,5 +155,32 @@ def style_cell1(y):
 
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=['最晚发货时间'])
-styled_df = styled_df.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-st.table(styled_df)
+df = styled_df.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
+
+st.markdown(
+    """
+    <style>
+        /* 设置表格样式 */
+        .scrollable-table {
+            height: 600px;
+            overflow-y: scroll;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+        /* 设置表头样式 */
+        .scrollable-table th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 2;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# 显示表格
+with st.beta_container():
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
