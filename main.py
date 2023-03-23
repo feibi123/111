@@ -11,4 +11,4 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
 df = pd.DataFrame(data)
 
 # 显示表格
-st.write(df)
+st.table(df)
