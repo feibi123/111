@@ -124,19 +124,37 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-st.markdown("""
+st.markdown(
+    """
     <style>
-        .st-bt {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 999;
+        /* 设置整个页面的宽度和高度 */
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
         }
-        .sidebar .st-bt {
-            left: initial;
+
+        /* 将列的宽度设置为50% */
+        .column {
+            width: 50%;
+            float: left;
+            position: fixed;
+            height: 100%;
+        }
+
+        /* 将第一列的位置固定在页面左侧 */
+        #column1 {
+            left: 0;
+        }
+        
+        /* 将第二列的位置固定在页面左侧，紧贴第一列 */
+        #column2 {
+            left: 50%;
         }
     </style>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 col1, col2 = st.columns(2)
 
@@ -158,11 +176,6 @@ if "全选" in selected_links1:
     df = df
 else:
     df = df[df["是否发货"].isin(selected_links1)]
-
-
-col1.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
-col2.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
-st.sidebar.markdown('<div class="st-bt"></div>', unsafe_allow_html=True)
 
 
 def style_cell(x):
