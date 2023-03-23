@@ -11,25 +11,33 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
-        /* 设置表格样式 */
         .scrollable-table {
-            height: 600px;
-            overflow-y: scroll;
-            position: sticky;
+            position: fixed;
             top: 0;
-            background-color: white;
-            z-index: 1;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            overflow: auto;
         }
 
-        /* 设置表头样式 */
+        .scrollable-table table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .scrollable-table th, .scrollable-table td {
+            padding: 8px;
+            text-align: center;
+        }
+
         .scrollable-table th {
             position: sticky;
             top: 0;
-            background-color: white;
-            z-index: 2;
+            background-color: #ffffff;
         }
 
-        /* 设置表格行的样式 */
         .scrollable-table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
