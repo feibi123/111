@@ -11,7 +11,7 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
-        .scrollable-table {
+        .scrollable-table-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -21,15 +21,16 @@ st.markdown(
             overflow: auto;
         }
 
-        .scrollable-table table {
+        .scrollable-table {
             width: 100%;
+            background-color: #ffffff;
         }
 
-        /* 固定表头 */
+        /* 固定第一行 */
         .scrollable-table thead th {
             position: sticky;
             top: 0;
-            background-color: #ffffff;
+            z-index: 1;
         }
     </style>
     """,
@@ -38,4 +39,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.write("<div class='scrollable-table-container'><table class='scrollable-table'>", df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
