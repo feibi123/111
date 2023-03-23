@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 from io import StringIO
-pd.set_option('display.max_colwidth', None)
-st.set_page_config(layout="wide")
+# pd.set_option('display.max_colwidth', None)
+# st.set_page_config(layout="wide")
 
 col1, col2 = st.sidebar.columns(2)
 variable = col1.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
