@@ -9,9 +9,6 @@
 import streamlit as st
 import pandas as pd
 
-pd.set_option('display.max_colwidth', None)
-st.set_page_config(layout="wide")
-
 # 创建示例数据
 data = {'A': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
         'B': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
@@ -25,6 +22,10 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
+        /* 将表格的高度设置为100% */
+        .full-height {
+            height: 100%;
+        }
         /* 设置表头的位置为固定 */
         .freeze {
             position: sticky;
@@ -37,8 +38,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# 将表格的高度设置为100%
+container = st.container()
+container.markdown(
+    '<div class="full-height">' + "&nbsp;" + '</div>',
+    unsafe_allow_html=True
+)
+
 # 添加表格并将表头放置在一个固定的div元素中
-with st.container():
+with container:
     # 将表头放置在一个固定的div元素中
     st.markdown(
         f'<div class="freeze">{df.columns[0]}</div>',
