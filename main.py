@@ -1,43 +1,43 @@
 import streamlit as st
 import pandas as pd
 
-# 创建示例数据
-data = {'姓名': ['小明', '小红', '小刚'] * 100,
-        '年龄': [18, 19, 20] * 100,
-        '性别': ['男', '女', '男'] * 100}
+# Create example data
+data = {'Name': ['Alice', 'Bob', 'Charlie'] * 100,
+        'Age': [25, 30, 35] * 100,
+        'Gender': ['F', 'M', 'M'] * 100}
 df = pd.DataFrame(data)
 
-# 设置表格样式
-st.markdown(
-    """
+# Define CSS and JavaScript to freeze first row of table and synchronize scrolling with page
+freeze_table_script = """
     <style>
-        /* 设置表格样式 */
-        .scrollable-table {
-            height: 600px;
-            overflow-y: scroll;
+        /* Add custom styles for first row */
+        .freeze-table th:first-child, .freeze-table td:first-child {
             position: sticky;
-            top: 0;
-            background-color: white;
+            left: 0;
             z-index: 1;
-        }
-
-        /* 设置表头样式 */
-        .scrollable-table th {
-            position: sticky;
-            top: 0;
             background-color: white;
-            z-index: 2;
         }
-
-        /* 设置表格行的样式 */
-        .scrollable-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+        /* Add custom styles for remaining rows */
+        .freeze-table th, .freeze-table td {
+            background-color: white;
         }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    <script>
+        // Synchronize scrolling of table with page
+        window.onscroll = function() {
+            var scrollPosition = window.pageYOffset;
+            var tableTop = document.getElementById('table').getBoundingClientRect().top + window.pageYOffset;
+            var tableBottom = tableTop + document.getElementById('table').clientHeight;
+            var windowHeight = window.innerHeight;
+            if (scrollPosition > tableTop - windowHeight/2 && scrollPosition < tableBottom - windowHeight/2) {
+                document.getElementById('table').style.transform = 'translate(0px,' + (scrollPosition - tableTop + windowHeight/2) + 'px)';
+            }
+        };
+    </script>
+"""
 
-# 显示表格
+# Display table with frozen first row and synchronized scrolling
 with st.beta_container():
-    st.table("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.markdown(freeze_table_script, unsafe_allow_html=True)
+    st.table(df.style.set_table_attributes('class="freeze-table" id="table"').hide_index())
+
