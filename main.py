@@ -13,19 +13,21 @@ st.markdown(
     <style>
         /* 设置表格样式 */
         .scrollable-table {
-            height: 600px;
+            max-height: 600px;
             overflow-y: scroll;
-            position: sticky;
-            top: 0;
-            background-color: white;
-            z-index: 1;
         }
         /* 设置表头样式 */
         .scrollable-table th {
             position: sticky;
             top: 0;
             background-color: white;
-            z-index: 2;
+        }
+        /* 设置首行样式 */
+        .scrollable-table tr:first-child {
+            position: sticky;
+            top: 38px; /* 设置表头高度 */
+            background-color: white;
+            z-index: 1;
         }
     </style>
     """,
@@ -34,4 +36,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table' style='height: 100vh;'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
