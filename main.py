@@ -7,4 +7,4 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '性别': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
-st.dataframe(df)
+st.table(df)
