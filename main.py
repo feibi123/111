@@ -11,10 +11,16 @@ df = pd.DataFrame(data)
 st.markdown(
     """
     <style>
+        #mytable {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
         #mytable thead {
             position: sticky;
             top: 0;
-            background-color: black;
+            background-color: white;
         }
     </style>
     """,
@@ -23,4 +29,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.table(df)
+    st.write("<div style='overflow-x: auto;'><table id='mytable'>", df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
