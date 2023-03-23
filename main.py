@@ -13,14 +13,13 @@ st.markdown(
     <style>
         /* 设置表格样式 */
         .scrollable-table {
-            height: 600px;
+            height: 100vh;
             overflow-y: scroll;
             position: sticky;
             top: 0;
             background-color: white;
             z-index: 1;
         }
-
         /* 设置表头样式 */
         .scrollable-table th {
             position: sticky;
