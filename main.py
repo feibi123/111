@@ -13,7 +13,7 @@ st.markdown(
     <style>
         /* 设置表格样式 */
         .scrollable-table {
-            height: 100vh;
+            height: 600px;
             overflow-y: scroll;
             position: sticky;
             top: 0;
@@ -34,4 +34,4 @@ st.markdown(
 
 # 显示表格
 with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+    st.write("<div class='scrollable-table' style='height: 100vh;'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
