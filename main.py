@@ -7,12 +7,23 @@ data = {'姓名': ['小明', '小红', '小刚', '小红', '小刚', '小红', '
         '性别': ['男', '女', '男', '男', '女', '男', '男', '女', '男', '男', '女', '男', '男', '女', '男']}
 df = pd.DataFrame(data)
 
-# 冻结第一行的样式
-styles = [dict(selector="th", props=[("font-size", "150%"),
-                                     ("text-align", "center"),
-                                     ("color", "white"),
-                                     ("background-color", "#4CAF50")])]
-styled_table = df.style.set_properties(**{'text-align': 'center'}).set_table_styles(styles)
+# 设置表格样式
+st.markdown(
+    """
+    <style>
+        .full-width {
+            width: 100%;
+        }
 
-# 将样式应用于整个表格
-st.write(styled_table)
+        .full-height {
+            height: 500px;
+            overflow: auto;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# 显示表格
+with st.beta_container():
+    st.write("<div class='full-height'><table class='full-width'>", df.to_html(index=False), "</table></div>", unsafe_allow_html=True)
