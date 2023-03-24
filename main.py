@@ -24,4 +24,4 @@ gb.configure_default_column(
 go = gb.build()
 
 # 使用 AgGrid 组件来呈现表格
-AgGrid(df, grid
+AgGrid(df, gridOptions=go)
