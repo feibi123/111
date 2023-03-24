@@ -1,5 +1,6 @@
+import streamlit as st
 import pandas as pd
-from st_aggrid import GridOptionsBuilder, GridOptions, AgGrid
+from st_aggrid import GridOptionsBuilder, AgGrid
 
 # 创建一个包含随机数据的 DataFrame
 df = pd.DataFrame({'姓名': ['小明', '小红', '小刚'] * 100,
@@ -18,20 +19,16 @@ gb.configure_default_column(
     editable=True
 )
 
-# 使用屏幕宽度设置表格宽度
-screen_width = st.experimental_get_query_params().get('screenWidth', [None])[0]
-if screen_width:
-    gb.configure_grid_options(domLayout='autoHeight',
-                              enableBrowserTooltips=True,
-                              with_full_width=False,
-                              with_dimensions=True,
-                              heightViewport='window.innerHeight',
-                              widthViewport='{}.toString() + "px"'.format(screen_width),
-                              rowHeight=32)
+# 设置表格的宽度和高度
+gb.with_dimensions(height=500, width='100%')
 
-# 创建 GridOptions 对象
-go_dict = gb.build()
-go = GridOptions(**go_dict)
+# 首行冻结
+gb.with_row_style(rowStyle={"border-top": "1px solid black", "font-weight": "bold"}, rowHeight=35)
+
+# 构建表格选项
+go = gb.build()
 
 # 使用 AgGrid 组件来呈现表格
-AgGrid(df, gridOptions=go, width='100%')
+st.header("数据表格")
+with st.spinner('正在加载数据，请稍等...'):
+    AgGrid(df, gridOptions=go)
