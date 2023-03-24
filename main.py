@@ -12,6 +12,12 @@ df = pd.DataFrame({
 gb = GridOptionsBuilder.from_dataframe(df)
 
 # 设置 Grid Options，其中 `domLayout` 可以设置为 'normal' 或者 'autoHeight'
-go = gb.set_grid_options(domLayout='normal').build()
+go = gb.default_column_def(
+    groupable=True,
+    value=True,
+    enableRowGroup=True,
+    aggFunc='sum',
+    editable=True
+)
 # 使用 AgGrid 组件来呈现表格
 AgGrid(df, gridOptions=go)
