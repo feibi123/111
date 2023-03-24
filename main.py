@@ -39,5 +39,5 @@ freeze_table_script = """
 # Display table with frozen first row and synchronized scrolling
 with st.beta_container():
     st.markdown(freeze_table_script, unsafe_allow_html=True)
-    st.table(df.style.set_table_attributes('class="freeze-table" id="table"').hide_index())
+    st.dataframe(df.style.set_table_attributes('class="freeze-table" id="table"').hide_index())
 
