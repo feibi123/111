@@ -2,3 +2,8 @@ pandas
 numpy
 chardet
 openpyxl
+streamlit_aggrid
+streamlit-pandas-profiling
+streamlit_bokeh_events
+bokeh==2.4.3
+st-aggrid
