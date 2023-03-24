@@ -15,7 +15,7 @@ gb.configure_column("年龄", minWidth=100)
 gb.configure_column("性别", minWidth=100)
 
 # 设置默认行高和列宽
-gb.default_column_def(width=100)
+gb.configure_column("all", width=100)
 gb.default_row_height(30)
 
 # 构建表格选项
