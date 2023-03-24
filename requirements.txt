@@ -3,4 +3,4 @@ numpy
 chardet
 openpyxl
 matplotlib
-st-aggrid
+streamlit-aggrid==0.3.3
