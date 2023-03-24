@@ -1,10 +1,17 @@
-import streamlit as st
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode
+import pandas as pd
+from st_aggrid import GridOptionsBuilder
 
-# 创建一个 GridOptionsBuilder 对象
+# 创建一个包含随机数据的 DataFrame
+df = pd.DataFrame({
+    'A': [1, 2, 3, 4],
+    'B': [5, 6, 7, 8],
+    'C': [9, 10, 11, 12]
+})
+
+# 创建一个 GridOptionsBuilder 对象并从 DataFrame 中获取选项
 gb = GridOptionsBuilder.from_dataframe(df)
 
-# 设置表格高度和宽度
+# 配置表格选项
 gb.configure_default_column(
     groupable=True,
     value=True,
@@ -17,4 +24,4 @@ gb.configure_default_column(
 go = gb.build()
 
 # 使用 AgGrid 组件来呈现表格
-AgGrid(df, gridOptions=go, height=500, width=800)
+AgGrid(df, grid
