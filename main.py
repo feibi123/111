@@ -1,5 +1,6 @@
 import pandas as pd
 from st_aggrid import GridOptionsBuilder, AgGrid
+import streamlit as st
 
 # 创建一个包含随机数据的 DataFrame
 df = pd.DataFrame( {'姓名': ['小明', '小红', '小刚'] * 100,
