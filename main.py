@@ -6,23 +6,13 @@ df = pd.DataFrame( {'姓名': ['小明', '小红', '小刚'] * 100,
         '年龄': [18, 19, 20] * 100,
         '性别': ['男', '女', '男'] * 100})
 
+screen_width = st.experimental_get_query_params()['screenWidth'][0]
+table_width = int(0.9 * float(screen_width))
+
 # 创建一个 GridOptionsBuilder 对象并从 DataFrame 中获取选项
 gb = GridOptionsBuilder.from_dataframe(df)
 
-# 配置表格选项
-gb.configure_default_column(
-    groupable=True,
-    value=True,
-    enableRowGroup=True,
-    aggFunc='sum',
-    editable=True
-)
-
-# 设置自动调整表格大小
-gb.configure_grid_options(
-    autoHeight=True,
-    autoWidth=True
-)
+gb.with_grid_width(f"{table_width}px")
 
 # 构建表格选项
 go = gb.build()
