@@ -1,5 +1,5 @@
 import pandas as pd
-from st_aggrid import GridOptionsBuilder
+from st_aggrid import GridOptionsBuilder, AgGrid
 
 # 创建一个包含随机数据的 DataFrame
 df = pd.DataFrame({
