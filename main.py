@@ -16,6 +16,9 @@ gb.configure_default_column(
     enableRowGroup=True,
     aggFunc='sum',
     editable=True
+).with_dimensions(
+    height='500',
+    width='100%'
 )
 
 # 构建表格选项
