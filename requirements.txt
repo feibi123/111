@@ -3,3 +3,4 @@ numpy
 chardet
 openpyxl
 matplotlib
+streamlit-aggrid
