@@ -19,6 +19,7 @@ st.markdown(
             top: 0;
             background-color: white;
             z-index: 1;
+            width: 100%;
         }
 
         /* 设置表头样式 */
@@ -39,6 +40,5 @@ st.markdown(
 )
 
 # 显示表格
-with st.beta_container():
-    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
+st.markdown(f'<div class="scrollable-table">{df.to_html(index=False)}</div>', unsafe_allow_html=True)
     
