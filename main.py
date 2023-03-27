@@ -1,25 +1,38 @@
+import streamlit as st
 import pandas as pd
-from st_aggrid import GridOptionsBuilder, AgGrid
 
-# 创建一个包含随机数据的 DataFrame
-df = pd.DataFrame({'姓名': ['小明', '小红', '小刚'] * 100,
-                   '年龄': [18, 19, 20] * 100,
-                   '性别': ['男', '女', '男'] * 100})
+# 创建示例数据
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100}
+df = pd.DataFrame(data)
 
-# 创建一个 GridOptionsBuilder 对象并从 DataFrame 中获取选项
-gb = GridOptionsBuilder.from_dataframe(df)
+# 设置表格样式
+st.markdown(
+    """
+    <style>
+        .scrollable-table {
+            position: fixed;
+            top: 150px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
 
-# 配置表格选项
-gb.configure_column("姓名", minWidth=100)
-gb.configure_column("年龄", minWidth=100)
-gb.configure_column("性别", minWidth=100)
+        .scrollable-table table {
+            width: 100%;
+        }
 
-# 设置默认行高和列宽
-gb.configure_column("all", width=100)
-gb.default_row_height(30)
+        .scrollable-table thead {
+            position: sticky;
+            top: 0;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# 构建表格选项
-go = gb.build()
-
-# 使用 AgGrid 组件来呈现表格
-AgGrid(df, gridOptions=go, height=500)
+# 显示表格
+with st.beta_container():
+    st.write("<div class='scrollable-table'>", df.to_html(index=False), "</div>", unsafe_allow_html=True)
