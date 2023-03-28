@@ -1,5 +1,5 @@
 import streamlit.components.v1 as components
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, AgGridTheme
+from st_aggrid import AgGrid, AgGridTheme, GridOptionsBuilder
 import pandas as pd
 import streamlit as st
 from io import StringIO
@@ -30,33 +30,25 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 
+# 配置 AgGrid 组件
 gb = GridOptionsBuilder.from_dataframe(df)
-gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=False, sortable=True, resizable=True, filter=True)
-gb.configure_grid_options(domLayout='normal')
-gb.configure_pagination()
-gb.configure_side_bar()
-gb.configure_selection('single')
+gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
 gridOptions = gb.build()
 
-# 将 GridOptions 传递给 AgGrid 组件
-grid_response = components.declare_component(
-    "streamlit_aggrid",
-    url="http://localhost:3001",
-    path=st._RELEASE_INFO["componentPath"],
-    version=st._RELEASE_INFO["componentVersion"],
-)
-with st.spinner('正在加载数据...'):
-    component_value = grid_response(gridOptions=gridOptions, rowData=df.to_dict('records'), theme='ag-theme-alpine-dark', enable_enterprise_modules=False, key="ag")
-    
-# 从组件响应中获取 AgGrid 组件的状态
-if component_value.get("selected_rows"):
-    selected_rows = component_value["selected_rows"]
-else:
-    selected_rows = []
-    
-    
-# 更新原始数据框以反映所选行
-df_selected = pd.DataFrame(selected_rows)
+# 设置表格样式
+theme = AgGridTheme.FLAT
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df_selected, height=500, width='100%', gridOptions=gridOptions, theme='ag-theme-alpine-dark', update_mode=GridUpdateMode.SELECTION_CHANGED, fit_columns_on_grid_load=True, allow_unsafe_jscode=True, key="ag")
+with st.spinner('正在加载数据...'):
+    grid = AgGrid(
+        df, 
+        theme=theme, 
+        gridOptions=gridOptions, 
+        height=600, 
+        width='100%', 
+        # 这里是冻结首行的代码
+        additional_theme_options={
+            "freeze_header": True
+        }
+    )
+    
