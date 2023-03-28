@@ -32,17 +32,9 @@ df = df.dropna(subset=['type'])   # 删除含有空值的行
 
 # 创建 grid options 对象并进行设置
 grid_options = GridOptionsBuilder(). \
-    row_selection('multiple'). \
-    row_multi_select_with_click(True). \
-    hide_columns(['id']). \
-    enable_pagination(True). \
-    enable_floating_filter(True). \
-    enable_range_selection(True). \
-    enable_column_virtualization(True). \
-    enable_filter(True). \
-    enable_sorting(True). \
-    enable_cell_edit(False). \
+    selection_mode("single"). \
     build()
+
 
 # 设置 AgGrid 组件的主题为 FLAT，并且冻结首行
 theme = AgGridTheme.FLAT
