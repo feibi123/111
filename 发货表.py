@@ -11,7 +11,7 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
 df = pd.DataFrame(data)
 
 # 设置 defaultColumnDef 属性，使所有列名能够完全显示出来
-default_column_def = {'minWidth': 100}
+default_column_def = {'minWidth': 50}
 grid_options = {
     'defaultColumnDef': default_column_def
 }
