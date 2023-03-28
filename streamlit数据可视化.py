@@ -150,7 +150,7 @@ def style_cell(x):
 # 设置单元格样式
 def style_cell1(y):
     style = ''
-    if y < 10:
+    if int(y) < 10:
         style += "font-weight: bold; color: red;"
     else:
         style += ""
