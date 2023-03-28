@@ -12,12 +12,12 @@ df = pd.DataFrame(data)
 
 # 设置单元格样式
 def style_cell(x):
-    style = ''
-    if x < 80:
-        style += "font-weight: bold; color: red;"
-    elif x > 90:
-        style += "font-weight: bold; color: green;"
-    return style
+    if isinstance(x, (int, float))
+     if x < 80:
+           style += "font-weight: bold; color: red;"
+       elif x > 90:
+          style += "font-weight: bold; color: green;"
+      return style
 
 # 应用样式
 df = df.style.applymap(style_cell)
