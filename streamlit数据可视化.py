@@ -159,8 +159,8 @@ def style_cell1(x):
 
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
-styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
-st.write(styled_df)
+df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
+st.write(df)
 
 # 构建 AgGrid 组件的配置项
 gb = GridOptionsBuilder.from_dataframe(df)
