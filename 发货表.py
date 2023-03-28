@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # 创建一个包含随机数据的数据框
-df = pd.DataFrame(np.random.randn(10, 9), columns=['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9'])
+df = pd.DataFrame(np.random.randn(100, 5), columns=['col1', 'col2', 'col3', 'col4', 'col5'])
 
 # 将数据框转换为 streamlit 表格
 table = st.table(df)
@@ -27,6 +27,18 @@ st.markdown("""
             z-index: 1 !important;
             background-color: #ffffff !important;
             font-weight: bold !important;
+        }
+        
+        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div {
+            position: static !important;
+        }
+        
+        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(2) > div > div {
+            position: sticky !important;
+            top: 30px !important;
+            z-index: 1 !important;
+            background-color: #ffffff !important;
+            font-weight: normal !important;
         }
     </style>
 """, unsafe_allow_html=True)
