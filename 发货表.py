@@ -16,10 +16,8 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 # 冻结首行并扩大宽度
 grid_options = {
-    "floatingFilter": True,
-    "pinnedTopRowCount": 1,
-    "suppressHorizontalScroll": False,
+    "width": 100% ,
 }
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, gridOptions=grid_options, height=500, width='100%')
+grid = AgGrid(df, gridOptions=grid_options)
