@@ -1,24 +1,21 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 
+df = pd.read_excel("E:\发货表\FSM\1.xlsx")
 
-def style_cell(x):
-    if x < 80:
-        return 'background-color: red'
-    elif x > 90:
-        return 'background-color: green'
-    else:
-        return ''
+# 冻结表格首行
+st.write(
+    df.style
+    .set_table_styles([{'selector': 'thead', 'props': [('sticky', 'top')]}])
+    .set_properties(**{'width': '100%', 'max-width': '100%'})
+)
 
-df = pd.read_excel('https://github.com/datagy/mediumdata/raw/master/pythonexcel.xlsx')
+# 铺满全屏
+st.markdown("""
+    <style>
+        .fullScreen {
+            height: 100vh !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-styled_df = df.style.applymap(style_cell, subset=['语文', '英语'])
-
-# Set the page configuration
-st.set_page_config(layout="wide")
-
-# Set the first row to be frozen
-styled_df.set_sticky(axis='index')
-
-# Display the styled DataFrame with a fixed height and width
-st.dataframe(styled_df, height=600, width=None, max_height=800)
