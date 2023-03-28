@@ -4,4 +4,3 @@ chardet
 streamlit
 streamlit-aggrid
 openpyxl
-streamlit-folium
