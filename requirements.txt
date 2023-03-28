@@ -1,6 +1,6 @@
 pandas
 numpy
 chardet
+streamlit==1.20.0
+streamlit-aggrid==0.3.0
 openpyxl
-matplotlib
-streamlit-aggrid
