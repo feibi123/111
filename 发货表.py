@@ -17,6 +17,10 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 # 设置 AgGrid 组件的宽度
 grid_options = {
     'width': '100%',
+    'floatingTopRow': {
+        'data': df.head(1).to_dict('records'), # 冻结的是表格的首行
+        'rowHeight': 40 # 冻结行的高度
+    }
 }
 
 # 使用 AgGrid 组件展示数据
