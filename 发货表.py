@@ -11,11 +11,11 @@ df = pd.DataFrame(data)
 
 st.write("""
 <style>
-#grid-container {
+grid-container {
     height: 500px; /* 设置 AgGrid 的高度 */
     overflow: auto; /* 显示页面滚动条 */
 }
-#grid-frozen-rows {
+grid-frozen-rows {
     position: sticky; /* 固定在顶部 */
     top: 0; /* 距离顶部的位置 */
 }
