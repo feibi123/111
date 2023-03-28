@@ -34,9 +34,8 @@ df = df.dropna(subset=['type'])   # 删除含有空值的行
 gb = GridOptionsBuilder.from_dataframe(df)
 
 # 冻结首行
-gb.configure_grid_options(domLayout='normal')
-gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
-
+gb.enable_floating_header(True)
+gb.set_dom_layout("autoHeight")
 gridOptions = gb.build()
 
 # 使用 AgGrid 组件展示数据
