@@ -1,3 +1,4 @@
+import streamlit.components.v1 as components
 from st_aggrid import AgGrid
 import pandas as pd
 
@@ -9,3 +10,14 @@ df = pd.DataFrame(data)
 
 # 使用 AgGrid 组件展示数据
 grid = AgGrid(df)
+
+# 将表格宽度铺满全屏
+components.html(
+    """
+    <style>
+    #root div:first-child {
+        width: 100%;
+    }
+    </style>
+    """
+)
