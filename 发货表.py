@@ -2,14 +2,13 @@ import streamlit as st
 import pandas as pd
 
 df = pd.DataFrame({
-    'Column 1': ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do']*100,
-    'Column 2': ['Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris']*100,
-    'Column 3': ['Duis', 'aute', 'irure', 'dolor', 'in', 'reprehenderit', 'in', 'voluptate', 'velit', 'esse']*100,
-    'Column 4': ['Cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat']*100,
-    'Column 5': ['Non', 'proident', 'sunt', 'in', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim']*100
+    'Column 1': ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do'],
+    'Column 2': ['Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris'],
+    'Column 3': ['Duis', 'aute', 'irure', 'dolor', 'in', 'reprehenderit', 'in', 'voluptate', 'velit', 'esse'],
+    'Column 4': ['Cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat'],
+    'Column 5': ['Non', 'proident', 'sunt', 'in', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim']
 })
 
-# Set up CSS styles for the table
 css = """
 table {
     width: 100%;
@@ -23,39 +22,46 @@ td {
     text-align: left;
 }
 
-tbody {
-    overflow-y: auto;
-    height: 200px;
+#table-container {
+    height: 300px;
+    overflow: auto;
+    position: relative;
+}
+
+#table-container table {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 1;
+}
+
+#table-container th:first-child {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 2;
 }
 """
 
-# Set up JavaScript code to fix the first row of the table
-javascript = """
-const table = document.querySelector('table');
-const tbody = table.querySelector('tbody');
-const firstRow = tbody.querySelector('tr');
-
-function fixTableHeader() {
-  if (window.scrollY > table.offsetTop) {
-    firstRow.classList.add('fixed');
-  } else {
-    firstRow.classList.remove('fixed');
-  }
-}
-
-window.addEventListener('scroll', fixTableHeader);
+js = """
+$(function() {
+  var tableContainer = $('#table-container');
+  tableContainer.scroll(function() {
+    var scrollLeft = tableContainer.scrollLeft();
+    $('th:first-child', tableContainer).css('left', scrollLeft);
+  });
+});
 """
 
 def main():
-    # Write CSS to page
+    # Write CSS and JS to page
     st.write(f'<style>{css}</style>', unsafe_allow_html=True)
+    st.write(f'<script>{js}</script>', unsafe_allow_html=True)
 
     # Write table to page
-    st.write(df.to_html(index=False, header=True), unsafe_allow_html=True)
-
-    # Write JavaScript to page
-    st.write(f'<script>{javascript}</script>', unsafe_allow_html=True)
+    st.write(f'<div id="table-container">{df.to_html(index=False, header=True)}</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
-
+    
