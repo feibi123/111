@@ -1,32 +1,59 @@
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
 
-# 创建示例数据
-data = {'姓名': ['小明', '小红', '小刚'] * 100,
-        '年龄': [18, 19, 20] * 100,
-        '性别': ['男', '女', '男'] * 100,
-        '身高': ['男', '女', '男'] * 100,
-        '体重': ['男', '女', '男'] * 100}
-df = pd.DataFrame(data)
+df = pd.DataFrame({
+    'Column 1': ['Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do'],
+    'Column 2': ['Ut', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris'],
+    'Column 3': ['Duis', 'aute', 'irure', 'dolor', 'in', 'reprehenderit', 'in', 'voluptate', 'velit', 'esse'],
+    'Column 4': ['Cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat'],
+    'Column 5': ['Non', 'proident', 'sunt', 'in', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim']
+})
 
-# 设置页面宽度和高度
-st.set_page_config(page_title="AgGrid Example", layout="wide")
-
-# 设置 AgGrid 组件的宽度
-grid_options = {
-    'width': '100%',
-    'enableRangeSelection': True,
-    'enableFilter': True,
-    'enableSorting': True,
-    'floatingTopRow': True,
-    'floatingTopRowData': [df.columns.tolist()],
-    'floatingTopRowStyle': {'zIndex': '1', 'fontWeight': 'bold'}
+# Set up CSS styles for the table
+css = """
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-# 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=grid_options)
+th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
 
-# 输出表格数据
-if 'data' in grid_response:
-    st.write(grid_response['data'])
+th,
+td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+tbody {
+    overflow-y: auto;
+    height: 200px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+"""
+
+def main():
+    # Write CSS to page
+    st.write(f'<style>{css}</style>', unsafe_allow_html=True)
+
+    # Write table to page
+    st.table(df)
+
+if __name__ == "__main__":
+    main()
