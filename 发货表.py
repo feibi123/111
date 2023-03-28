@@ -17,9 +17,10 @@ table {
 }
 
 th {
-    position: sticky;
+    position: fixed;
     top: 0;
     background-color: white;
+    z-index: 1;
 }
 
 th,
@@ -32,6 +33,7 @@ td {
 tbody {
     overflow-y: auto;
     height: 200px;
+    margin-top: 40px;
 }
 
 ::-webkit-scrollbar {
