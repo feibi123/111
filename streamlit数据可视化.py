@@ -1,3 +1,5 @@
+import streamlit.components.v1 as components
+from st_aggrid import AgGrid, GridOptionsBuilder
 import streamlit as st
 import pandas as pd
 from io import StringIO
@@ -13,6 +15,8 @@ variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value
 uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="xlsx")
 uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
+df = pd.DataFrame()
+
 
 # 如果用户上传了文件
 if uploaded_file1 is not None:
@@ -156,4 +160,17 @@ def style_cell1(y):
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=['最晚发货时间'])
 df = styled_df.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-st.table(df)
+
+gb = GridOptionsBuilder.from_dataframe(df)
+
+# 冻结首行
+gb.configure_grid_options(domLayout='normal')
+gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
+
+# 设置表格的宽度自适应页面的宽度
+gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
+
+gridOptions = gb.build()
+
+# 使用 AgGrid 组件展示数据
+grid = AgGrid(df, gridOptions=gridOptions, height=600)
