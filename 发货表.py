@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_excel("E:\发货表\FSM\1.xlsx")
+df = pd.read_excel(r"E:\发货表\FSM\1.xlsx")
 
 # 冻结表格首行
 st.write(
