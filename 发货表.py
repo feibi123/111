@@ -39,6 +39,7 @@ gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
 
 # 设置表格的宽度自适应页面的宽度
 gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
+
 gridOptions = gb.build()
 
 # 使用 AgGrid 组件展示数据
