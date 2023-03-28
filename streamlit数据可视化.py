@@ -160,4 +160,4 @@ def style_cell1(x):
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
 df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
-st.write(df)
+st.table(df)
