@@ -11,7 +11,7 @@ df = pd.DataFrame({
 
 css = """
 table {
-    width: 100%;
+    width: 100%vw;
     border-collapse: collapse;
 }
 
