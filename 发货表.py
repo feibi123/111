@@ -16,14 +16,10 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 # 创建 GridOptionsBuilder 对象
 gb = GridOptionsBuilder.from_dataframe(df)
 
-# 冻结表格的首行
-gb.configure_floating_top_row(rowHeight=40)
-
-# 禁用分页
-gb.configure_pagination(enabled=False)
-
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
+gridOptions['floatingTopRow'] = {'data': [{'姓名': '', '年龄': '', '性别': '', '身高': '', '体重': ''}], 'rowHeight': 40}
+gridOptions['enablePagination'] = False
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
 # 使用 AgGrid 组件展示数据
