@@ -1,5 +1,5 @@
 import streamlit.components.v1 as components
-from st_aggrid import AgGrid, AgGridTheme, GridOptionsBuilder
+from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
 import streamlit as st
 from io import StringIO
@@ -30,26 +30,14 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 
-# 创建 grid options 对象并进行设置
-grid_options = GridOptionsBuilder(). \
-    selection_mode("single"). \
-    build()
+# 创建 GridOptionsBuilder 对象，用于构建 AgGrid 的参数
+gb = GridOptionsBuilder.from_dataframe(df)
 
+# 冻结首行
+gb.configure_grid_options(domLayout='normal')
+gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
 
-# 设置 AgGrid 组件的主题为 FLAT，并且冻结首行
-theme = AgGridTheme.FLAT
-with st.spinner('正在加载数据...'):
-    grid = AgGrid(df, gridOptions=grid_options, theme=theme, height=500, width='100%', allow_unsafe_jscode=True, 
-                  on_ready='this.api.setPinnedTopRow(0)')
+gridOptions = gb.build()
 
-# 设置表格宽度与页面宽度一致
-st.markdown(
-     f"""
-        <style>
-            .fullWidth {{
-                width: 100% !important;
-            }}
-        </style>
-    """,
-    unsafe_allow_html=True
-)
+# 使用 AgGrid 组件展示数据
+grid = AgGrid(df, gridOptions=gridOptions, height=600)
