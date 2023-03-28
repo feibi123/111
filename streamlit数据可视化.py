@@ -161,18 +161,3 @@ def style_cell1(x):
 styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
 df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
 st.write(df)
-
-# 构建 AgGrid 组件的配置项
-gb = GridOptionsBuilder.from_dataframe(df)
-
-# 冻结首行
-gb.configure_grid_options(domLayout='normal')
-gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
-
-# 设置表格的宽度自适应页面的宽度
-gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
-
-gridOptions = gb.build()
-
-# 使用 AgGrid 组件展示数据
-grid = AgGrid(styled_df.data, gridOptions=gridOptions)
