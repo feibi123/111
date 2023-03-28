@@ -27,8 +27,8 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 
-# # 使用 AgGrid 组件展示数据
-# grid = AgGrid(df)
+# 使用 AgGrid 组件展示数据
+grid = AgGrid(df)
 
 # 将表格宽度铺满全屏
 components.html(
