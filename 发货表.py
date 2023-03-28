@@ -14,12 +14,12 @@ df = pd.DataFrame(data)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-# 设置 AgGrid 组件的宽度
+# 冻结首行并扩大宽度
 grid_options = {
-    'width': '100%',
     "floatingFilter": True,
     "pinnedTopRowCount": 1,
+    "suppressHorizontalScroll": False,
 }
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, gridOptions=grid_options)
+grid = AgGrid(df, gridOptions=grid_options, height=500, width='100%')
