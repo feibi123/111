@@ -159,8 +159,8 @@ def style_cell1(y):
 
 # 应用样式
 styled_df = df.style.apply(style_cell1, subset=['最晚发货时间'])
-styled_data = styled_df.data
-df = styled_data.apply(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
+styled_data = styled_df.dataframe
+df = styled_df.apply(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
 
 gb = GridOptionsBuilder.from_dataframe(df)
 
