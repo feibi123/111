@@ -175,4 +175,4 @@ gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
 gridOptions = gb.build()
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(styled_df, gridOptions=gridOptions, height=600)
+grid = AgGrid(styled_df.data, gridOptions=gridOptions)
