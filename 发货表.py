@@ -2,7 +2,7 @@ import streamlit.components.v1 as components
 from st_aggrid import AgGrid
 import pandas as pd
 import streamlit as st
-
+from io import StringIO
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 df = pd.DataFrame()
 
