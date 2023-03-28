@@ -23,20 +23,19 @@ if uploaded_file1 is not None:
     
 df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
-df = df.dropna(subset=['type']) 
+df = df.dropna(subset=['type'])   # 删除含有空值的行
 
-df = pd.DataFrame(data)
+# # 使用 AgGrid 组件展示数据
+# grid = AgGrid(df)
 
-# 使用 AgGrid 组件展示数据
-grid = AgGrid(df)
-
-# 将表格宽度铺满全屏
-components.html(
-    """
-    <style>
-    #root div:first-child {
-        width: 100%;
-    }
-    </style>
-    """
-)
+# # 将表格宽度铺满全屏
+# components.html(
+#     """
+#     <style>
+#     #root div:first-child {
+#         width: 100%;
+#     }
+#     </style>
+#     """
+# )
+st.write(df)
