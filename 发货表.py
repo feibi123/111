@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.write("<style>.title{position: fixed; top: 0; left: 0; width: 100%; padding: 20px 0; background-color: #fff; text-align: center; font-size: 36px; font-weight: bold;}</style>", unsafe_allow_html=True)
+st.write("<style>.title{position: fixed; top: 0; left: 0; width: 100%; padding: 60px 0; background-color: #fff; text-align: center; font-size: 36px; font-weight: bold;}</style>", unsafe_allow_html=True)
 st.write("<div class='title'>这是一个大标题</div>", unsafe_allow_html=True)
 
 # 创建普通标题
