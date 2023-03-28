@@ -18,17 +18,22 @@ def style_cell(x):
 
 # 应用样式
 styled_df = df.copy()
-styled_df[['语文', '英语']] = df[['语文', '英语']].applymap(style_cell)
+styled_df['语文'] = styled_df['语文'].apply(style_cell)
+styled_df['英语'] = styled_df['英语'].apply(style_cell)
 
-# 构建 GridOptions
 gb = GridOptionsBuilder.from_dataframe(styled_df)
-gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
-gb.configure_grid_options(domLayout='normal', widthMode='fit')
 
-# 展示 AgGrid
+# 冻结首行
+gb.configure_grid_options(domLayout='normal')
+gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
+
+# 设置表格的宽度自适应页面的宽度
+gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
+
 gridOptions = gb.build()
+
+# 使用 AgGrid 组件展示数据
 grid = AgGrid(styled_df, gridOptions=gridOptions, height=600)
 
-# 显示原始 DataFrame
-st.write(df, wide=True)
-
+# 使用 st.dataframe 显示 Pandas DataFrame
+st.dataframe(df, height=600, width=800, scrollable=True)
