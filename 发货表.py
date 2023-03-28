@@ -30,5 +30,13 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 
+gb = GridOptionsBuilder.from_dataframe(df)
+
+# 冻结首行
+gb.configure_grid_options(domLayout='normal')
+gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
+
+gridOptions = gb.build()
+
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, header=True)
+grid = AgGrid(df, gridOptions=gridOptions, height=600)
