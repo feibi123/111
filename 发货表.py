@@ -26,5 +26,4 @@ gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal'
 grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
 
 # 打印 AgGrid 组件的状态
-if grid_response['changed'] and 'data' in grid_response:
-    st.write(grid_response['data'])
+st.write(grid_response['data'])
