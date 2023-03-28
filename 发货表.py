@@ -18,7 +18,7 @@ def style_cell(x):
 
 # 应用样式
 styled_df = df.style.applymap(style_cell)
-gb = GridOptionsBuilder.from_dataframe(styled_df)
+gb = GridOptionsBuilder.from_dataframe(styled_df.data)
 
 # 冻结首行
 gb.configure_grid_options(domLayout='normal')
