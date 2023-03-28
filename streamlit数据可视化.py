@@ -148,9 +148,9 @@ def style_cell(x):
 
 
 # 设置单元格样式
-def style_cell1(y):
+def style_cell1(x):
     style = ''
-    if int(y) < 10:
+    if x < 10:
         style += "font-weight: bold; color: red;"
     else:
         style += ""
@@ -158,12 +158,11 @@ def style_cell1(y):
 
 
 # 应用样式
-styled_df = df.style.apply(style_cell1, subset=['最晚发货时间'])
-df = styled_df.apply(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-styled_data = df.render().split('\n')[3:-1]
-styled_data = [list(map(str.strip, row.split('<td')))[:-1] for row in styled_data]
-df = pd.DataFrame(styled_data, columns=df.columns)
+styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
+styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
+st.write(styled_df)
 
+# 构建 AgGrid 组件的配置项
 gb = GridOptionsBuilder.from_dataframe(df)
 
 # 冻结首行
@@ -176,4 +175,4 @@ gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
 gridOptions = gb.build()
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, gridOptions=gridOptions, height=600)
+grid = AgGrid(styled_df, gridOptions=gridOptions, height=600)
