@@ -30,25 +30,34 @@ df = df.dropna(subset=['quantity'])  # 删除含有空值的行
 df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
 df = df.dropna(subset=['type'])   # 删除含有空值的行
 
-# 配置 AgGrid 组件
-gb = GridOptionsBuilder.from_dataframe(df)
-gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
-gridOptions = gb.build()
+# 创建 grid options 对象并进行设置
+grid_options = GridOptionsBuilder(). \
+    row_selection('multiple'). \
+    row_multi_select_with_click(True). \
+    hide_columns(['id']). \
+    enable_pagination(True). \
+    enable_floating_filter(True). \
+    enable_range_selection(True). \
+    enable_column_virtualization(True). \
+    enable_filter(True). \
+    enable_sorting(True). \
+    enable_cell_edit(False). \
+    build()
 
-# 设置表格样式
+# 设置 AgGrid 组件的主题为 FLAT，并且冻结首行
 theme = AgGridTheme.FLAT
-
-# 使用 AgGrid 组件展示数据
 with st.spinner('正在加载数据...'):
-    grid = AgGrid(
-        df, 
-        theme=theme, 
-        gridOptions=gridOptions, 
-        height=600, 
-        width='100%', 
-        # 这里是冻结首行的代码
-        additional_theme_options={
-            "freeze_header": True
-        }
-    )
-    
+    grid = AgGrid(df, gridOptions=grid_options, theme=theme, height=500, width='100%', allow_unsafe_jscode=True, 
+                  on_ready='this.api.setPinnedTopRow(0)')
+
+# 设置表格宽度与页面宽度一致
+st.markdown(
+     f"""
+        <style>
+            .fullWidth {{
+                width: 100% !important;
+            }}
+        </style>
+    """,
+    unsafe_allow_html=True
+)
