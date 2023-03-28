@@ -28,17 +28,5 @@ st.markdown("""
             background-color: #ffffff !important;
             font-weight: bold !important;
         }
-        
-        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(1) > div > div > div {
-            position: static !important;
-        }
-        
-        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(2) > div > div {
-            position: sticky !important;
-            top: 30px !important;
-            z-index: 1 !important;
-            background-color: #ffffff !important;
-            font-weight: normal !important;
-        }
     </style>
 """, unsafe_allow_html=True)
