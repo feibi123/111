@@ -29,14 +29,3 @@ df = df.dropna(subset=['type'])   # 删除含有空值的行
 
 # 使用 AgGrid 组件展示数据
 grid = AgGrid(df)
-
-# 将表格宽度铺满全屏
-components.html(
-    """
-    <style>
-    #root div:first-child {
-        width: 100%;
-    }
-    </style>
-    """
-)
