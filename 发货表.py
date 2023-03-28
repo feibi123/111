@@ -22,4 +22,4 @@ grid_options = {
 }
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, gridOptions=grid_options, height=500)
+grid = AgGrid(df, gridOptions=grid_options)
