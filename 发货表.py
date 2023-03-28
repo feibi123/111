@@ -3,6 +3,9 @@ from st_aggrid import AgGrid
 import pandas as pd
 import streamlit as st
 from io import StringIO
+pd.set_option('display.max_colwidth', None)
+st.set_page_config(layout="wide")
+
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
 df = pd.DataFrame()
 
