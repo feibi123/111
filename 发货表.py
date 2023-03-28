@@ -39,7 +39,7 @@ df.set_table_styles([{
 })
 
 # 设置表格的宽度自适应页面的宽度
-st.beta_set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 
 # 将表格放入容器中，并使用 CSS 样式控制容器高度和滚动条
 with st.beta_container():
