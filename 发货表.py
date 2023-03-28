@@ -1,6 +1,5 @@
 import streamlit as st
-import streamlit.components.v1 as components
-from st_aggrid import AgGrid
+from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
 
 # 创建示例数据
@@ -14,14 +13,22 @@ df = pd.DataFrame(data)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-# 设置 AgGrid 组件的宽度
-grid_options = {
-    'width': '100%',
-    'floatingTopRow': {
-        'data': df.head(1).to_dict('records'), # 冻结的是表格的首行
-        'rowHeight': 40 # 冻结行的高度
-    }
-}
+# 创建 GridOptionsBuilder 对象
+gb = GridOptionsBuilder.from_dataframe(df)
+
+# 冻结表格的首行
+gb.configure_floating_top_row(rowHeight=40)
+
+# 禁用分页
+gb.configure_pagination(enabled=False)
+
+# 设置 AgGrid 组件的属性
+gridOptions = gb.build()
+gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
 # 使用 AgGrid 组件展示数据
-grid = AgGrid(df, grid_options=grid_options)
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
+
+# 打印 AgGrid 组件的状态
+if grid_response['changed'] and 'data' in grid_response:
+    st.write(grid_response['data'])
