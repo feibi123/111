@@ -1,9 +1,23 @@
-import streamlit as st
+import streamlit.components.v1 as components
+from st_aggrid import AgGrid
 import pandas as pd
-import streamlit_aggrid as st_ag
 
-# 创建一个包含随机数据的数据框
-df = pd.DataFrame(np.random.randn(100, 5), columns=['col1', 'col2', 'col3', 'col4', 'col5'])
+# 创建示例数据
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100}
+df = pd.DataFrame(data)
 
-# 在 Streamlit 应用中显示表格
-st_ag.grid(df, height=500, theme='streamlit', frozen_rows=1)
+# 使用 AgGrid 组件展示数据
+grid = AgGrid(df)
+
+# 将表格宽度铺满全屏
+components.html(
+    """
+    <style>
+    #root div:first-child {
+        width: 100%;
+    }
+    </style>
+    """
+)
