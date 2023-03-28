@@ -1,19 +1,30 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
-data = {
-    '姓名': ['小明', '小红', '小张', '小李', '小刚'],
-    '语文': [78, 92, 85, 90, 87],
-    '数学': [83, 76, 92, 88, 82],
-    '英语': [87, 85, 72, 90, 92]
-}
+# 创建一个包含随机数据的数据框
+df = pd.DataFrame(np.random.randn(10, 5), columns=['col1', 'col2', 'col3', 'col4', 'col5'])
 
-df = pd.DataFrame(data)
+# 将数据框转换为 streamlit 表格
+st.table(df)
 
-st.write(df.style.highlight_max(axis=0))
-
-# 冻结表头
-st.write(df.style.highlight_max(axis=0).set_table_styles([{'selector': 'thead th', 'props': [('position', 'sticky'), ('top', '0px')]}]))
-
-# 铺满全屏
-st.write(df.style.set_table_styles([{'selector': 'table', 'props': [('width', '100%'), ('height', '100%')]}]))
+# 使用 CSS 样式来设置表格铺满全屏并冻结首行
+st.markdown("""
+    <style>
+        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div {
+            position: fixed !important;
+            top: 10% !important;
+            left: 5% !important;
+            right: 5% !important;
+            bottom: 10% !important;
+            overflow-y: scroll !important;
+            z-index: 0 !important;
+        }
+        
+        #root > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(2) > div > div > div > div:nth-child(1) > div {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
