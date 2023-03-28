@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
-from st_aggrid import AgGrid, GridOptionsBuilder
 
-# 创建数据
-data = {'姓名': ['小明', '小红', '小张', '小李', '小刚'], '语文': [78, 92, 85, 90, 87], '数学': [83, 76, 92, 88, 82],
-        '英语': [87, 85, 72, 90, 92]}
+data = {
+    '姓名': ['小明', '小红', '小张', '小李', '小刚'],
+    '语文': [78, 92, 85, 90, 87],
+    '数学': [83, 76, 92, 88, 82],
+    '英语': [87, 85, 72, 90, 92]
+}
+
 df = pd.DataFrame(data)
 
 # 设置单元格样式
@@ -17,23 +20,37 @@ def style_cell(x):
     return style
 
 # 应用样式
-styled_df = df.copy()
-styled_df['语文'] = styled_df['语文'].apply(style_cell)
-styled_df['英语'] = styled_df['英语'].apply(style_cell)
-
-gb = GridOptionsBuilder.from_dataframe(styled_df)
+df = df.style.applymap(style_cell)
 
 # 冻结首行
-gb.configure_grid_options(domLayout='normal')
-gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
+df.set_table_styles([{
+    'selector': 'thead th',
+    'props': [
+        ('border', '1px solid #ccc'),
+        ('font-size', '14px'),
+        ('background-color', '#f8f9fa'),
+        ('font-weight', 'bold'),
+        ('text-align', 'center')
+    ]
+}]).set_properties(**{
+    'text-align': 'center',
+    'border': '1px solid #ccc',
+    'font-size': '14px'
+})
 
 # 设置表格的宽度自适应页面的宽度
-gb.configure_grid_options(domLayout='autoHeight', widthMode='fit')
+st.beta_set_page_config(layout="wide")
 
-gridOptions = gb.build()
+# 将表格放入容器中，并使用 CSS 样式控制容器高度和滚动条
+with st.beta_container():
+    st.dataframe(df, height=400, width=1000)
 
-# 使用 AgGrid 组件展示数据
-grid = AgGrid(styled_df, gridOptions=gridOptions, height=600)
-
-# 使用 st.dataframe 显示 Pandas DataFrame
-st.dataframe(df, height=600, width=800, scrollable=True)
+    st.write(
+        f"""<style>
+        .css-1aumxhk {{
+            max-height: 400px !important;
+            overflow-y: scroll;
+        }}
+        </style>""",
+        unsafe_allow_html=True,
+    )
