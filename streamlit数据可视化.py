@@ -158,10 +158,10 @@ def style_cell1(y):
 
 
 # 应用样式
-styled_df = df.style.applymap(style_cell1, subset=['最晚发货时间'])
+styled_df = df.style.apply(style_cell1, subset=['最晚发货时间'])
 styled_data = styled_df.data
-styled_data = styled_data.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-df = styled_data.to_df()
+df = styled_data.apply(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
+
 gb = GridOptionsBuilder.from_dataframe(df)
 
 # 冻结首行
