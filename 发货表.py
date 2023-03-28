@@ -14,16 +14,14 @@ import streamlit as st
 # 设置页面宽度
 st.set_page_config(page_title="上传文件示例", layout="wide")
 
-# 使用 st.sidebar 或 st.beta_container() 在页面顶部添加一个容器
-# 这里使用 st.beta_container()，需要在 Streamlit 版本为 0.84 或更高时才可用
+# 在页面中添加一个大标题
+st.write('<h1 style="position: sticky; top: 0; background-color: white; z-index: 999;">大标题</h1>', unsafe_allow_html=True)
+
+# 使用 st.beta_container() 在页面顶部添加一个容器
 container = st.beta_container()
 
 # 在容器内添加一个上传文件的按钮
 file = container.file_uploader("上传文件")
-
-# 在页面中添加一个大标题，并使用 st.beta_columns() 分成两列
-cols = st.beta_columns(2)
-cols[0].title("大标题")
 
 # 创建普通标题
 st.header("这是一个普通标题")
