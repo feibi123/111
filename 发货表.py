@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # 创建一个包含随机数据的数据框
-df = pd.DataFrame(np.random.randn(10, 5), columns=['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9'])
+df = pd.DataFrame(np.random.randn(10, 9), columns=['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9'])
 
 # 将数据框转换为 streamlit 表格
 table = st.table(df)
