@@ -4,6 +4,8 @@ import pandas as pd
 import streamlit as st
 
 uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
+df = pd.DataFrame()
+
 
 # 如果用户上传了文件
 if uploaded_file1 is not None:
