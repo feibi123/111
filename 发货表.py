@@ -34,7 +34,8 @@ df = df.dropna(subset=['type'])   # 删除含有空值的行
 gb = GridOptionsBuilder.from_dataframe(df)
 
 # 冻结首行
-gb.enable_floating_header(True)
+gb.configure_grid_options(domLayout='normal')
+gb.configure_column("index", headerName="", maxWidth=50, lockPosition=True)
 gb.set_dom_layout("autoHeight")
 gridOptions = gb.build()
 
