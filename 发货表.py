@@ -7,19 +7,22 @@
 
 import streamlit as st
 
-# 设置页面宽度为全屏
-st.set_page_config(layout="wide")
-
 # 添加上传文件按钮和大标题
 uploaded_file = st.file_uploader("上传文件")
 st.title("这是一个大标题")
 
-# 将大标题和上传文件按钮固定在页面顶部
 st.markdown("""
 <style>
 .stButton > button {
-    position: sticky;
+    position: fixed;
     top: 0;
+    width: 100%;
+    z-index: 999;
+}
+.stTitle {
+    position: fixed;
+    top: 40px;
+    width: 100%;
     z-index: 999;
 }
 </style>
