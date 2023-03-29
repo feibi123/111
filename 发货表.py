@@ -18,8 +18,9 @@ gb = GridOptionsBuilder.from_dataframe(df)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
-gridOptions['enablePagination'] = False
+gridOptions['enablePagination'] = True  # 启用分页功能
+gridOptions['paginationAutoPageSize'] = True  # 自动调整每页显示的行数
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
 # 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height='95vh', width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
