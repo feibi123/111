@@ -17,6 +17,10 @@ st.write("""
             top: 0;
             background-color: white;
         }
+        div[data-testid="stTable"] tbody {
+            overflow-y: scroll;
+            max-height: 400px;
+        }
     </style>
 """, unsafe_allow_html=True)
 
