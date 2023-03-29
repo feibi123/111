@@ -43,16 +43,16 @@ gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
 gridOptions['defaultColDef'] = {'flex': 1}
 
-# 使用 AgGrid 组件展示数据
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 
+# 转换高度为整数值
 if window_height:
     window_height = int(window_height.replace("px", ""))
 else:
-    window_height = 300  # 如果没有设置高度，默认设置为 600 像素
+    window_height = None
 
-
-st.markdown("""<style>body::-webkit-scrollbar{width: 10px;height: 10px;}</style>""", unsafe_allow_html=True)
+window_width = '100%'
+# 使用 AgGrid 组件展示数据
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
             
