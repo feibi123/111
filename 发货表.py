@@ -19,6 +19,7 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
+gridOptions['defaultColDef'] = {'flex': 1}
 
 # 使用 AgGrid 组件展示数据
 grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
