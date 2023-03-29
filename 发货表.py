@@ -18,9 +18,8 @@ gb = GridOptionsBuilder.from_dataframe(df)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
-gridOptions['floatingTopRow'] = {'data': [{'姓名': '', '年龄': '', '性别': '', '身高': '', '体重': ''}], 'rowHeight': 40}
 gridOptions['enablePagination'] = False
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
 # 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%vw')
