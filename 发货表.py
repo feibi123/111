@@ -22,4 +22,4 @@ gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 
 # 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=80vh, width='100%')
