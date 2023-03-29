@@ -22,4 +22,4 @@ gridOptions['enablePagination'] = False
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
 # 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height='100vh', width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height='95vh', width='100%')
