@@ -7,9 +7,15 @@
 
 import streamlit as st
 
-# 添加上传文件按钮和大标题
-uploaded_file = st.file_uploader("上传文件")
-st.markdown('<h1 id="title" style="position:fixed; top:0; left:0; right:0; background-color:#FFFFFF; z-index:999; padding: 80px 0; ">这是一个大标题</h1>', unsafe_allow_html=True)
+# 冻结上传文件按钮和大标题
+st.set_page_config(page_title="My Page", page_icon=":sunglasses:", layout="wide")
 
-# 添加正文内容
-st.write("这里是正文一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境的文件的境内容...")
+# 设置大标题
+st.title("My Title")
+
+# 创建一些示例文本
+lorem_ipsum = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id dictum quam. Suspendisse mollis sagittis enim sit amet molestie. Vivamus ullamcorper sapien vitae risus rutrum ultrices. Proin bibendum, eros non dignissim consectetur, nisi tellus auctor tellus, et pharetra turpis enim vel dui. Nam id libero mi. Nullam porta congue euismod. Sed vel eleifend nunc. Donec iaculis ullamcorper nunc id pulvinar. Sed tristique efficitur lorem, id volutpat lacus interdum nec. Proin at turpis nunc. Proin imperdiet consequat eros non tristique. Ut elementum, turpis a lacinia convallis, odio enim pretium lorem, sit amet laoreet elit tellus vel elit. Donec in varius sapien, vel aliquam nisl. """
+
+# 创建一个滚动区域来显示文本
+with st.beta_container():
+    st.markdown(f"<div style='height: 500px; overflow-y: scroll;'>{lorem_ipsum}</div>", unsafe_allow_html=True)
