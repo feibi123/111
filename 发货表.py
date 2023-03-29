@@ -1,26 +1,15 @@
-import streamlit as st
+# import streamlit as st
 
-st.write("<style>.title{position: fixed; top: 0; left: 0; width: 100%; padding: 80px 0; background-color: #fff; text-align: center; font-size: 36px; font-weight: bold; z-index: 1;}</style>", unsafe_allow_html=True)
-st.write("<div class='title'>这是一个大标题</div>", unsafe_allow_html=True)
+# st.write("<style>.title{position: fixed; top: 0; left: 0; width: 100%; padding: 80px 0; background-color: #fff; text-align: center; font-size: 36px; font-weight: bold; z-index: 1;}</style>", unsafe_allow_html=True)
+# st.write("<div class='title'>这是一个大标题</div>", unsafe_allow_html=True)
 
 # st.write("<div style='margin-top: 100px; z-index: 0;'>这是一的撒发文件的文件的境况章。</div>")
-st.write("这是一的撒发文件的一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境文件的境况章。")
-# import streamlit as st
+
+import streamlit as st
+
+# 添加上传文件按钮和大标题
 # uploaded_file = st.file_uploader("上传文件")
-# with st.container():
-#     st.markdown('<h1 style="text-align: center;">这是一个大标题</h1>', unsafe_allow_html=True)
+st.markdown('<h1 id="title" style="position:fixed; top:0; left:0; right:0; background-color:#FFFFFF; z-index:999;">这是一个大标题</h1>', unsafe_allow_html=True)
 
-# # 固定上传文件按钮和大标题
-# st.markdown("""
-# <style>
-# .sticky {
-#     position: sticky;
-#     top: 0;
-#     width: 100%;
-#     z-index: 1;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
-# # 添加正文内容
-# st.write("这是一段八百字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒发字的字的文的囧撒发字的字的文的囧撒发字字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒的文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒文的囧撒发文件的字的文的囧撒发文段八百字的文的囧段八百字的文的囧撒文的囧撒发文件的字的文的囧撒发文段八百字的文的囧撒发字的文的囧撒发文件的字的文的囧撒发撒发字的文的囧撒发文件的字的文的囧撒发文件的..")
+# 添加正文内容
+st.write("这里是正文一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境一的撒发文件的文件的境内容...")
