@@ -1,5 +1,12 @@
 import streamlit as st
 
+# Create a container for the file uploader and fixed title
+container = st.beta_container()
+
+# Add the file uploader to the container
+with container:
+    uploaded_file = st.file_uploader("Upload a file")
+
 st.write("<style>.title{position: fixed; top: 0; left: 0; width: 100%; padding: 80px 0; background-color: #fff; text-align: center; font-size: 36px; font-weight: bold; z-index: 1;}</style>", unsafe_allow_html=True)
 st.write("<div class='title'>这是一个大标题</div>", unsafe_allow_html=True)
 
