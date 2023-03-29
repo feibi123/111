@@ -1,38 +1,26 @@
 import streamlit as st
-import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder
+import pandas as pd
 
-df = pd.DataFrame({
-    'A': [1,2,3,4,5,6],
-    'B': [11,22,33,44,55,66],
-    'C': [11,22,33,44,55,66],
-    'D': [11,22,33,44,55,66],
-    'E': [11,22,33,44,55,66],
-})
+# 创建示例数据
+data = {'姓名': ['小明', '小红', '小刚'] * 100,
+        '年龄': [18, 19, 20] * 100,
+        '性别': ['男', '女', '男'] * 100,
+        '身高': ['男', '女', '男'] * 100,
+        '体重': ['男', '女', '男'] * 100}
+df = pd.DataFrame(data)
 
-gob = GridOptionsBuilder.from_dataframe(df)
+# 设置页面宽度和高度
+st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-gob.configure_default_column(groupable=True, value=True, enableRowGroup=True, aggFunc='sum', editable=True)
-gob.configure_grid_options(domLayout='normal', enableRangeSelection=True, enableCharts=True, enableStatusBar=True, enableFilter=True, enableSorting=True, enableColResize=True, enableCellChangeFlash=True, suppressDragLeaveHidesColumns=True, rowSelection='single', rowMultiSelectWithClick=True, suppressRowClickSelection=False, groupSelectsChildren=True, groupSelectsFiltered=True, suppressAggFuncInHeader=True, suppressMultiSort=False, rowHeight=22, headerHeight=28, defaultColDef={'sortable': True}, autoSizeColumns=True)
+# 创建 GridOptionsBuilder 对象
+gb = GridOptionsBuilder.from_dataframe(df)
 
-go = gob.build()
+# 设置 AgGrid 组件的属性
+gridOptions = gb.build()
+gridOptions['floatingTopRow'] = {'data': [{'姓名': '', '年龄': '', '性别': '', '身高': '', '体重': ''}], 'rowHeight': 40}
+gridOptions['enablePagination'] = False
+gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');}"
 
-# 定义CSS样式
-css = """
-<style>
-    #my-grid-wrapper {
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-
-    #my-grid {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-    }
-</style>
-"""
-
-# 在st.markdown函数中添加CSS样式和表格
-st.markdown(css + '<div id="my-grid-wrapper"><div id="my-grid">' + AgGrid(df, gridOptions=go, height=300)._repr_html_() + '</div></div>', unsafe_allow_html=True)
+# 使用 AgGrid 组件展示数据
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
