@@ -9,8 +9,16 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '体重': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
-# 将表头固定在页面顶部
-st.table(df.style.set_table_styles([{
-    'selector': 'thead',
-    'props': [('position', 'sticky'), ('top', '0px')]
-}]))
+# 使用 CSS 控制表格样式
+st.write("""
+    <style>
+        div[data-testid="stTable"] thead {
+            position: sticky;
+            top: 0;
+            background-color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# 显示表格
+st.table(df)
