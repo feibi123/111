@@ -8,7 +8,7 @@
 import streamlit as st
 
 # 添加上传文件按钮和大标题
-# uploaded_file = st.file_uploader("上传文件")
+uploaded_file = st.file_uploader("上传文件")
 st.markdown('<h1 id="title" style="position:fixed; top:0; left:0; right:0; background-color:#FFFFFF; z-index:999; padding: 80px 0; ">这是一个大标题</h1>', unsafe_allow_html=True)
 
 # 添加正文内容
