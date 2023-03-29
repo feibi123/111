@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from streamlit_aggrid import GridOptionsBuilder, AgGrid
+from st_aggrid import GridOptionsBuilder, AgGrid
 
 # 创建示例数据
 data = {'姓名': ['小明', '小红', '小刚'] * 100,
