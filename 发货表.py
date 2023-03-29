@@ -22,4 +22,5 @@ gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 
 # 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height='50vh', width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height='100vh', width='100%',
+                        css_rules={'.ag-body-viewport': 'overflow-y: auto;'})
