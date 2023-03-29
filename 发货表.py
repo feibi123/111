@@ -1,7 +1,7 @@
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
-st.set_page_config(page_title="AgGrid Example", layout="wide")
+# st.set_page_config(page_title="AgGrid Example", layout="wide")
 # 创建示例数据
 data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '年龄': [18, 19, 20] * 100,
