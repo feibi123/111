@@ -50,7 +50,7 @@ window_height = st.experimental_get_query_params().get('height', [None])[0]
 if window_height:
     window_height = int(window_height.replace("px", ""))
 else:
-    window_height = 600  # 如果没有设置高度，默认设置为 600 像素
+    window_height = 300  # 如果没有设置高度，默认设置为 600 像素
 
 
 st.markdown("""<style>body::-webkit-scrollbar{width: 10px;height: 10px;}</style>""", unsafe_allow_html=True)
