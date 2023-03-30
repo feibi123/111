@@ -160,19 +160,19 @@ def style_cell1(x):
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
 styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
+st.table(styled_df)
+# gb = GridOptionsBuilder.from_dataframe(styled_df.data)
+# gridOptions = gb.build()
+# gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
+# gridOptions['defaultColDef'] = {'flex': 1}
 
-gb = GridOptionsBuilder.from_dataframe(styled_df.data)
-gridOptions = gb.build()
-gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
-gridOptions['defaultColDef'] = {'flex': 1}
+# window_height = st.experimental_get_query_params().get('height', [None])[0]
 
-window_height = st.experimental_get_query_params().get('height', [None])[0]
-
-if window_height:
-    window_height = int(window_height.replace('px', ''))
-else:
-    window_height = None  # 设置一个默认值
+# if window_height:
+#     window_height = int(window_height.replace('px', ''))
+# else:
+#     window_height = None  # 设置一个默认值
 
 
-window_width = '100%'
-grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
+# window_width = '100%'
+# grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
