@@ -162,7 +162,7 @@ styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发�
 styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
 
 gb = GridOptionsBuilder.from_dataframe(styled_df.data)
-grid_options = gb.build()
+gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
 gridOptions['defaultColDef'] = {'flex': 1}
 
@@ -175,4 +175,4 @@ else:
 
 
 window_width = '100%'
-grid_response = AgGrid(styled_df.data, gridOptions=grid_options, height=window_height, width='100%')
+grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
