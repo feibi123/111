@@ -16,6 +16,11 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 # 创建 GridOptionsBuilder 对象
 gb = GridOptionsBuilder.from_dataframe(df)
 
+gb.configure_default_column(
+    cellStyle={'textAlign': 'center'},
+    headerStyle={'textAlign': 'center'}
+)
+
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
