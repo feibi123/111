@@ -19,10 +19,8 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
-gridOptions['defaultColDef'] = {'flex': 1}
-
-gridOptions['defaultColDef']['cellStyle'] = {'textAlign': 'center'}
-gridOptions['headerClass'] = 'text-center'
+gridOptions['defaultColDef'] = {'flex': 1, 'headerClass': 'text-center'}
+gridOptions['headerHeight'] = 40
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
