@@ -4,7 +4,7 @@ import streamlit as st
 import pandas as pd
 from io import StringIO
 pd.set_option('display.max_colwidth', None)
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 col1, col2 = st.sidebar.columns(2)
 variable = col1.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
@@ -163,5 +163,16 @@ styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预�
 
 gb = GridOptionsBuilder.from_dataframe(styled_df.data)
 grid_options = gb.build()
+gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
+gridOptions['defaultColDef'] = {'flex': 1}
 
-grid_response = AgGrid(styled_df.data, gridOptions=grid_options, height=600, width='100%')
+window_height = st.experimental_get_query_params().get('height', [None])[0]
+
+if window_height:
+    window_height = int(window_height.replace('px', ''))
+else:
+    window_height = None  # 设置一个默认值
+
+
+window_width = '100%'
+grid_response = AgGrid(styled_df.data, gridOptions=grid_options, height=window_height, width='100%')
