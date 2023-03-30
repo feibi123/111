@@ -10,6 +10,7 @@ data = {'姓名': ['小明', '小红', '小刚'] * 100,
         '体重': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
+gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
