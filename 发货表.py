@@ -14,16 +14,6 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-css = """
-    <style>
-        .ag-header-cell {
-            text-align: center;
-        }
-    </style>
-"""
-
-# 在 Streamlit 中显示 CSS 样式
-st.markdown(css, unsafe_allow_html=True)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
