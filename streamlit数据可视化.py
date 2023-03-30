@@ -159,5 +159,9 @@ def style_cell1(x):
 
 # 应用样式
 styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
-df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
-st.table(df)
+styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
+
+gb = GridOptionsBuilder.from_dataframe(styled_df.data)
+grid_options = gb.build()
+
+grid_response = AgGrid(styled_df, gridOptions=grid_options, height=600, width='100%')
