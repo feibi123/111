@@ -19,7 +19,7 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['defaultColDef'] = {'flex': 1}
-gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit();}'
+gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
