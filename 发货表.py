@@ -21,6 +21,8 @@ gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
 gridOptions['defaultColDef'] = {'flex': 1}
 
+gridOptions['defaultColDef']['cellStyle'] = {'textAlign': 'center'}
+
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 
