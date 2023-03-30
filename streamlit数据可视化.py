@@ -164,4 +164,4 @@ styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预�
 gb = GridOptionsBuilder.from_dataframe(styled_df.data)
 grid_options = gb.build()
 
-grid_response = AgGrid(styled_df, gridOptions=grid_options, height=600, width='100%')
+grid_response = AgGrid(styled_df.data, gridOptions=grid_options, height=600, width='100%')
