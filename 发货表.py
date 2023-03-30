@@ -22,6 +22,7 @@ gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 
 gridOptions['defaultColDef']['cellStyle'] = {'textAlign': 'center'}
+gridOptions['headerClass'] = 'text-center'
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
