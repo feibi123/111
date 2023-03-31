@@ -27,15 +27,15 @@ gridOptions['columnDefs'] = [
 
 gridOptions['defaultColDef'] = {'resizable': True}
 
-# window_height = st.experimental_get_query_params().get('height', [None])[0]
+window_height = st.experimental_get_query_params().get('height', [None])[0]
 
-# if window_height:
-#     window_height = int(window_height.replace('px', ''))
-# else:
-#     window_height = None  # 设置一个默认值
+if window_height:
+    window_height = int(window_height.replace('px', ''))
+else:
+    window_height = None  # 设置一个默认值
 
 
-# window_width = '100%'
-# # 使用 AgGrid 组件展示数据
-# grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
-grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
+window_width = '100%'
+# 使用 AgGrid 组件展示数据
+grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
+# grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
