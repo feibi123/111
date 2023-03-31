@@ -141,7 +141,7 @@ else:
 window_width = '100%'
 gridOptions['columnDefs'] = [
     {'headerName': '产品类别', 'field': '产品类别', 'flex': 1},
-    {'headerName': '颜色', 'field': '颜色', 'width': 130},
+    {'headerName': '颜色', 'field': '颜色', 'width': 120},
     {'headerName': 'sku', 'field': 'sku', 'flex': 1},
     {'headerName': '7天销量', 'field': '7天销量', 'width': 85},
     {'headerName': '15天销量', 'field': '15天销量', 'width': 92},
