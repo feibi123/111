@@ -23,7 +23,7 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-gob.configure_default_column(cellRenderer=renderer)
+gb.configure_default_column(cellRenderer=renderer)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
