@@ -85,10 +85,7 @@ df['是否发货'] = df['建议补货数量'].apply(fill_or_not)
 df[['7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存', '建议补货数量', '最晚发货时间']] = \
     df[['7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存',
         '建议补货数量', '最晚发货时间']].round().astype(int)  # 保留整数
-cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存',
-        '最晚发货时间', '是否发货', '建议补货数量']
-df = df.reindex(columns=cols)
-df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
+
 col1, col2 = st.columns(2)
 link_names = df["产品类别"].unique()
 link_names = ["全选"] + list(link_names)
@@ -104,6 +101,13 @@ if "全选" in selected_links1:
     df = df
 else:
     df = df[df["是否发货"].isin(selected_links1)]
+    
+    
+cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存',
+        '最晚发货时间', '是否发货', '建议补货数量']
+df = df.reindex(columns=cols)
+df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
+
 def style_cell(x):
     style = ''
     if x < 30:
