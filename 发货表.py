@@ -15,14 +15,10 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
-gridOptions['domLayout'] = 'normal'
+gridOptions['domLayout'] = 'autoHeight'
 gridOptions['defaultColDef'] = {'flex': 1}
-
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
-gridOptions = {
-    'pagination': True,
-    'paginationAutoPageSize': True,
-}
+
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 if window_height:
