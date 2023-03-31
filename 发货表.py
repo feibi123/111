@@ -16,23 +16,26 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
-gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit();}'
-gridOptions['columnDefs'][0]['width'] = 100
-gridOptions['columnDefs'][1]['width'] = 10
-gridOptions['defaultColDef'] = {
-    'resizable': True,
-    'flex': 1,
-}
+gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
+gridOptions['columnDefs'] = [
+    {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
+    {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 10},
+    {'headerName': '性nananananan别', 'field': '性nananananan别'},
+    {'headerName': '身nanannanananananananannananananannanaanan高', 'field': '身nanannanananananananannananananannanaanan高'},
+    {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重'},
+]
 
-window_height = st.experimental_get_query_params().get('height', [None])[0]
+gridOptions['defaultColDef'] = {'resizable': True}
 
-if window_height:
-    window_height = int(window_height.replace('px', ''))
-else:
-    window_height = None  # 设置一个默认值
+# window_height = st.experimental_get_query_params().get('height', [None])[0]
+
+# if window_height:
+#     window_height = int(window_height.replace('px', ''))
+# else:
+#     window_height = None  # 设置一个默认值
 
 
-window_width = '100%'
-# 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
-# grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
+# window_width = '100%'
+# # 使用 AgGrid 组件展示数据
+# grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
