@@ -1,5 +1,5 @@
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 import pandas as pd
 
 # 创建示例数据
@@ -10,10 +10,20 @@ data = {'姓名nananananannanananananannanananananannananan': ['小明nanananana
         '体anananananananananannananananananannananannananannananananan重': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
+renderer = JsCode("""
+    function(params) {
+        var text = params.value;
+        var text_width = text.length * 10;
+        params.columnApi.setColumnWidth(params.column.colId, text_width, true);
+        return text;
+    }
+""")
+
 gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
+gob.configure_default_column(cellRenderer=renderer)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
