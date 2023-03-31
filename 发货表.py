@@ -19,7 +19,9 @@ gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
-gb.with_auto_size_columns(True)
+gb.set_default_col_def({
+    'autoSizeColumns': True
+})
 
 # window_height = st.experimental_get_query_params().get('height', [None])[0]
 
