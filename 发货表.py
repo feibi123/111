@@ -1,7 +1,6 @@
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
+from st_aggrid import AgGrid, GridOptionsBuilder
 import pandas as pd
-import random
 # 创建示例数据
 data = {'姓名nananananannanananananannanananananannananan': ['小明nanananananannana', '小红', '小刚'] * 100,
         '年nananananananananan龄': [18, 19, 20] * 100,
@@ -20,9 +19,17 @@ gob.configure_grid_options(domLayout='normal', enableSorting=True, enableFilter=
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
-gridOptions['defaultColDef'] = {'flex': 1}
+# gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
-
+gridOptions = {
+    'defaultColumnDef': {
+        'resizable': True,
+        'sortable': True,
+        'filter': True,
+        'flex': 1,
+        'cellRenderer': 'multiLineRenderer'
+    }
+}
 # window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 # if window_height:
