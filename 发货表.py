@@ -36,6 +36,7 @@ gridOptions['columnDefs'] = [
     {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重', 'flex': 1},
 ]
 
+
 # 使用 AgGrid 组件展示数据
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
 # grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
