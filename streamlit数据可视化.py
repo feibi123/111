@@ -164,7 +164,7 @@ styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预�
 gb = GridOptionsBuilder.from_dataframe(styled_df.data)
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
-gridOptions['defaultColDef'] = {'flex': 1}
+# gridOptions['defaultColDef'] = {'flex': 1}
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
@@ -173,6 +173,24 @@ if window_height:
 else:
     window_height = None  # 设置一个默认值
 
-
+    
 window_width = '100%'
+
+gridOptions['columnDefs'] = [
+    {'headerName': '产品类别', 'field': '产品类别', 'flex': 1},
+    {'headerName': '颜色', 'field': '颜色', 'flex': 1},
+    {'headerName': 'sku', 'field': 'sku', 'flex': 1},
+    {'headerName': '7天销量', 'field': '7天销量', 'width': 20},
+    {'headerName': '15天销量', 'field': '15天销量', 'width': 20},
+    {'headerName': '可变销量', 'field': '可变销量', 'width': 20},
+    {'headerName': '在途库存数量', 'field': '在途库存数量', 'flex': 1},
+    {'headerName': '在库库存数量', 'field': '在库库存数量', 'flex': 1},
+    {'headerName': '在途预计可售天数', 'field': '在途预计可售天数', 'flex': 1},
+    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
+    {'headerName': '安全库存', 'field': '安全库存', 'width': 20},
+    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1},
+    {'headerName': '是否发货', 'field': '是否发货', 'width': 20},
+    {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
+]
+
 grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
