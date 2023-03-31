@@ -153,7 +153,6 @@ gridOptions['columnDefs'] = [
     {'headerName': '安全库存', 'field': '安全库存', 'width': 100},
     {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
-    {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
 ]
 
