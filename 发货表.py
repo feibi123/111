@@ -21,7 +21,7 @@ gridOptions = {
     'columnDefs': [
         {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
         {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 100},
-        {'headerName': '性nananananan别', 'field': '性nananananan别', 'minWidth': 100},   
+        {'headerName': '性nananananan别', 'field': '性nananananan别', 'minWidth': 10},   
         {'headerName': '男nananananananananananananannananananananananannanananan', 'field': '男nananananananananananananannananananananananannanananan'},
         {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重'},
     ],
