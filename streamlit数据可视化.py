@@ -180,7 +180,7 @@ gridOptions['columnDefs'] = [
     {'headerName': '产品类别', 'field': '产品类别', 'flex': 1},
     {'headerName': '颜色', 'field': '颜色', 'flex': 1},
     {'headerName': 'sku', 'field': 'sku', 'flex': 1},
-    {'headerName': '7天销量', 'field': '7天销量', 'width': 50},
+    {'headerName': '7天销量', 'field': '7天销量', 'width': 200},
     {'headerName': '15天销量', 'field': '15天销量', 'width': 20},
     {'headerName': '可变销量', 'field': '可变销量', 'width': 20},
     {'headerName': '在途库存数量', 'field': '在途库存数量', 'flex': 1},
