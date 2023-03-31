@@ -18,7 +18,7 @@ gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit();}'
 gridOptions['columnDefs'][0]['width'] = 100
-gridOptions['columnDefs'][1]['width'] = 100
+gridOptions['columnDefs'][1]['width'] = 10
 gridOptions['defaultColDef'] = {
     'resizable': True,
     'flex': 1,
