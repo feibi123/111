@@ -23,7 +23,7 @@ else:
 window_width = '100%'
 gridOptions['columnDefs'] = [
     {'headerName': '姓名', 'field': '姓名', 'flex': 1},
-    {'headerName': '年龄', 'field': '年龄', 'width': 110}, 'cellStyle': lambda params: {'color': 'red', 'fontWeight': 'bold'} if params.value < 10 else {}},
+    {'headerName': '年龄', 'field': '年龄', 'width': 110, 'cellStyle': lambda params: {'color': 'red', 'fontWeight': 'bold'} if params.value < 10 else {}},
     {'headerName': '性别', 'field': '性别', 'flex': 1},
     {'headerName': '身高', 'field': '身高', 'width': 85},
     {'headerName': '体重', 'field': '体重', 'width': 92},
