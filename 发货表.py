@@ -13,16 +13,13 @@ gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
-gb.configure_column('姓名nananananannanananananannanananananannananan', width=10)
-gb.configure_column('年nananananananananan龄', width=10)
-
 # 设置 AgGrid 组件的属性
-gridOptions = gb.build()
+gridOptions = gb.with_default_col_def({'flex': 1}).build()
 gridOptions['domLayout'] = 'normal'
-gridOptions['defaultColDef'] = {'flex': 1}
-gridOptions['suppressHorizontalScroll'] = True
-gridOptions['suppressVerticalScroll'] = False
+# gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
+gridOptions['columnDefs'][0]['width'] = 100
+gridOptions['columnDefs'][1]['width'] = 100
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
