@@ -150,26 +150,10 @@ gridOptions['columnDefs'] = [
     {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'flex': 1},
     {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 100},
-    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1},
+    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1, 'cellStyle': lambda params: {'color': 'red', 'fontWeight': 'bold'} if params.value < 10 else {}},
+    {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
 ]
-
-
-for item in data:
-    cellStyle = {}
-    if item['最晚发货时间'] < 10:
-        cellStyle['color'] = 'red'
-        cellStyle['fontWeight'] = 'bold'
-    elif item['在库预计可售天数'] < 30 or item['总预计可售天数'] < 30:
-        cellStyle['color'] = 'green'
-        cellStyle['fontWeight'] = 'bold'
-    elif item['在库预计可售天数'] > 180 or item['总预计可售天数'] > 180:
-        cellStyle['color'] = 'red'
-        cellStyle['fontWeight'] = 'bold'
-    
-    item['cellStyle'] = cellStyle
-
-gridOptions['rowData'] = data
 
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
