@@ -108,26 +108,26 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-def style_cell(x):
-    style = ''
-    if x < 30:
-        style += "font-weight: bold; color: green;"
-    elif x > 180:
-        style += "font-weight: bold; color: red;"
-    return style
-# 设置单元格样式
-def style_cell1(x):
-    style = ''
-    if x < 10:
-        style += "font-weight: bold; color: red;"
-    else:
-        style += ""
-    return style
-# 应用样式
-styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
-styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
+# def style_cell(x):
+#     style = ''
+#     if x < 30:
+#         style += "font-weight: bold; color: green;"
+#     elif x > 180:
+#         style += "font-weight: bold; color: red;"
+#     return style
+# # 设置单元格样式
+# def style_cell1(x):
+#     style = ''
+#     if x < 10:
+#         style += "font-weight: bold; color: red;"
+#     else:
+#         style += ""
+#     return style
+# # 应用样式
+# styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
+# styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
 # st.table(styled_df)
-gb = GridOptionsBuilder.from_dataframe(styled_df.data)
+gb = GridOptionsBuilder.from_dataframe(df)
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
 # gridOptions['defaultColDef'] = {'flex': 1}
@@ -155,4 +155,4 @@ gridOptions['columnDefs'] = [
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
 ]
 
-grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
