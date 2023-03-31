@@ -16,7 +16,7 @@ renderer = JsCode("""
         if (text.length > 20) {
             var text_width = text.length * 10;
             params.columnApi.setColumnWidth(params.column.colId, text_width, true);
-            return '<div style="text-indent: 10px;">' + text + '</div>';
+            return '<div style="white-space: normal; word-wrap: break-word;">' + text + '</div>';
         } else {
             return text;
         }
