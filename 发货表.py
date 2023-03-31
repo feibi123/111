@@ -22,8 +22,12 @@ gridOptions = {
     'columnDefs': [
         {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
         {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 100},
+        {'headerName': '性nananananan别', 'field': '性nananananan别'},   
+        {'headerName': '身nanannanananananananannananananannanaanan高', 'field': '身nanannanananananananannananananannanaanan高'},
+        {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重'},
     ],
     'defaultColDef': {
+        'resizable': True,
         'flex': 1,
     },
 }
