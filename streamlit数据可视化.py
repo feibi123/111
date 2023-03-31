@@ -150,14 +150,16 @@ gridOptions['columnDefs'] = [
     {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'flex': 1},
     {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 100},
-    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1},
-    cellStyle: function(params) {
-            var style = {};
+    {
+        headerName: '最晚发货时间',
+        field: '最晚发货时间',
+        flex: 1,
+        cellStyle: function(params) {
             if (params.value < 10) {
-                style.color = 'red';
-                style.fontWeight = 'bold';
+                return {color: 'red', 'font-weight': 'bold'};
+            } else {
+                return null;
             }
-            return style;
         }
     },
     {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
