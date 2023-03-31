@@ -186,5 +186,9 @@ gridOptions['columnDefs'] = [
     {'headerName': '是否发货', 'field': '是否发货', 'width': 92},
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'width': 119},
 ]
-
+gridOptions['floatingTopRowData'] = [    {'产品类别': '固定顶部', '颜色': '固定顶部', 'sku': '固定顶部', '7天销量': '固定顶部',
+                                          '15天销量': '固定顶部', '可变销量': '固定顶部', '在途库存': '固定顶部', '在库库存': '固定顶部', 
+                                          '在库预计可售天数': '固定顶部', '总预计可售天数': '固定顶部', '安全库存': '固定顶部', '最晚发货时间': '固定顶部', 
+                                          '是否发货': '固定顶部', '建议捕获数量': '固定顶部'}]
+gridOptions['floatingTopRowHeight'] = 40  # 固定行的高度
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%', allow_unsafe_jscode=True)
