@@ -164,7 +164,7 @@ df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 # styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
 # styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
 # st.table(styled_df)
-gb = GridOptionsBuilder.from_dataframe(styled_df.data)
+gb = GridOptionsBuilder.from_dataframe(df.data)
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
 # gridOptions['defaultColDef'] = {'flex': 1}
@@ -196,4 +196,4 @@ gridOptions['columnDefs'] = [
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
 ]
 
-grid_response = AgGrid(styled_df.data, gridOptions=gridOptions, height=window_height, width='100%')
+grid_response = AgGrid(df.data, gridOptions=gridOptions, height=window_height, width='100%')
