@@ -1,7 +1,7 @@
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, JsCode
 import pandas as pd
-
+import random
 # 创建示例数据
 data = {'姓名nananananannanananananannanananananannananan': ['小明nanananananannana', '小红', '小刚'] * 100,
         '年nananananananananan龄': [18, 19, 20] * 100,
@@ -13,9 +13,13 @@ df = pd.DataFrame(data)
 renderer = JsCode("""
     function(params) {
         var text = params.value;
-        var text_width = text.length * 10;
-        params.columnApi.setColumnWidth(params.column.colId, text_width, true);
-        return text;
+        if (text.length > 20) {
+            var text_width = text.length * 10;
+            params.columnApi.setColumnWidth(params.column.colId, text_width, true);
+            return '<div style="text-indent: 10px;">' + text + '</div>';
+        } else {
+            return text;
+        }
     }
 """)
 
@@ -31,16 +35,15 @@ gridOptions['domLayout'] = 'normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
 
-window_height = st.experimental_get_query_params().get('height', [None])[0]
+# window_height = st.experimental_get_query_params().get('height', [None])[0]
 
-if window_height:
-    window_height = int(window_height.replace('px', ''))
-else:
-    window_height = None  # 设置一个默认值
+# if window_height:
+#     window_height = int(window_height.replace('px', ''))
+# else:
+#     window_height = None  # 设置一个默认值
 
 
-window_width = '100%'
-# 使用 AgGrid 组件展示数据
-grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
-# grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
-            
+# window_width = '100%'
+# # 使用 AgGrid 组件展示数据
+# grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
