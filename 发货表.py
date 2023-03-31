@@ -17,7 +17,7 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
-gridOptions['defaultColDef'] = {'flex': 1}
+# gridOptions['defaultColDef'] = {'flex': 1}
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 if window_height:
@@ -27,6 +27,16 @@ else:
 
 
 window_width = '100%'
+
+gridOptions['columnDefs'] = [
+    {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 10},
+    {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'flex': 1},
+    {'headerName': '性nananananan别', 'field': '性nananananan别', 'flex': 1},
+    {'headerName': '男nananananananananananananannananananananananannanananan', 'field': '男nananananananananananananannananananananananannanananan', 'flex': 1},
+    {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重', 'flex': 1},
+]
+
+gridOptions['defaultColDef'] = {'flex': 1}
 # 使用 AgGrid 组件展示数据
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
 # grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')          
