@@ -131,11 +131,11 @@ df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 gb = GridOptionsBuilder.from_dataframe(df)
 gridOptions = gb.build()
 gridOptions['onGridReady'] = "function(params) {params.api.setDomLayout('normal');params.api.sizeColumnsToFit();}"
-# window_height = st.experimental_get_query_params().get('height', [None])[0]
-# if window_height:
-#     window_height = int(window_height.replace('px', ''))
-# else:
-#     window_height = None  # 设置一个默认值
+window_height = st.experimental_get_query_params().get('height', [None])[0]
+if window_height:
+    window_height = int(window_height.replace('px', ''))
+else:
+    window_height = None  # 设置一个默认值
     
 cellStyle = JsCode("""
 function(params) {
@@ -151,7 +151,7 @@ function(params) {
 """)
 
     
-# window_width = '100%'
+window_width = '100%'
 gridOptions['columnDefs'] = [
     {'headerName': '产品类别', 'field': '产品类别', 'flex': 1},
     {'headerName': '颜色', 'field': '颜色', 'width': 110},
@@ -169,4 +169,4 @@ gridOptions['columnDefs'] = [
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'width': 119},
 ]
 
-grid_response = AgGrid(df, gridOptions=gridOptions, height=600, width='100%')
+grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%', allow_unsafe_jscode=True)
