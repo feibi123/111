@@ -139,11 +139,29 @@ else:
     
 cellStyle = JsCode("""
 function(params) {
-    if (parseInt(params.value) < 10) {
-        return {
-            'color': 'red',
-            'fontWeight': 'bold'
-        };
+    if (params.colDef.field == '最晚发货时间') {
+        if (parseInt(params.value) < 10) {
+            return {
+                'color': 'red',
+                'fontWeight': 'bold'
+            };
+        } else {
+            return {};
+        }
+    } else if (params.colDef.field == '在库预计可售天数' || params.colDef.field == '总预计可售天数') {
+        if (parseInt(params.value) < 30) {
+            return {
+                'color': 'green',
+                'fontWeight': 'bold'
+            };
+        } else if (parseInt(params.value) > 180) {
+            return {
+                'color': 'red',
+                'fontWeight': 'bold'
+            };
+        } else {
+            return {};
+        }
     } else {
         return {};
     }
@@ -161,8 +179,8 @@ gridOptions['columnDefs'] = [
     {'headerName': '可变销量', 'field': '可变销量', 'width': 92},
     {'headerName': '在途库存', 'field': '在途库存', 'width': 92},
     {'headerName': '在库库存', 'field': '在库库存', 'width': 92},
-    {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'width': 145},
-    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'width': 129},
+    {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'width': 145, 'cellStyle': cellStyle},
+    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'width': 129, 'cellStyle': cellStyle},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 92},
     {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'width': 119, 'cellStyle': cellStyle},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 92},
