@@ -14,9 +14,9 @@ gb = GridOptionsBuilder.from_dataframe(df)
 st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 # 设置 AgGrid 组件的属性
-gridOptions = gb.with_default_col_def({'flex': 1}).build()
+gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
-# gridOptions['defaultColDef'] = {'flex': 1}
+gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
 gridOptions['columnDefs'][0]['width'] = 100
 gridOptions['columnDefs'][1]['width'] = 100
