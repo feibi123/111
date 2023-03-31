@@ -149,7 +149,7 @@ gridOptions['columnDefs'] = [
     {'headerName': '在途库存', 'field': '在途库存', 'width': 92},
     {'headerName': '在库库存', 'field': '在库库存', 'width': 92},
     {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'flex': 1},
-    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
+    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'width': 120},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 92},
     {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'width': 120},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 92},
