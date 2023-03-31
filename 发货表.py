@@ -8,10 +8,10 @@ data = {'姓名nananananannanananananannanananananannananan': ['小明nanananana
         '身nanannanananananananannananananannanaanan高': ['男', '女', '男'] * 100,
         '体anananananananananannananananananannananannananannananananan重': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
-st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
+st.set_page_config(page_title="AgGrid Example", layout="wide")
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
