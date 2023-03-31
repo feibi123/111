@@ -35,11 +35,6 @@ gridOptions['columnDefs'] = [
     {'headerName': '男nananananananananananananannananananananananannanananan', 'field': '男nananananananananananananannananananananananannanananan', 'flex': 1},
     {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重', 'flex': 1},
 ]
-gridOptions = {
-     'defaultColDef': {
-        'resizable': True,
-    },
-}
 
 # 使用 AgGrid 组件展示数据
 grid_response = AgGrid(df, gridOptions=gridOptions, height=window_height, width='100%')
