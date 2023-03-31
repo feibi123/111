@@ -65,9 +65,9 @@ dt['Inbound'] = dt['Inbound'].astype(int)
 dt['Available'] = dt['Available'].astype(int)
 dt['FC transfer'] = dt['FC transfer'].astype(int)
 dt = dt[(dt['Inbound'] != 0) | (dt['Available'] != 0) | (dt['FC transfer'] != 0)]
-dt = dt.rename(columns={'Inbound': '在途库存数量'})
-dt = dt.assign(在库库存数量=lambda x: x['Available'] + x['FC transfer'])
-cols1 = ['sku', '在途库存数量', '在库库存数量']
+dt = dt.rename(columns={'Inbound': '在途库存'})
+dt = dt.assign(在库库存=lambda x: x['Available'] + x['FC transfer'])
+cols1 = ['sku', '在途库存', '在库库存']
 dt = dt.reindex(columns=cols1)
 
 df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
@@ -84,10 +84,10 @@ df['3次'] = (df['可变销量'] > 0).astype(int)
 df['次数'] = df['1次'] + df['2次'] + df['3次']
 df['平均销量'] = (df['7天销量'] / 7 + df['15天销量'] / 15 + df['可变销量'] / variable) / df['次数']
 df.loc[df['次数'] == 0, '平均销量'] = 0
-df['在库预计可售天数'] = df['在库库存数量'] / df['平均销量']  # 计算在库预计可售天数
+df['在库预计可售天数'] = df['在库库存'] / df['平均销量']  # 计算在库预计可售天数
 df.loc[df['次数'] == 0, '在库预计可售天数'] = 0
 
-df['总预计可售天数'] = (df['在库库存数量'] + df['在途库存数量']) / df['平均销量']
+df['总预计可售天数'] = (df['在库库存'] + df['在途库存']) / df['平均销量']
 # 计算总预计可售天数
 df.loc[df['平均销量'] == 0, '总预计可售天数'] = 0
 
@@ -108,10 +108,10 @@ def fill_or_not(x):
 
 df['是否发货'] = df['建议补货数量'].apply(fill_or_not)
 
-df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存', '建议补货数量', '最晚发货时间']] = \
-    df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
+df[['7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存', '建议补货数量', '最晚发货时间']] = \
+    df[['7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存',
         '建议补货数量', '最晚发货时间']].round().astype(int)  # 保留整数
-cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
+cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销量', '在途库存', '在库库存', '在库预计可售天数', '总预计可售天数', '安全库存',
         '最晚发货时间', '是否发货', '建议补货数量']
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
@@ -181,10 +181,10 @@ gridOptions['columnDefs'] = [
     {'headerName': '颜色', 'field': '颜色', 'flex': 1},
     {'headerName': 'sku', 'field': 'sku', 'flex': 1},
     {'headerName': '7天销量', 'field': '7天销量', 'width': 90},
-    {'headerName': '15天销量', 'field': '15天销量', 'width': 90},
-    {'headerName': '可变销量', 'field': '可变销量', 'width': 90},
-    {'headerName': '在途库存数量', 'field': '在途库存数量', 'flex': 1},
-    {'headerName': '在库库存数量', 'field': '在库库存数量', 'flex': 1},
+    {'headerName': '15天销量', 'field': '15天销量', 'width': 100},
+    {'headerName': '可变销量', 'field': '可变销量', 'width': 100},
+    {'headerName': '在途库存', 'field': '在途库存', 'flex': 1},
+    {'headerName': '在库库存', 'field': '在库库存', 'flex': 1},
     {'headerName': '在途预计可售天数', 'field': '在途预计可售天数', 'flex': 1},
     {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 90},
