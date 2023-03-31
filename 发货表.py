@@ -20,6 +20,12 @@ gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['suppressHorizontalScroll'] = True
 gridOptions['suppressVerticalScroll'] = False
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
+gridOptions = {
+    'columnDefs': [
+        {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
+        {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 150}
+    ]
+}
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
