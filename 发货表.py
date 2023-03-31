@@ -16,17 +16,10 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
-# gridOptions['defaultColDef'] = {'flex': 1}
+gridOptions['defaultColDef'] = {'flex': 1}
+gridOptions['defaultColDef'] = {'wrapText': True}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
-gridOptions = {
-    'defaultColumnDef': {
-        'resizable': True,
-        'sortable': True,
-        'filter': True,
-        'flex': 1,
-        'cellRenderer': 'multiLineRenderer'
-    }
-}
+
 # window_height = st.experimental_get_query_params().get('height', [None])[0]
 
 # if window_height:
