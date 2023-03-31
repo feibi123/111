@@ -10,30 +10,16 @@ data = {'姓名nananananannanananananannanananananannananan': ['小明nanananana
         '体anananananananananannananananananannananannananannananananan重': ['男', '女', '男'] * 100}
 df = pd.DataFrame(data)
 
-renderer = JsCode("""
-    function(params) {
-        var text = params.value;
-        if (text.length > 20) {
-            var text_width = text.length * 10;
-            params.columnApi.setColumnWidth(params.column.colId, text_width, true);
-            return '<div style="white-space: normal; word-wrap: break-word;">' + text + '</div>';
-        } else {
-            return text;
-        }
-    }
-""")
-
 gb = GridOptionsBuilder.from_dataframe(df)
 # 设置页面宽度和高度
 st.set_page_config(page_title="AgGrid Example", layout="wide")
-
-gb.configure_default_column(cellRenderer=renderer)
 
 # 设置 AgGrid 组件的属性
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['defaultColDef'] = {'flex': 1}
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
+gb.with_auto_size_columns(True)
 
 # window_height = st.experimental_get_query_params().get('height', [None])[0]
 
