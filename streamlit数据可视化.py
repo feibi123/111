@@ -138,6 +138,20 @@ if window_height:
 else:
     window_height = None  # 设置一个默认值
     
+cellStyle = JsCode("""
+function(params) {
+    if (parseInt(params.value) < 10) {
+        return {
+            'color': 'red',
+            'fontWeight': 'bold'
+        };
+    } else {
+        return {};
+    }
+}
+""")
+
+    
 window_width = '100%'
 gridOptions['columnDefs'] = [
     {'headerName': '产品类别', 'field': '产品类别', 'flex': 1},
@@ -151,7 +165,7 @@ gridOptions['columnDefs'] = [
     {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'width': 145},
     {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'width': 129},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 92},
-    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'width': 119, 'cellStyle': lambda params: {'color': 'red', 'fontWeight': 'bold'} if params.value < 10 else {}},
+    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'width': 119, 'cellStyle': cellStyle},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 92},
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'width': 119},
 ]
