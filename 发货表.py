@@ -17,15 +17,20 @@ st.set_page_config(page_title="AgGrid Example", layout="wide")
 gridOptions = gb.build()
 gridOptions['domLayout'] = 'normal'
 gridOptions['onFirstDataRendered'] = 'function(params) {params.api.sizeColumnsToFit(); params.api.autoSizeColumns();}'
-gridOptions['columnDefs'] = [
-    {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
-    {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 10},
-    {'headerName': '性nananananan别', 'field': '性nananananan别'},
-    {'headerName': '身nanannanananananananannananananannanaanan高', 'field': '身nanannanananananananannananananannanaanan高'},
-    {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重'},
-]
-
-gridOptions['defaultColDef'] = {'resizable': True}
+gridOptions = {
+    'columnDefs': [
+        {'headerName': '姓名nananananannanananananannanananananannananan', 'field': '姓名nananananannanananananannanananananannananan', 'width': 100},
+        {'headerName': '年nananananananananan龄', 'field': '年nananananananananan龄', 'width': 100},
+        {'headerName': '性nananananan别', 'field': '性nananananan别', 'minWidth': 100},   
+        {'headerName': '男nananananananananananananannananananananananannanananan', 'field': '男nananananananananananananannananananananananannanananan', 'minWidth': 100},
+        {'headerName': '体anananananananananannananananananannananannananannananananan重', 'field': '体anananananananananannananananananannananannananannananananan重', 'minWidth': 100},
+    ],
+    'defaultColDef': {
+        'resizable': True,
+        'flex': 1,
+        'minWidth': 100,
+    },
+}
 
 window_height = st.experimental_get_query_params().get('height', [None])[0]
 
