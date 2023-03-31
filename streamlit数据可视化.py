@@ -108,21 +108,21 @@ cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销
 df = df.reindex(columns=cols)
 df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
 
-# def style_cell(x):
-#     style = ''
-#     if x < 30:
-#         style += "font-weight: bold; color: green;"
-#     elif x > 180:
-#         style += "font-weight: bold; color: red;"
-#     return style
-# # 设置单元格样式
-# def style_cell1(x):
-#     style = ''
-#     if x < 10:
-#         style += "font-weight: bold; color: red;"
-#     else:
-#         style += ""
-#     return style
+def style_cell(x):
+    style = ''
+    if x < 30:
+        style += "font-weight: bold; color: green;"
+    elif x > 180:
+        style += "font-weight: bold; color: red;"
+    return style
+# 设置单元格样式
+def style_cell1(x):
+    style = ''
+    if x < 10:
+        style += "font-weight: bold; color: red;"
+    else:
+        style += ""
+    return style
 # # 应用样式
 # styled_df = df.style.applymap(style_cell1, subset=pd.IndexSlice[:, ['最晚发货时间']])
 # styled_df = styled_df.applymap(style_cell, subset=pd.IndexSlice[:, ['在库预计可售天数', '总预计可售天数']])
@@ -147,10 +147,10 @@ gridOptions['columnDefs'] = [
     {'headerName': '可变销量', 'field': '可变销量', 'width': 100},
     {'headerName': '在途库存', 'field': '在途库存', 'width': 100},
     {'headerName': '在库库存', 'field': '在库库存', 'width': 100},
-    {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'flex': 1},
-    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1},
+    {'headerName': '在库预计可售天数', 'field': '在库预计可售天数', 'flex': 1, 'cellStyle': style_cell},
+    {'headerName': '总预计可售天数', 'field': '总预计可售天数', 'flex': 1, 'cellStyle': style_cell},
     {'headerName': '安全库存', 'field': '安全库存', 'width': 100},
-    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1},
+    {'headerName': '最晚发货时间', 'field': '最晚发货时间', 'flex': 1, 'cellStyle': style_cell1},
     {'headerName': '是否发货', 'field': '是否发货', 'width': 100},
     {'headerName': '建议补货数量', 'field': '建议补货数量', 'flex': 1},
 ]
