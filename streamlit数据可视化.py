@@ -1,5 +1,5 @@
 import streamlit.components.v1 as components
-from st_aggrid import AgGrid, GridOptionsBuilder
+from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 import streamlit as st
 import pandas as pd
 from io import StringIO
