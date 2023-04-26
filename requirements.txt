@@ -4,3 +4,4 @@ chardet
 streamlit
 streamlit-aggrid
 openpyxl
+plotly
