@@ -1,159 +1,118 @@
-import streamlit as st
+import os
 import pandas as pd
-from io import StringIO
-pd.set_option('display.max_colwidth', None)
-st.set_page_config(layout="wide")
+import datetime
+import numpy as np
+import streamlit as st
+import plotly.graph_objects as go
+st.set_page_config(layout='wide')
+# 获取目录下所有CSV文件的文件名
+directory = 'E:/广告表/广告'
+csv_files = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
 
-col1, col2 = st.sidebar.columns(2)
-variable = col1.number_input("输入可变天数", min_value=16, max_value=60, value=31)  # 可变天数
-variable2 = col2.number_input("输入安全库存", min_value=1, max_value=60, value=30)  # 30天安全库存
-variable5 = col2.number_input("输入生产+物流周期", min_value=1, max_value=90, value=45)  # 物流周期
-variable4 = col1.number_input("输入最小安全库存", min_value=1, max_value=45, value=20)  # 最小安全库存
+# 读取所有CSV文件并合并到一个数据框中
+df_list = []
+for file in csv_files:
+    sheet_name = os.path.splitext(os.path.basename(file))[0]  # 获取文件名作为sheet名
+    df = pd.read_csv(file, encoding='utf-8-sig',
+                     usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
+                              '已订购商品数量', '已订购商品数量 - B2B'])
+    df['日期'] = sheet_name  # 添加日期列
+    df_list.append(df)
+df = pd.concat(df_list, axis=0)
+df['手机端访问量'] = df['会话次数 – 移动应用'] + df['会话次数 – 移动应用 – B2B']
+df['PC端访问量'] = df['会话次数 – 浏览器'] + df['会话次数 – 浏览器 – B2B']
+df['访问量总计'] = df['手机端访问量'] + df['PC端访问量']
+df['总订单'] = df['已订购商品数量'] + df['已订购商品数量 - B2B']
+df['日期'] = df['日期'].apply(lambda x: datetime.datetime.strptime(x, '%Y年%m月%d日').strftime('%Y-%m-%d'))
 
-uploaded_file2 = st.sidebar.file_uploader("上传库存表", type="xlsx")
-uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
-uploaded_file1 = st.sidebar.file_uploader("上传订单报告")
+product_file = 'E:/广告表/产品属性表.xlsx'
+product_df = pd.read_excel(product_file)
+df = pd.merge(df, product_df, on='SKU', how='left')
+columns1 = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量', 'PC端访问量', '访问量总计', '总订单']
+df = df[columns1]
 
-# 如果用户上传了文件
-if uploaded_file1 is not None:
-    # 读取文件内容
-    content = uploaded_file1.read()
-
-    # 尝试使用 utf-8 编码方式进行解码
-    try:
-        decoded_content = content.decode('utf-8')
-    except UnicodeDecodeError:
-        # 如果解码失败，则尝试使用 gbk 编码方式进行解码
-        decoded_content = content.decode('gbk')
-
-    # 将解码后的文件内容转换为 pandas 数据框
-    df = pd.read_csv(StringIO(decoded_content), skiprows=7)
-
-    
-df = df.dropna(subset=['quantity'])  # 删除含有空值的行
-df['quantity'] = df['quantity'].astype(int)  # 将quantity列转换成整数类型
-df = df.dropna(subset=['type'])   # 删除含有空值的行
-df = df[df['type'].str.contains('Order')]  # 从type列筛选出Order
-df = df[['date/time', 'sku', 'quantity']]  # 只保留 'date/time', 'sku', 'quantity' 三列的内容
-df = df.rename(columns={'date/time': 'datetime'})  # 将date/time列名更改为datetime
-df['datetime'] = df['datetime'].str.extract(r'(\w{3} \d+, \d{4})')  # 用正则表达式提取出日期
-df['datetime'] = pd.to_datetime(df['datetime'], format='%b %d, %Y')  # 转换列类型
-df['datetime'] = df['datetime'].dt.date  # 保留年月日
-
-df7 = df[df['datetime'] >= (df['datetime'].max() - pd.Timedelta(days=6))]  # 截取近7天的数据
-df7 = df7.groupby(['sku'])['quantity'].sum().reset_index()  # 汇总近7天的数据
-df7 = df7.rename(columns={'quantity': '7天销量'})  # 将’quantity‘列名改成’7天销量‘
-
-df15 = df[df['datetime'] >= (df['datetime'].max() - pd.Timedelta(days=14))]  # 截取近15天的数据
-df15 = df15.groupby(['sku'])['quantity'].sum().reset_index()  # 汇总近15天的数据
-df15 = df15.rename(columns={'quantity': '15天销量'})  # 将’quantity‘列名改成’15天销量‘
-
-dfv = df[df['datetime'] >= (df['datetime'].max() - pd.Timedelta(days=variable - 1))]  # 截取变量的数据
-dfv = dfv.groupby(['sku'])['quantity'].sum().reset_index()  # 汇总变量的数据
-dfv = dfv.rename(columns={'quantity': '可变销量'})  # 将’quantity‘列名改成’可变销量‘
-
-df = pd.merge(df7, df15, on='sku', how='outer')  # 将7天销量表格和15天销量表格合并
-df = pd.merge(df, dfv, on='sku', how='outer')  # 将7天销量表格、15天销量表格和可变销量表格合并
-
-dt = pd.read_excel(uploaded_file2, header=0)
-dt = dt.rename(columns={'Merchant SKU': 'sku'})
-dt['Inbound'] = dt['Inbound'].astype(int)
-dt['Available'] = dt['Available'].astype(int)
-dt['FC transfer'] = dt['FC transfer'].astype(int)
-dt = dt[(dt['Inbound'] != 0) | (dt['Available'] != 0) | (dt['FC transfer'] != 0)]
-dt = dt.rename(columns={'Inbound': '在途库存数量'})
-dt = dt.assign(在库库存数量=lambda x: x['Available'] + x['FC transfer'])
-cols1 = ['sku', '在途库存数量', '在库库存数量']
-dt = dt.reindex(columns=cols1)
-
-df = pd.merge(df, dt, on='sku', how='outer')  # 将7天销量表格、15天销量表格、可变销量表格和在库在途库存表格合并
-
-dc = pd.read_excel(uploaded_file, header=0)
-dc = dc[['产品类别', '颜色', 'sku']]  # 只保留产品类别，颜色和sku列
-
-df = pd.merge(df, dc, on='sku', how='left')  # 将7天销量表格、15天销量表格、可变销量表格、在途库存表格、在库库存表格和产品属性表合并
-df.fillna(0, inplace=True)  # 将所有空值替换为0
-
-df['1次'] = (df['7天销量'] > 0).astype(int)  # 计算次数
-df['2次'] = (df['15天销量'] > 0).astype(int)
-df['3次'] = (df['可变销量'] > 0).astype(int)
-df['次数'] = df['1次'] + df['2次'] + df['3次']
-df['平均销量'] = (df['7天销量'] / 7 + df['15天销量'] / 15 + df['可变销量'] / variable) / df['次数']
-df.loc[df['次数'] == 0, '平均销量'] = 0
-df['在库预计可售天数'] = df['在库库存数量'] / df['平均销量']  # 计算在库预计可售天数
-df.loc[df['次数'] == 0, '在库预计可售天数'] = 0
-
-df['总预计可售天数'] = (df['在库库存数量'] + df['在途库存数量']) / df['平均销量']
-# 计算总预计可售天数
-df.loc[df['平均销量'] == 0, '总预计可售天数'] = 0
-
-df['安全库存'] = df['平均销量'] * variable2  # 计算安全库存
-df.loc[df['次数'] == 0, '安全库存'] = 0
-
-df['最晚发货时间'] = round(df['总预计可售天数'] - variable5)  # 计算最晚发货时间
-
-df['建议补货数量'] = df['平均销量'] * (variable5 + variable4 - df['总预计可售天数'])  # 计算建议补货数量
+dt = 'E:/广告表/商品推广 推广的商品 报告.xlsx'
+dt = pd.read_excel(dt)
+dt['日期'] = pd.to_datetime(dt['日期']).dt.strftime('%Y-%m-%d')
+dt = dt.rename(columns={'广告SKU': 'SKU'})
+dz = dt[dt["广告活动名称"].str.contains("自动")]  # 自动广告汇总
+pivot1 = pd.pivot_table(
+    dz,
+    values=['点击量', '7天总销售量(#)'],
+    index=['日期', 'SKU'],
+    columns=None,
+    aggfunc='sum',
+    fill_value=0,
+    dropna=True,
+    margins=False,
+)
+pivot1.reset_index(inplace=True)                # 自动广告点击量
+pivot1 = pivot1.rename(columns={'点击量': '自动广告点击量'})
+pivot1 = pivot1.rename(columns={'7天总销售量(#)': '自动广告销量'})
+pivot1 = pd.merge(pivot1, product_df, on='SKU', how='left')
 
 
-def fill_or_not(x):
-    if x >= 0:
-        return '是'
-    else:
-        return '否'
+ds = dt[~dt["广告活动名称"].str.contains("自动")]   # 手动广告汇总
+pivot2 = pd.pivot_table(
+    ds,
+    values=['点击量', '7天总销售量(#)'],
+    index=['日期', 'SKU'],
+    columns=None,
+    aggfunc='sum',
+    fill_value=0,
+    dropna=True,
+    margins=False,
+)
+pivot2.reset_index(inplace=True)                # 自动广告点击量
+pivot2 = pivot2.rename(columns={'点击量': '手动广告点击量'})
+pivot2 = pivot2.rename(columns={'7天总销售量(#)': '手动广告销量'})
+pivot2 = pd.merge(pivot2, product_df, on='SKU', how='left')
 
+pivot = pd.concat([df, pivot1, pivot2], axis=0, ignore_index=True)
+pivot = pivot.groupby(['日期', 'SKU', '链接名称', '父ASIN'], as_index=False).sum()
+pivot['广告单'] = pivot['手动广告销量'] + pivot['自动广告销量']
+pivot['正常单'] = pivot['总订单'] - pivot['广告单']
+pivot['正常单'] = np.clip(pivot['正常单'], 0, np.inf)
+pivot['正常单占比'] = pivot.apply(lambda x: '{:.2%}'.format(x['正常单'] / x['总订单']) if x['总订单'] != 0 else '0.00%', axis=1)
+pivot['综合转化率'] = pivot.apply(
+    lambda x: '{:.2%}'.format(x['总订单'] / (x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量']))
+    if x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量'] != 0 else '0.00%', axis=1)
+keep_columns = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量', 'PC端访问量', '访问量总计', '自动广告点击量', '手动广告点击量', '广告单', '正常单',
+                '总订单', '正常单占比', '综合转化率']
+dt = pivot[keep_columns].astype({'手机端访问量': int, 'PC端访问量': int, '访问量总计': int, '自动广告点击量': int, '手动广告点击量': int,
+                                 '广告单': int, '正常单': int, '总订单': int})
 
-df['是否发货'] = df['建议补货数量'].apply(fill_or_not)
+sku_list = sorted(dt['SKU'].unique())
 
-df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存', '建议补货数量', '最晚发货时间']] = \
-    df[['7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
-        '建议补货数量', '最晚发货时间']].round().astype(int)  # 保留整数
-cols = ['产品类别', '颜色', 'sku', '7天销量', '15天销量', '可变销量', '在途库存数量', '在库库存数量', '在库预计可售天数', '总预计可售天数', '安全库存',
-        '最晚发货时间', '是否发货', '建议补货数量']
-df = df.reindex(columns=cols)
-df = df.drop(columns=['1次', '2次', '3次', '次数'], errors='ignore')
+# 在页面上方添加选择 SKU 的下拉菜单
+selected_sku = st.selectbox('选择 SKU', sku_list)
 
-col1, col2 = st.columns(2)
+# 过滤数据框以仅显示所选 SKU 的数据
+df = dt[dt['SKU'] == selected_sku]
+df = df.drop_duplicates(subset=['SKU', '日期'])
+start_date = st.date_input('选择开始日期', value=pd.to_datetime(df['日期'].min()), min_value=pd.to_datetime(df['日期'].min()),
+                           max_value=pd.to_datetime(df['日期'].max()))
+end_date = st.date_input('选择结束日期', value=pd.to_datetime(df['日期'].max()), min_value=pd.to_datetime(df['日期'].min()),
+                         max_value=pd.to_datetime(df['日期'].max()))
 
-link_names = df["产品类别"].unique()
-link_names = ["全选"] + list(link_names)
-selected_links = col1.multiselect("选择产品", link_names)
+# 根据选择的日期过滤数据
+df = df[(df['日期'] >= start_date.strftime('%Y-%m-%d')) & (df['日期'] <= end_date.strftime('%Y-%m-%d'))]
 
-if "全选" in selected_links:
-    df = df
-else:
-    df = df[df["产品类别"].isin(selected_links)]
+fig_data = list()
+fig_data.append(go.Bar(x=pd.to_datetime(df['日期']), y=df['手机端访问量'], name='手机端访问量'))
+fig_data.append(go.Bar(x=pd.to_datetime(df['日期']), y=df['PC端访问量'], name='PC端访问量'))
+fig_data.append(go.Bar(x=pd.to_datetime(df['日期']), y=df['访问量总计'], name='访问量总计'))
+fig_data.append(go.Bar(x=pd.to_datetime(df['日期']), y=df['自动广告点击量'], name='自动广告点击量'))
+fig_data.append(go.Bar(x=pd.to_datetime(df['日期']), y=df['手动广告点击量'], name='手动广告点击量'))
+fig_data.append(go.Scatter(x=pd.to_datetime(df['日期']), y=df['广告单'], mode='lines+markers', name='广告单'))
+fig_data.append(go.Scatter(x=pd.to_datetime(df['日期']), y=df['正常单'], mode='lines+markers', name='正常单'))
+fig_data.append(go.Scatter(x=pd.to_datetime(df['日期']), y=df['总订单'], mode='lines+markers', name='总订单'))
+fig_data.append(go.Scatter(x=pd.to_datetime(df['日期']), y=df['正常单占比'], mode='lines+markers', name='正常单占比'))
+fig_data.append(go.Scatter(x=pd.to_datetime(df['日期']), y=df['综合转化率'], mode='lines+markers', name='综合转化率'))
+# 将两个图表合并成一个
+combined_fig = go.Figure(data=fig_data,
+                         layout=go.Layout(title=dict(text='SKU广告趋势图', x=0.5, y=0.9),
+                                          xaxis=dict(tickformat='%Y-%m-%d', dtick='D')))
 
-link_names1 = df["是否发货"].unique()
-link_names1 = ["全选"] + list(link_names1)
-selected_links1 = col2.multiselect("是否发货", link_names1)
-
-
-if "全选" in selected_links1:
-    df = df
-else:
-    df = df[df["是否发货"].isin(selected_links1)]
-
-
-def style_cell(x):
-    style = ''
-    if x < 30:
-        style += "font-weight: bold; color: green;"
-    elif x > 180:
-        style += "font-weight: bold; color: red;"
-    return style
-
-
-# 设置单元格样式
-def style_cell1(y):
-    style = ''
-    if y < 10:
-        style += "font-weight: bold; color: red;"
-    else:
-        style += ""
-    return style
-
-
-# 应用样式
-styled_df = df.style.applymap(style_cell1, subset=['最晚发货时间'])
-df = styled_df.applymap(style_cell, subset=['在库预计可售天数', '总预计可售天数'])
-st.table(df)
+st.plotly_chart(combined_fig, use_container_width=True)
+st.table(dt)
