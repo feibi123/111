@@ -31,7 +31,7 @@ for url in csv_urls:
     content = requests.get(url).content.decode("utf-8")
     sheet_name = url.split("/")[-1].split(".")[0]
     df = pd.read_csv(StringIO(content))
-    df["sheet_name"] = sheet_name
+    df["sheet_name"] = pd.to_datetime(sheet_name, format='%Y%m%d')
     dfs.append(df)
 df = pd.concat(dfs)
 
