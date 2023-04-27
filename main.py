@@ -1,54 +1,43 @@
-import os
-import chardet
-import pandas as pd
-import zipfile
-from io import BytesIO
 import streamlit as st
+import pandas as pd
+import os
 
-# 上传zip文件
-uploaded_file = st.file_uploader("上传zip文件", type="zip")
-
-if uploaded_file is not None:
-    # 尝试解压缩上传的 ZIP 文件
-    try:
-        with zipfile.ZipFile(BytesIO(uploaded_file.read())) as zip_file:
-            zip_file.extractall()
-    except Exception as e:
-        st.write(f"Error: {e}")
-
-    # 读取文件内容
-    content = uploaded_file.read()
-
-    # 解压文件
-    with zipfile.ZipFile(BytesIO(content)) as zip_file:
-        zip_file.extractall()
-
-    # 获取所有CSV文件，并检测编码方式
-    csv_files = [file_name for file_name in os.listdir() if file_name.endswith('.csv')]
-    csv_encodings = {}
-    for file in csv_files:
-        with open(file, 'rb') as f:
-            result = chardet.detect(f.read())
-            csv_encodings[file] = result['encoding']
-
-    # 读取所有CSV文件并合并到一个数据框中
-    df_list = []
-    for file in csv_files:
-        sheet_name = os.path.splitext(os.path.basename(file))[0]  # 获取文件名作为sheet名
-        encoding = csv_encodings[file]
-        df = pd.read_csv(file, encoding=encoding,
-                         usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
-                                  '已订购商品数量', '已订购商品数量 - B2B'])
-        df['日期'] = sheet_name  # 添加日期列
-        df_list.append(df)
-        print(f"File {file} loaded, {len(df)} rows.")
-
-    print(f"Found {len(csv_files)} CSV files.")
-    print(f"Loaded {len(df_list)} data frames.")
-    
-    if df_list:
-        df = pd.concat(df_list, ignore_index=True)
-        st.write(df)
+# 创建上传文件夹的函数
+def folder_upload():
+    uploaded_folder = st.file_uploader("选择文件夹", type=["zip", "tar"])
+    if uploaded_folder is not None:
+        # 将文件夹解压缩到本地文件夹
+        with open(os.path.join("temp", uploaded_folder.name), "wb") as f:
+            f.write(uploaded_folder.getbuffer())
+        st.success(f"{uploaded_folder.name} 已上传")
+        return True
     else:
-        st.write("No CSV files found or loaded.")
-st.write(content)
+        return False
+
+# 创建合并CSV文件的函数
+def merge_csv():
+    # 获取temp文件夹中的所有CSV文件
+    csv_files = [f for f in os.listdir("temp") if f.endswith(".csv")]
+    # 如果temp文件夹中没有CSV文件，则返回
+    if len(csv_files) == 0:
+        st.warning("没有找到CSV文件")
+        return
+    # 将所有CSV文件合并成一个数据帧
+    dfs = []
+    for file in csv_files:
+        df = pd.read_csv(os.path.join("temp", file))
+        dfs.append(df)
+    merged_df = pd.concat(dfs, ignore_index=True)
+    # 将合并后的数据帧转换成字符串并打印在网页上
+    st.write(merged_df.to_string(index=False))
+
+# 创建一个Streamlit应用程序
+def main():
+    # 创建一个上传文件夹的按钮
+    if folder_upload():
+        # 如果成功上传文件夹，则创建一个合并CSV文件的按钮
+        if st.button("合并CSV文件"):
+            merge_csv()
+
+if __name__ == "__main__":
+    main()
