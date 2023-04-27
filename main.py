@@ -1,17 +1,19 @@
 import os
-import zipfile
-import pandas as pd
-import datetime
 import chardet
-import numpy as np
+import pandas as pd
+import zipfile
+from io import StringIO
 import streamlit as st
-import plotly.graph_objects as go
-st.set_page_config(layout='wide')
-# 获取目录下所有CSV文件的文件名
+
+# 上传zip文件
 uploaded_file = st.file_uploader("上传zip文件", type="zip")
-try:
+
+if uploaded_file is not None:
+    # 读取文件内容
+    content = uploaded_file.read()
+
     # 解压文件
-    with zipfile.ZipFile(uploaded_file, 'r') as zip_file:
+    with zipfile.ZipFile(BytesIO(content)) as zip_file:
         zip_file.extractall()
 
     # 获取所有CSV文件，并检测编码方式
@@ -36,12 +38,9 @@ try:
 
     print(f"Found {len(csv_files)} CSV files.")
     print(f"Loaded {len(df_list)} data frames.")
-
+    
     if df_list:
         df = pd.concat(df_list, ignore_index=True)
         st.write(df)
     else:
         st.write("No CSV files found or loaded.")
-
-except Exception as e:
-    st.write("An error occurred: ", e)
