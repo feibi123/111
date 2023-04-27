@@ -8,7 +8,11 @@ from urllib.parse import unquote
 url_folder = "https://api.github.com/repos/feibi123/111/contents/广告?ref=main"
 response = requests.get(url_folder)
 data = response.json()
-csv_urls = [x["download_url"] for x in data if x["name"].endswith(".csv")]
+
+# 检查 data 变量是否是一个列表
+assert isinstance(data, list), f"data is not a list: {data}"
+
+csv_urls = [x["download_url"] for x in data if isinstance(x, dict) and x["name"].endswith(".csv")]
 
 # 读取所有CSV文件并合并为一个DataFrame
 dfs = []
