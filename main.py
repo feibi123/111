@@ -1,4 +1,6 @@
 import os
+import zipfile
+import io
 import pandas as pd
 import datetime
 import numpy as np
@@ -6,8 +8,10 @@ import streamlit as st
 import plotly.graph_objects as go
 st.set_page_config(layout='wide')
 # 获取目录下所有CSV文件的文件名
-directory = st.text_input("请输入文件夹路径：")
-csv_files = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
+uploaded_file = st.file_uploader("上传zip文件", type="zip")
+contents = uploaded_file.getvalue()
+with zipfile.ZipFile(io.BytesIO(contents)) as zip_file:
+    csv_files = [file_name for file_name in zip_file.namelist() if file_name.endswith('.csv')]
 
 # 读取所有CSV文件并合并到一个数据框中
 df_list = []
@@ -18,21 +22,21 @@ for file in csv_files:
                               '已订购商品数量', '已订购商品数量 - B2B'])
     df['日期'] = sheet_name  # 添加日期列
     df_list.append(df)
-df = pd.concat(df_list, axis=0)
+df = pd.concat(df_list, ignore_index=True)
 df['手机端访问量'] = df['会话次数 – 移动应用'] + df['会话次数 – 移动应用 – B2B']
 df['PC端访问量'] = df['会话次数 – 浏览器'] + df['会话次数 – 浏览器 – B2B']
 df['访问量总计'] = df['手机端访问量'] + df['PC端访问量']
 df['总订单'] = df['已订购商品数量'] + df['已订购商品数量 - B2B']
 df['日期'] = df['日期'].apply(lambda x: datetime.datetime.strptime(x, '%Y年%m月%d日').strftime('%Y-%m-%d'))
 
-product_file = 'E:/广告表/产品属性表.xlsx'
-product_df = pd.read_excel(product_file)
+uploaded_file = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
+product_df = pd.read_excel(uploaded_file)
 df = pd.merge(df, product_df, on='SKU', how='left')
 columns1 = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量', 'PC端访问量', '访问量总计', '总订单']
 df = df[columns1]
 
-dt = 'E:/广告表/商品推广 推广的商品 报告.xlsx'
-dt = pd.read_excel(dt)
+uploaded_file1 = st.sidebar.file_uploader("上传广告费用报告", type="xlsx")
+dt = pd.read_excel(uploaded_file1)
 dt['日期'] = pd.to_datetime(dt['日期']).dt.strftime('%Y-%m-%d')
 dt = dt.rename(columns={'广告SKU': 'SKU'})
 dz = dt[dt["广告活动名称"].str.contains("自动")]  # 自动广告汇总
