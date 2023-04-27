@@ -9,6 +9,13 @@ import streamlit as st
 uploaded_file = st.file_uploader("上传zip文件", type="zip")
 
 if uploaded_file is not None:
+    # 尝试解压缩上传的 ZIP 文件
+    try:
+        with zipfile.ZipFile(BytesIO(uploaded_file.read())) as zip_file:
+            zip_file.extractall()
+    except Exception as e:
+        st.write(f"Error: {e}")
+
     # 读取文件内容
     content = uploaded_file.read()
 
