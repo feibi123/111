@@ -51,3 +51,4 @@ if uploaded_file is not None:
         st.write(df)
     else:
         st.write("No CSV files found or loaded.")
+st.write(content)
