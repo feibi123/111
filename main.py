@@ -6,7 +6,7 @@ import streamlit as st
 import plotly.graph_objects as go
 st.set_page_config(layout='wide')
 # 获取目录下所有CSV文件的文件名
-directory = 'E:/广告表/广告'
+directory = st.text_input("请输入文件夹路径：")
 csv_files = [os.path.join(directory, file) for file in os.listdir(directory) if file.endswith('.csv')]
 
 # 读取所有CSV文件并合并到一个数据框中
