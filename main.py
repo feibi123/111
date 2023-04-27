@@ -1,12 +1,9 @@
+import streamlit as st
 import pandas as pd
-import glob
-ipmort io
-# 指定文件夹路径
-folder_path = "E:/广告表/广告"
 
-# 读取文件夹中的所有CSV文件
-all_files = glob.glob(os.path.join(folder_path, "*.csv"))
-df = pd.concat((pd.read_csv(f) for f in all_files), ignore_index=True)
+# 从GitHub加载数据
+url = "https://raw.githubusercontent.com/feibi123/111.git/main/广告/2023年3月10日.csv"
+data = pd.read_csv(url)
 
-# 打印合并后的DataFrame
-print(df)
+# 在Streamlit中显示数据
+st.dataframe(data)
