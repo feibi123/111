@@ -37,9 +37,8 @@ df = pd.merge(df, product_df, on='SKU', how='left')
 columns1 = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量', 'PC端访问量', '访问量总计', '总订单']
 df = df[columns1]
 
-uploaded_file1 = st.sidebar.file_uploader("上传产品属性表", type="xlsx")
+uploaded_file1 = st.sidebar.file_uploader("上传广告费用报告", type="xlsx")
 dt = pd.read_excel(uploaded_file1)
-
 dt['日期'] = pd.to_datetime(dt['日期']).dt.strftime('%Y-%m-%d')
 dt = dt.rename(columns={'广告SKU': 'SKU'})
 dz = dt[dt["广告活动名称"].str.contains("自动")]  # 自动广告汇总
