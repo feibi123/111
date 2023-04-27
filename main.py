@@ -3,12 +3,14 @@ import pandas as pd
 import requests
 from io import StringIO
 
-# 从GitHub下载数据
-url = "https://raw.githubusercontent.com/feibi123/111/main/广告/2023年3月10日.csv"
-r = requests.get(url)
+# 获取文件夹中所有csv文件的URL列表
+url_folder = "https://api.github.com/repos/feibi123/111/contents/广告?ref=main"
+response = requests.get(url_folder)
+data = response.json()
+csv_urls = [x["download_url"] for x in data if x["name"].endswith(".csv")]
 
-# 将数据读取为 Pandas 数据框
-data = pd.read_csv(StringIO(r.text))
+# 读取所有CSV文件并合并为一个DataFrame
+df = pd.concat([pd.read_csv(StringIO(requests.get(url).text)) for url in csv_urls])
 
-# 在 Streamlit 中显示数据
-st.write(data)
+# 在Streamlit中显示数据
+st.dataframe(df)
