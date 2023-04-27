@@ -1,6 +1,6 @@
 import pandas as pd
 import glob
-
+ipmort io
 # 指定文件夹路径
 folder_path = "E:/广告表/广告"
 
