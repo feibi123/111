@@ -2,7 +2,7 @@ import os
 import chardet
 import pandas as pd
 import zipfile
-from io import StringIO
+from io import BytesIO
 import streamlit as st
 
 # 上传zip文件
