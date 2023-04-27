@@ -19,9 +19,9 @@ dfs = []
 for url in csv_urls:
     content = requests.get(url).content.decode("utf-8")
     sheet_name = url.split("/")[-1].split(".")[0]
-    df = pd.read_csv(StringIO(content)), 
-                 usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', 
-                          '会话次数 – 浏览器 – B2B', '已订购商品数量', '已订购商品数量 - B2B'])
+    df = pd.read_csv(StringIO(content), 
+                     usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', 
+                              '会话次数 – 浏览器 – B2B', '已订购商品数量', '已订购商品数量 - B2B'])
     df["日期"] = pd.to_datetime(unquote(sheet_name), format='%Y年%m月%d日')
     dfs.append(df)
 df = pd.concat(dfs, ignore_index=True)
