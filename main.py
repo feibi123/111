@@ -26,14 +26,14 @@ data = response.json()
 csv_urls = [x["download_url"] for x in data if x["name"].endswith(".csv")]
 
 # 读取所有CSV文件并合并为一个DataFrame
-dfs = []
+df_list = []
 for url in csv_urls:
     content = requests.get(url).content.decode("utf-8")
     sheet_name = url.split("/")[-1].split(".")[0]
     df = pd.read_csv(StringIO(content))
     df["sheet_name"] = pd.to_datetime(sheet_name, format='%Y%m%d')
-    dfs.append(df)
-df = pd.concat(dfs)
+    df_list.append(df)
+df = pd.concat(df_list)
 
 # 在Streamlit中显示数据
 st.dataframe(df)
