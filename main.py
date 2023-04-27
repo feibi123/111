@@ -1,27 +1,38 @@
 import os
 import zipfile
-import io
 import pandas as pd
 import datetime
+import chardet
 import numpy as np
 import streamlit as st
 import plotly.graph_objects as go
 st.set_page_config(layout='wide')
 # 获取目录下所有CSV文件的文件名
 uploaded_file = st.file_uploader("上传zip文件", type="zip")
-contents = uploaded_file.getvalue()
-with zipfile.ZipFile(io.BytesIO(contents)) as zip_file:
-    csv_files = [file_name for file_name in zip_file.namelist() if file_name.endswith('.csv')]
-
-# 读取所有CSV文件并合并到一个数据框中
 df_list = []
-for file in csv_files:
-    sheet_name = os.path.splitext(os.path.basename(file))[0]  # 获取文件名作为sheet名
-    df = pd.read_csv(file, encoding='utf-8-sig',
-                     usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
-                              '已订购商品数量', '已订购商品数量 - B2B'])
-    df['日期'] = sheet_name  # 添加日期列
-    df_list.append(df)
+if uploaded_file is not None:
+    # 解压文件
+    with zipfile.ZipFile(uploaded_file, 'r') as zip_file:
+        zip_file.extractall()
+
+    # 获取所有CSV文件，并检测编码方式
+    csv_files = [file_name for file_name in os.listdir() if file_name.endswith('.csv')]
+    csv_encodings = {}
+    for file in csv_files:
+        with open(file, 'rb') as f:
+            result = chardet.detect(f.read())
+            csv_encodings[file] = result['encoding']
+
+    # 读取所有CSV文件并合并到一个数据框中
+    df_list = []
+    for file in csv_files:
+        sheet_name = os.path.splitext(os.path.basename(file))[0]  # 获取文件名作为sheet名
+        encoding = csv_encodings[file]
+        df = pd.read_csv(file, encoding=encoding,
+                         usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
+                                  '已订购商品数量', '已订购商品数量 - B2B'])
+        df['日期'] = sheet_name  # 添加日期列
+        df_list.append(df)
 df = pd.concat(df_list, ignore_index=True)
 df['手机端访问量'] = df['会话次数 – 移动应用'] + df['会话次数 – 移动应用 – B2B']
 df['PC端访问量'] = df['会话次数 – 浏览器'] + df['会话次数 – 浏览器 – B2B']
@@ -120,3 +131,4 @@ combined_fig = go.Figure(data=fig_data,
 
 st.plotly_chart(combined_fig, use_container_width=True)
 st.table(dt)
+
