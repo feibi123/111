@@ -5,3 +5,5 @@ streamlit
 streamlit-aggrid
 openpyxl
 plotly
+datetime
+cos-python-sdk-v5
