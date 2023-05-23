@@ -3,11 +3,13 @@ from qcloud_cos import CosS3Client
 import streamlit as st
 import pandas as pd
 import io
-import os
+# import os
 import datetime
 import numpy as np
+import threading
 import plotly.graph_objects as go
 st.set_page_config(layout='wide')
+pd.set_option('display.max_colwidth', None)
 secret_id = 'AKIDaCoNo12sXyMcidM3bv0sdGh6OTbcXWO8'
 secret_key = 'jJgrqdGuPmyEXp13tW7Yv9Azf9NSL6e0'
 region = 'ap-shanghai'
@@ -23,9 +25,9 @@ response = client.list_objects(
 )
 file_keys = [content['Key'] for content in response['Contents']]
 
-# 读取并合并文件数据
-dataframes = []
-for file_key in file_keys:
+
+# 线程读取文件的函数
+def read_file(file_key):
     # 获取文件内容
     response = client.get_object(
         Bucket=bucket,
@@ -35,25 +37,54 @@ for file_key in file_keys:
 
     # 读取CSV文件数据
     dataframe = pd.read_csv(io.BytesIO(content.encode('utf-8')),
-                            usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
+                            usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器',
+                                     '会话次数 – 浏览器 – B2B',
                                      '已订购商品数量', '已订购商品数量 - B2B'])
 
     # 提取sheet名作为日期列
-    sheet_name = os.path.basename(file_key).split('.')[0]
+    sheet_name = file_key.split('/')[-1].split('.')[0]
     dataframe['日期'] = sheet_name
 
-    # 将数据框添加到列表
-    dataframes.append(dataframe)
+    # 返回读取的数据
+    return dataframe
 
 
+# 多线程读取文件
+dataframes = []
+lock = threading.Lock()  # 线程锁，用于保护共享资源
+
+
+def process_data():
+    while True:
+        with lock:
+            if len(file_keys) == 0:
+                break
+            file_key = file_keys.pop(0)
+
+        dataframe = read_file(file_key)
+        with lock:
+            dataframes.append(dataframe)
+
+
+# 创建并启动多个线程
+num_threads = min(8, len(file_keys))  # 设置线程数，最多为8个
+threads = []
+for _ in range(num_threads):
+    thread = threading.Thread(target=process_data)
+    thread.start()
+    threads.append(thread)
+
+# 等待所有线程完成
+for thread in threads:
+    thread.join()
+
+# 合并所有数据框
 df = pd.concat(dataframes, ignore_index=True)
 df['手机端访问量'] = df['会话次数 – 移动应用'] + df['会话次数 – 移动应用 – B2B']
 df['PC端访问量'] = df['会话次数 – 浏览器'] + df['会话次数 – 浏览器 – B2B']
 df['访问量总计'] = df['手机端访问量'] + df['PC端访问量']
 df['总订单'] = df['已订购商品数量'] + df['已订购商品数量 - B2B']
 df['日期'] = df['日期'].apply(lambda x: datetime.datetime.strptime(x, '%Y年%m月%d日').strftime('%Y-%m-%d'))
-
-# df.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
 
 file_key1 = '产品属性表.xlsx'
 # 获取文件内容
@@ -125,7 +156,11 @@ keep_columns = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量'
                 '总订单', '正常单占比', '综合转化率']
 dt = pivot[keep_columns].astype({'手机端访问量': int, 'PC端访问量': int, '访问量总计': int, '自动广告点击量': int, '手动广告点击量': int,
                                  '广告单': int, '正常单': int, '总订单': int})
-# 创建输入框和按钮
+# print(dt)
+
+dt.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
+df.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
+#  创建输入框和按钮
 row1_col1, row1_col2, row1_col3 = st.columns(3)
 
 with row1_col1:
@@ -180,5 +215,4 @@ combined_fig = go.Figure(data=fig_data,
                                           yaxis2=dict(side='right', overlaying='y', showgrid=False, tickfont={})))
 
 st.plotly_chart(combined_fig, use_container_width=True)
-
-st.table(dt)
+st.write(dt)
