@@ -158,8 +158,8 @@ dt = pivot[keep_columns].astype({'手机端访问量': int, 'PC端访问量': in
                                  '广告单': int, '正常单': int, '总订单': int})
 # print(dt)
 
-dt.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
-df.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
+# dt.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
+# df.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
 #  创建输入框和按钮
 row1_col1, row1_col2, row1_col3 = st.columns(3)
 
