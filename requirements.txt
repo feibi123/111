@@ -4,3 +4,6 @@ chardet
 streamlit
 streamlit-aggrid
 openpyxl
+datetime
+plotly
+cos-python-sdk-v5
