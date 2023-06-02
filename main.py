@@ -3,13 +3,12 @@ from qcloud_cos import CosS3Client
 import streamlit as st
 import pandas as pd
 import io
-# import os
+import os
 import datetime
 import numpy as np
-import threading
 import plotly.graph_objects as go
-st.set_page_config(layout='wide')
 pd.set_option('display.max_colwidth', None)
+st.set_page_config(layout='wide')
 secret_id = 'AKIDaCoNo12sXyMcidM3bv0sdGh6OTbcXWO8'
 secret_key = 'jJgrqdGuPmyEXp13tW7Yv9Azf9NSL6e0'
 region = 'ap-shanghai'
@@ -25,9 +24,9 @@ response = client.list_objects(
 )
 file_keys = [content['Key'] for content in response['Contents']]
 
-
-# 线程读取文件的函数
-def read_file(file_key):
+# 读取并合并文件数据
+dataframes = []
+for file_key in file_keys:
     # 获取文件内容
     response = client.get_object(
         Bucket=bucket,
@@ -37,48 +36,17 @@ def read_file(file_key):
 
     # 读取CSV文件数据
     dataframe = pd.read_csv(io.BytesIO(content.encode('utf-8')),
-                            usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器',
-                                     '会话次数 – 浏览器 – B2B',
+                            usecols=['SKU', '会话次数 – 移动应用', '会话次数 – 移动应用 – B2B', '会话次数 – 浏览器', '会话次数 – 浏览器 – B2B',
                                      '已订购商品数量', '已订购商品数量 - B2B'])
 
     # 提取sheet名作为日期列
-    sheet_name = file_key.split('/')[-1].split('.')[0]
+    sheet_name = os.path.basename(file_key).split('.')[0]
     dataframe['日期'] = sheet_name
 
-    # 返回读取的数据
-    return dataframe
+    # 将数据框添加到列表
+    dataframes.append(dataframe)
 
 
-# 多线程读取文件
-dataframes = []
-lock = threading.Lock()  # 线程锁，用于保护共享资源
-
-
-def process_data():
-    while True:
-        with lock:
-            if len(file_keys) == 0:
-                break
-            file_key = file_keys.pop(0)
-
-        dataframe = read_file(file_key)
-        with lock:
-            dataframes.append(dataframe)
-
-
-# 创建并启动多个线程
-num_threads = min(8, len(file_keys))  # 设置线程数，最多为8个
-threads = []
-for _ in range(num_threads):
-    thread = threading.Thread(target=process_data)
-    thread.start()
-    threads.append(thread)
-
-# 等待所有线程完成
-for thread in threads:
-    thread.join()
-
-# 合并所有数据框
 df = pd.concat(dataframes, ignore_index=True)
 df['手机端访问量'] = df['会话次数 – 移动应用'] + df['会话次数 – 移动应用 – B2B']
 df['PC端访问量'] = df['会话次数 – 浏览器'] + df['会话次数 – 浏览器 – B2B']
@@ -148,66 +116,92 @@ pivot = pivot.groupby(['日期', 'SKU', '链接名称', '父ASIN'], as_index=Fal
 pivot['广告单'] = pivot['手动广告销量'] + pivot['自动广告销量']
 pivot['正常单'] = pivot['总订单'] - pivot['广告单']
 pivot['正常单'] = np.clip(pivot['正常单'], 0, np.inf)
-pivot['正常单占比'] = pivot.apply(lambda x: '{:.2%}'.format(x['正常单'] / x['总订单']) if x['总订单'] != 0 else '0.00%', axis=1)
-pivot['综合转化率'] = pivot.apply(
-    lambda x: '{:.2%}'.format(x['总订单'] / (x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量']))
-    if x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量'] != 0 else '0.00%', axis=1)
 keep_columns = ['日期', '链接名称', '父ASIN', 'SKU', '手机端访问量', 'PC端访问量', '访问量总计', '自动广告点击量', '手动广告点击量', '广告单', '正常单',
-                '总订单', '正常单占比', '综合转化率']
+                '总订单']
 dt = pivot[keep_columns].astype({'手机端访问量': int, 'PC端访问量': int, '访问量总计': int, '自动广告点击量': int, '手动广告点击量': int,
                                  '广告单': int, '正常单': int, '总订单': int})
-# print(dt)
-
-# dt.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
-# df.to_csv('E:/广告表/merged_data.csv', index=False, encoding='utf-8-sig')
-#  创建输入框和按钮
-row1_col1, row1_col2, row1_col3 = st.columns(3)
-
+# 创建输入框
+row1_col1, row1_col2, row1_col3, row1_col4 = st.columns(4)
 with row1_col1:
-    search_str = st.text_input('请输入查找字符串')
-    df_filtered = dt.loc[dt['SKU'].str.contains(search_str, case=False)]
+    parent_asin_input = st.text_input("输入父ASIN")
+with row1_col2:
+    sku_input = st.text_input("输入SKU")
+with row1_col3:
+    start_date_input = st.date_input("选择开始日期")
+with row1_col4:
+    end_date_input = st.date_input("选择结束日期")
+# 根据模糊查找条件过滤数据
+filtered_data = dt.copy()
 
-grouped = df_filtered.groupby(['日期']).sum()
-da = pd.DataFrame({'日期': grouped.index, '手机端访问量': grouped['手机端访问量'], 'PC端访问量': grouped['PC端访问量'],
-                   '访问量总计': grouped['访问量总计'], '自动广告点击量': grouped['自动广告点击量'], '手动广告点击量': grouped['手动广告点击量'],
-                   '广告单': grouped['广告单'], '正常单': grouped['正常单'], '总订单': grouped['总订单']})
-da['正常单占比'] = da.apply(lambda x: '{:.2%}'.format(x['正常单'] / x['总订单']) if x['总订单'] != 0 else '0.00%', axis=1)
-da['综合转化率'] = da.apply(
+if parent_asin_input:
+    filtered_data = filtered_data[filtered_data['父ASIN'].str.contains(parent_asin_input, case=False)]
+
+if start_date_input and end_date_input:
+    start_date_str = start_date_input.strftime("%Y-%m-%d")
+    end_date_str = end_date_input.strftime("%Y-%m-%d")
+    filtered_data = filtered_data[(filtered_data['日期'] >= start_date_str) & (filtered_data['日期'] <= end_date_str)]
+
+if parent_asin_input and not sku_input:
+    summary_data = filtered_data.groupby(['日期', '父ASIN']).agg({
+        '链接名称': 'first',
+        '手机端访问量': 'sum',
+        'PC端访问量': 'sum',
+        '访问量总计': 'sum',
+        '自动广告点击量': 'sum',
+        '手动广告点击量': 'sum',
+        '广告单': 'sum',
+        '正常单': 'sum',
+        '总订单': 'sum'
+    }).reset_index()
+else:
+    sku_related_data = filtered_data[filtered_data['SKU'].str.contains(sku_input, case=False)]
+    summary_data = sku_related_data.groupby(['日期', '父ASIN']).agg({
+        '链接名称': 'first',
+        'SKU': 'first',
+        '手机端访问量': 'sum',
+        'PC端访问量': 'sum',
+        '访问量总计': 'sum',
+        '自动广告点击量': 'sum',
+        '手动广告点击量': 'sum',
+        '广告单': 'sum',
+        '正常单': 'sum',
+        '总订单': 'sum'
+    }).reset_index()
+
+
+# 添加正常单占比列
+summary_data['正常单占比'] = summary_data.apply(
+    lambda x: '{:.2%}'.format(x['正常单'] / x['总订单']) if x['总订单'] != 0 else '0.00%', axis=1)
+
+summary_data['综合转化率'] = summary_data.apply(
     lambda x: '{:.2%}'.format(x['总订单'] / (x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量']))
     if x['访问量总计'] + x['自动广告点击量'] + x['手动广告点击量'] != 0 else '0.00%', axis=1)
-
-with row1_col2:
-    start_date = st.date_input('选择开始日期', value=pd.to_datetime(da['日期'].min()),
-                               min_value=pd.to_datetime(da['日期'].min()), max_value=pd.to_datetime(da['日期'].max()))
-with row1_col3:
-    end_date = st.date_input('选择结束日期', value=pd.to_datetime(da['日期'].max()),
-                             min_value=pd.to_datetime(da['日期'].min()), max_value=pd.to_datetime(da['日期'].max()))
-
-# 根据选择的日期过滤数据
-dx = da[(da['日期'] >= start_date.strftime('%Y-%m-%d')) & (da['日期'] <= end_date.strftime('%Y-%m-%d'))]
-
+# 创建可展开的容器
+with st.expander("展开表格", expanded=True):
+    st.markdown('<style>div.css-1l02zno table {width: 100%;}</style>', unsafe_allow_html=True)
+    st.table(summary_data)
 
 fig_data = list()
-fig_data.append(go.Bar(x=pd.to_datetime(dx['日期']), y=dx['手机端访问量'], name='手机端访问量',
+fig_data.append(go.Bar(x=summary_data['日期'], y=summary_data['手机端访问量'], name='手机端访问量',
                        marker=dict(color='rgb(192, 207, 58)')))
-fig_data.append(go.Bar(x=pd.to_datetime(dx['日期']), y=dx['PC端访问量'], name='PC端访问量',
+fig_data.append(go.Bar(x=summary_data['日期'], y=summary_data['PC端访问量'], name='PC端访问量',
                        marker=dict(color='rgb(216, 196, 143)')))
-fig_data.append(go.Bar(x=pd.to_datetime(dx['日期']), y=dx['访问量总计'], name='访问量总计',
+fig_data.append(go.Bar(x=summary_data['日期'], y=summary_data['访问量总计'], name='访问量总计',
                        marker=dict(color='rgb(84, 158, 57)')))
-fig_data.append(go.Bar(x=pd.to_datetime(dx['日期']), y=dx['自动广告点击量'], name='自动广告点击量',
+fig_data.append(go.Bar(x=summary_data['日期'], y=summary_data['自动广告点击量'], name='自动广告点击量',
                        marker=dict(color='rgb(254, 236, 136)')))
-fig_data.append(go.Bar(x=pd.to_datetime(dx['日期']), y=dx['手动广告点击量'], name='手动广告点击量',
+fig_data.append(go.Bar(x=summary_data['日期'], y=summary_data['手动广告点击量'], name='手动广告点击量',
                        marker=dict(color='rgb(2, 150, 118)')))
-fig_data.append(go.Scatter(x=pd.to_datetime(dx['日期']), y=dx['广告单'], mode='lines+markers', name='广告单',
+fig_data.append(go.Scatter(x=summary_data['日期'], y=summary_data['广告单'], mode='lines+markers', name='广告单',
                            marker=dict(color='rgb(216, 196, 143)')))
-fig_data.append(go.Scatter(x=pd.to_datetime(dx['日期']), y=dx['正常单'], mode='lines+markers', name='正常单',
+fig_data.append(go.Scatter(x=summary_data['日期'], y=summary_data['正常单'], mode='lines+markers', name='正常单',
                            marker=dict(color='rgb(173, 224, 95)')))
-fig_data.append(go.Scatter(x=pd.to_datetime(dx['日期']), y=dx['总订单'], mode='lines+markers', name='总订单',
+fig_data.append(go.Scatter(x=summary_data['日期'], y=summary_data['总订单'], mode='lines+markers', name='总订单',
                            marker=dict(color='rgb(2, 150, 118)')))
-fig_data.append(go.Scatter(x=pd.to_datetime(dx['日期']), y=dx['正常单占比'], mode='lines+markers', name='正常单占比', yaxis='y2',
-                           marker=dict(color='#000000')))
-fig_data.append(go.Scatter(x=pd.to_datetime(dx['日期']), y=dx['综合转化率'], mode='lines+markers', name='综合转化率', yaxis='y2',
-                           marker=dict(color='#FF0000')))
+fig_data.append(go.Scatter(x=summary_data['日期'], y=summary_data['正常单占比'], mode='lines+markers', name='正常单占比',
+                           yaxis='y2', marker=dict(color='#000000')))
+fig_data.append(go.Scatter(x=summary_data['日期'], y=summary_data['综合转化率'], mode='lines+markers', name='综合转化率',
+                           yaxis='y2', marker=dict(color='#FF0000')))
 # 将两个图表合并成一个
 combined_fig = go.Figure(data=fig_data,
                          layout=go.Layout(title=dict(text='SKU广告趋势图', x=0.5, y=0.9),
@@ -215,4 +209,3 @@ combined_fig = go.Figure(data=fig_data,
                                           yaxis2=dict(side='right', overlaying='y', showgrid=False, tickfont={})))
 
 st.plotly_chart(combined_fig, use_container_width=True)
-st.write(dt)
