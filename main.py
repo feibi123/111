@@ -9,8 +9,8 @@ import numpy as np
 import plotly.graph_objects as go
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout='wide')
-secret_id = 'AKIDaCoNo12sXyMcidM3bv0sdGh6OTbcXWO8'
-secret_key = 'jJgrqdGuPmyEXp13tW7Yv9Azf9NSL6e0'
+secret_id = 'AKIDU1LGySgfRzrY5TfcvsdARSHuHSs8ByWr'
+secret_key = 'B6wRmtlOrAPRDnAJCvRilLk5LtJYZLel'
 region = 'ap-shanghai'
 bucket = 'guang-gao-1318184018'
 config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
