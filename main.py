@@ -15,7 +15,7 @@ region = 'ap-shanghai'
 bucket = 'guang-gao-1318184018'
 config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
 client = CosS3Client(config)
-folder_key = '广告'
+folder_key = '广告/'
 
 # 获取文件列表
 response = client.list_objects(
