@@ -9,8 +9,16 @@ import numpy as np
 import plotly.graph_objects as go
 pd.set_option('display.max_colwidth', None)
 st.set_page_config(layout='wide')
-secret_id = 'AKIDU1LGySgfRzrY5TfcvsdARSHuHSs8ByWr'
-secret_key = 'B6wRmtlOrAPRDnAJCvRilLk5LtJYZLel'
+# 读取环境变量中的值，如果不存在则使用默认值（这里的默认值是空字符串）
+secret_id = os.environ.get('SECRET_ID', '')
+secret_key = os.environ.get('SECRET_KEY', '')
+
+# 如果配置文件中有对应的值，则使用配置文件中的值覆盖默认值
+if secret_id == '':
+    secret_id = 'AKIDU1LGySgfRzrY5TfcvsdARSHuHSs8ByWr'
+
+if secret_key == '':
+    secret_key = 'B6wRmtlOrAPRDnAJCvRilLk5LtJYZLel'
 region = 'ap-shanghai'
 bucket = 'guang-gao-1318184018'
 config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
