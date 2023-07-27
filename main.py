@@ -14,13 +14,7 @@ secret_id = os.environ.get('SECRET_ID', '')
 secret_key = os.environ.get('SECRET_KEY', '')
 
 # 如果配置文件中有对应的值，则使用配置文件中的值覆盖默认值
-if secret_id == '':
-    secret_id = 'AKIDU1LGySgfRzrY5TfcvsdARSHuHSs8ByWr'
 
-if secret_key == '':
-    secret_key = 'B6wRmtlOrAPRDnAJCvRilLk5LtJYZLel'
-region = 'ap-shanghai'
-bucket = 'guang-gao-1318184018'
 config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
 client = CosS3Client(config)
 folder_key = '广告'
