@@ -1,0 +1,5 @@
+cos:
+  secret_id: YOUR_SECRET_ID
+  secret_key: YOUR_SECRET_KEY
+  region: ap-shanghai
+  bucket: guang-gao-1318184018
